@@ -2,9 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 import { Mountain, Droplet, Trees, Footprints, Compass, MapPin } from "lucide-react";
-import horsemanImg from "@/assets/horseman.jpg";
-import waterfallImg from "@/assets/waterfall.jpg";
-import valleyImg from "@/assets/valley.jpg";
+
+const tourismHeroImg = "/images/nature/hiker-climbing-mountains.jpg";
+const mountainsImg = "/images/nature/jagged-mountain-peaks-above-lush-forest-below.jpg";
+const riversImg = "/images/nature/white-water-river.jpg";
+const horseRoutesImg = "/images/nature/person-silhouetted-on-a-horse-in-a-open-field.jpg";
+const hikingImg = "/images/nature/hiking-the-path-up.jpg";
+const ecoImg = "/images/nature/freshwater-mountain-creek.jpg";
+const placesImg = "/images/nature/row-of-camping-tents.jpg";
 
 export const Route = createFileRoute("/tourism")({
   head: () => ({
@@ -13,7 +18,7 @@ export const Route = createFileRoute("/tourism")({
       { name: "description", content: "Mountain tourism, horse routes, ecotourism in Kara-Kulja." },
       { property: "og:title", content: "Tourism in Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/tourism" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/tourism" }],
   }),
   component: TourismPage,
 });
@@ -21,12 +26,12 @@ export const Route = createFileRoute("/tourism")({
 function TourismPage() {
   const { t } = useI18n();
   const cards = [
-    { icon: Mountain, titleKey: "tourism.item.mountains", descKey: "tourism.item.mountains.desc", img: valleyImg },
-    { icon: Droplet, titleKey: "tourism.item.rivers", descKey: "tourism.item.rivers.desc", img: waterfallImg },
-    { icon: Compass, titleKey: "tourism.item.horse", descKey: "tourism.item.horse.desc", img: horsemanImg },
-    { icon: Footprints, titleKey: "tourism.item.hiking", descKey: "tourism.item.hiking.desc", img: valleyImg },
-    { icon: Trees, titleKey: "tourism.item.eco", descKey: "tourism.item.eco.desc", img: waterfallImg },
-    { icon: MapPin, titleKey: "tourism.item.places", descKey: "tourism.item.places.desc", img: horsemanImg },
+    { icon: Mountain, titleKey: "tourism.item.mountains", descKey: "tourism.item.mountains.desc", img: mountainsImg },
+    { icon: Droplet, titleKey: "tourism.item.rivers", descKey: "tourism.item.rivers.desc", img: riversImg },
+    { icon: Compass, titleKey: "tourism.item.horse", descKey: "tourism.item.horse.desc", img: horseRoutesImg },
+    { icon: Footprints, titleKey: "tourism.item.hiking", descKey: "tourism.item.hiking.desc", img: hikingImg },
+    { icon: Trees, titleKey: "tourism.item.eco", descKey: "tourism.item.eco.desc", img: ecoImg },
+    { icon: MapPin, titleKey: "tourism.item.places", descKey: "tourism.item.places.desc", img: placesImg },
   ];
   return (
     <SiteLayout>
@@ -34,7 +39,7 @@ function TourismPage() {
         eyebrow={t("tourism.eyebrow")}
         title={t("tourism.title")}
         subtitle={t("tourism.desc")}
-        image={horsemanImg}
+        image={tourismHeroImg}
       />
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">

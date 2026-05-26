@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Get in touch with Kara-Kulja district." },
       { property: "og:title", content: "Contact — Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/contact" }],
   }),
   component: ContactPage,
 });

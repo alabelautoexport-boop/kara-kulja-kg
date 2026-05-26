@@ -11,7 +11,7 @@ export const Route = createFileRoute("/invest")({
       { name: "description", content: "Investment opportunities in agriculture, livestock, tourism, energy and infrastructure." },
       { property: "og:title", content: "Invest in Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/invest" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/invest" }],
   }),
   component: InvestPage,
 });

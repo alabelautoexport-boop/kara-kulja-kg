@@ -1,7 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/site/Layout";
-import { getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
+import { displayVillageName, getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
+import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
 import { useI18n } from "@/lib/i18n";
 import {
   Users,
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/villages_/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
       ],
+      links: [{ rel: "canonical", href: `https://kara-kulja.kg/villages/${params.slug}` }],
     };
   },
   loader: ({ params }) => {
@@ -168,7 +170,11 @@ function SectionNav() {
 function VillagePage() {
   const v = Route.useLoaderData() as Village;
   const { t, lang } = useI18n();
-  const related = v.related
+  const territory = getTerritoryForVillage(v.slug);
+  const villageName = displayVillageName(v, lang);
+  const territoryName = territory ? displayTerritoryName(territory, lang) : undefined;
+  const relatedSlugs = getNeighborVillageSlugs(v.slug);
+  const related = relatedSlugs
     .map((s: string) => VILLAGES.find((x) => x.slug === s))
     .filter(Boolean) as Village[];
 
@@ -178,7 +184,7 @@ function VillagePage() {
       <section className="relative flex min-h-[88vh] items-end overflow-hidden pt-32">
         <img
           src={v.hero}
-          alt={v.name}
+          alt={villageName}
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -186,13 +192,14 @@ function VillagePage() {
         <div className="absolute inset-0 gradient-vignette" />
         <div className="relative mx-auto w-full max-w-[1400px] px-6 pb-20 lg:px-10 lg:pb-32">
           <Link
-            to="/villages"
+            to={territory ? "/territories/$slug" : "/villages"}
+            params={territory ? { slug: territory.slug } : undefined}
             className="kbd-eyebrow inline-flex items-center gap-2 text-[var(--beige)]/80 hover:text-[var(--beige)]"
           >
-            <ArrowLeft className="h-3 w-3" /> {t("village.back")}
+            <ArrowLeft className="h-3 w-3" /> {territoryName ?? t("village.back")}
           </Link>
           <h1 className="mt-6 font-display text-6xl leading-[1.02] text-balance text-foreground md:text-8xl">
-            {v.name}
+            {villageName}
           </h1>
           <p className="mt-6 max-w-2xl font-display text-2xl font-light italic leading-[1.4] text-foreground/85 md:text-3xl">
             «{pick(v.tagline, lang)}»
@@ -422,7 +429,7 @@ function VillagePage() {
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
               <MapPin className="h-6 w-6 text-[var(--beige)]/80" strokeWidth={1.25} />
-              <p className="font-display text-2xl">{v.name}</p>
+              <p className="font-display text-2xl">{villageName}</p>
               <p className="kbd-eyebrow text-muted-foreground/70">{t("village.map.soon")}</p>
             </div>
           </div>
@@ -446,14 +453,14 @@ function VillagePage() {
               >
                 <img
                   src={r.hero}
-                  alt={r.name}
+                  alt={displayVillageName(r, lang)}
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8">
                   <div>
-                    <p className="font-display text-3xl">{r.name}</p>
+                    <p className="font-display text-3xl">{displayVillageName(r, lang)}</p>
                     <p className="mt-2 font-display italic text-foreground/80">«{pick(r.tagline, lang)}»</p>
                   </div>
                   <ArrowRight className="h-5 w-5 translate-y-[-2px] text-foreground/80 transition-transform group-hover:translate-x-1" />

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 import img from "@/assets/valley.jpg";
@@ -10,13 +10,13 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "History, geography, nature and culture of Kara-Kulja district." },
       { property: "og:title", content: "About Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/about" }],
   }),
   component: AboutPage,
 });
 
 function AboutPage() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const sections = [
     { k: t("about.section.history"), b: t("about.section.history.body") },
     { k: t("about.section.geography"), b: t("about.section.geography.body") },
@@ -26,8 +26,13 @@ function AboutPage() {
     { k: t("about.section.symbols"), b: t("about.section.symbols.body") },
   ];
   const aimaks = [
-    "Алайкуу", "Капчыгай", "Кенеш", "Карагуз", "Кара-Кочкор", "Кара-Кулжа",
-    "Кызыл-Жар", "Ылай-Талаа", "Ой-Тал", "Сары-Булак", "Чалма", "Кашка-Жол",
+    { name: { kg: "Кара-Кулжа", ru: "Кара-Кульджа", en: "Kara-Kulja" }, to: "/territories/kara-kulja" },
+    { name: { kg: "Алайкуу", ru: "Алайкуу", en: "Alaikuu" }, to: "/territories/alaikuu" },
+    { name: { kg: "Кара-Гүз", ru: "Кара-Гүз", en: "Kara-Guz" }, to: "/territories/kara-guz" },
+    { name: { kg: "Кара-Кочкор", ru: "Кара-Кочкор", en: "Kara-Kochkor" }, to: "/territories/kara-kochkor" },
+    { name: { kg: "Ой-Тал", ru: "Ой-Тал", en: "Oi-Tal" }, to: "/territories/oy-tal" },
+    { name: { kg: "Рыспай Абдыкадыров", ru: "Рыспай Абдыкадыров", en: "Ryspai Abdykadyrov" }, to: "/territories/ryspai-abdykadyrov" },
+    { name: { kg: "Ылай-Талаа", ru: "Ылай-Талаа", en: "Ylai-Talaa" }, to: "/territories/ylai-talaa" },
   ];
   return (
     <SiteLayout>
@@ -59,9 +64,14 @@ function AboutPage() {
           <p className="mt-6 max-w-2xl text-pretty text-muted-foreground">{t("admin.body")}</p>
           <ul className="mt-12 grid grid-cols-2 gap-px overflow-hidden border hairline sm:grid-cols-3 md:grid-cols-4">
             {aimaks.map((a, i) => (
-              <li key={a} className="flex items-baseline gap-3 bg-background p-5">
+              <li key={a.to} className="flex items-baseline gap-3 bg-background p-5">
                 <span className="kbd-eyebrow text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                <span className="font-display text-lg">{a}</span>
+                <Link
+                  to={a.to}
+                  className="font-display text-lg transition-colors duration-300 hover:text-[var(--beige)]"
+                >
+                  {a.name[lang]}
+                </Link>
               </li>
             ))}
           </ul>

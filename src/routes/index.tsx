@@ -2,13 +2,19 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowDown, Mountain, Sprout, Compass, Users } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
-import heroImg from "@/assets/hero-mountains.jpg";
-import villageImg from "@/assets/village.jpg";
-import valleyImg from "@/assets/valley.jpg";
-import horsemanImg from "@/assets/horseman.jpg";
-import elderImg from "@/assets/elder.jpg";
-import waterfallImg from "@/assets/waterfall.jpg";
-import agricultureImg from "@/assets/agriculture.jpg";
+import { PEOPLE, pick as pickPerson } from "@/lib/people-data";
+import { TERRITORIES, displayTerritoryName, pick } from "@/lib/territories-data";
+import homeHeroImg from "@/assets/hero-mountains.jpg";
+
+const heroImg = "/images/nature/aerial-image-of-snow-covered-mountains-under-bright-sky.jpg";
+const villageImg = "/images/nature/autumn-trees-hillside.jpg";
+const valleyImg = "/images/nature/jagged-mountain-peaks-above-lush-forest-below.jpg";
+const horsemanImg = "/images/nature/person-silhouetted-on-a-horse-in-a-open-field.jpg";
+const elderImg = "/images/nature/tall-field-plant-growth.jpg";
+const waterfallImg = "/images/nature/white-water-river.jpg";
+const agricultureImg = "/images/nature/nature-mountains-flower-landscape-adventure.jpg";
+const hikingImg = "/images/nature/hiking-the-path-up.jpg";
+const campingImg = "/images/nature/row-of-camping-tents.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,7 +30,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
     ],
     links: [
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: "https://kara-kulja.kg/" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap",
@@ -57,7 +63,7 @@ function Hero() {
   return (
     <section className="relative flex h-[100svh] min-h-[680px] items-end overflow-hidden">
       <img
-        src={heroImg}
+        src={homeHeroImg}
         alt="Aerial view of Kara-Kulja mountains"
         className="absolute inset-0 h-full w-full object-cover animate-slow-zoom"
         fetchPriority="high"
@@ -143,11 +149,11 @@ function HeroBtn({ to, children, primary }: { to: string; children: React.ReactN
 
 /* ---------- About ---------- */
 function About() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const stats = [
-    { v: "12", l: t("about.stat1") },
-    { v: "103 200", l: t("about.stat2") },
-    { v: "49", l: t("about.stat3") },
+    { v: "7", l: t("about.stat1") },
+    { v: lang === "en" ? "103,200" : "103 200", l: t("about.stat2") },
+    { v: "55", l: t("about.stat3") },
     { v: "4 327", l: t("about.stat4") },
   ];
   return (
@@ -278,12 +284,8 @@ function Tourism() {
 
 /* ---------- Villages ---------- */
 function Villages() {
-  const { t } = useI18n();
-  const villages = [
-    { name: "Кара-Кулжа", desc: t("village.tagline.kara-kulja"), img: villageImg },
-    { name: "Алай-Куу", desc: t("village.tagline.alai-kuu"), img: valleyImg },
-    { name: "Сары-Булак", desc: t("village.tagline.sary-bulak"), img: waterfallImg },
-  ];
+  const { t, lang } = useI18n();
+  const villages = TERRITORIES.slice(0, 3);
 
   return (
     <section className="border-t hairline py-24 lg:py-32">
@@ -296,7 +298,7 @@ function Villages() {
             </h2>
           </div>
           <Link
-            to="/villages"
+            to="/territories"
             className="inline-flex items-center gap-2 border-b hairline pb-1 text-sm text-muted-foreground hover:text-foreground"
           >
             {t("villages.cta")} <ArrowRight className="h-4 w-4" />
@@ -305,14 +307,15 @@ function Villages() {
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {villages.map((v, i) => (
             <Link
-              key={v.name}
-              to="/villages"
+              key={v.slug}
+              to="/territories/$slug"
+              params={{ slug: v.slug }}
               className="group block border hairline"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
-                  src={v.img}
-                  alt={v.name}
+                  src={v.image}
+                  alt={displayTerritoryName(v, lang)}
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -322,8 +325,8 @@ function Villages() {
               </div>
               <div className="flex items-end justify-between gap-3 p-6">
                 <div>
-                  <div className="font-display text-2xl">{v.name}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{v.desc}</div>
+                  <div className="font-display text-2xl">{displayTerritoryName(v, lang)}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{pick(v.subtitle, lang)}</div>
                 </div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
               </div>
@@ -393,12 +396,8 @@ function Invest() {
 
 /* ---------- Stories / People ---------- */
 function Stories() {
-  const { t } = useI18n();
-  const people = [
-    { name: "Эсенбек Аалы уулу", role: t("stories.role.shepherd"), village: "Алай-Куу", img: elderImg },
-    { name: "Айжамал К.", role: t("stories.role.craftswoman"), village: "Кара-Кулжа", img: horsemanImg },
-    { name: "Бакыт А.", role: t("stories.role.guide"), village: "Сары-Булак", img: villageImg },
-  ];
+  const { t, lang } = useI18n();
+  const people = PEOPLE;
 
   return (
     <section className="border-t hairline py-24 lg:py-32">
@@ -409,19 +408,19 @@ function Stories() {
         </h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {people.map((p) => (
-            <article key={p.name} className="group">
-              <div className="relative aspect-[4/5] overflow-hidden border hairline">
+            <article key={pick(p.name, lang)} className="group">
+              <div className="relative aspect-[4/5] overflow-hidden border hairline bg-background/70">
                 <img
-                  src={p.img}
-                  alt={p.name}
+                  src={p.image}
+                  alt={pick(p.name, lang)}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
+                  className="absolute inset-0 h-full w-full object-contain grayscale transition-all duration-700 group-hover:grayscale-0"
                 />
               </div>
               <div className="mt-5">
-                <div className="font-display text-xl">{p.name}</div>
+                <div className="font-display text-xl">{pick(p.name, lang)}</div>
                 <div className="mt-1 text-xs text-muted-foreground">
-                  {p.role} · {p.village}
+                  {pickPerson(p.role, lang)}
                 </div>
               </div>
             </article>
@@ -435,7 +434,7 @@ function Stories() {
 /* ---------- Gallery preview ---------- */
 function GalleryPreview() {
   const { t } = useI18n();
-  const imgs = [valleyImg, villageImg, horsemanImg, waterfallImg, agricultureImg, elderImg];
+  const imgs = [valleyImg, villageImg, horsemanImg, waterfallImg, hikingImg, campingImg];
   return (
     <section className="border-t hairline py-24 lg:py-32">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">

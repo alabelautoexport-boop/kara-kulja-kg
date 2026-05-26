@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VillagesRouteImport } from './routes/villages'
 import { Route as TourismRouteImport } from './routes/tourism'
+import { Route as TerritoriesRouteImport } from './routes/territories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PeopleRouteImport } from './routes/people'
 import { Route as NewsRouteImport } from './routes/news'
@@ -21,6 +22,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VillagesSlugRouteImport } from './routes/villages_.$slug'
+import { Route as TerritoriesSlugRouteImport } from './routes/territories_.$slug'
 
 const VillagesRoute = VillagesRouteImport.update({
   id: '/villages',
@@ -30,6 +32,11 @@ const VillagesRoute = VillagesRouteImport.update({
 const TourismRoute = TourismRouteImport.update({
   id: '/tourism',
   path: '/tourism',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TerritoriesRoute = TerritoriesRouteImport.update({
+  id: '/territories',
+  path: '/territories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -82,6 +89,11 @@ const VillagesSlugRoute = VillagesSlugRouteImport.update({
   path: '/villages/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TerritoriesSlugRoute = TerritoriesSlugRouteImport.update({
+  id: '/territories_/$slug',
+  path: '/territories/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -93,8 +105,10 @@ export interface FileRoutesByFullPath {
   '/news': typeof NewsRoute
   '/people': typeof PeopleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/territories/$slug': typeof TerritoriesSlugRoute
   '/villages/$slug': typeof VillagesSlugRoute
 }
 export interface FileRoutesByTo {
@@ -107,8 +121,10 @@ export interface FileRoutesByTo {
   '/news': typeof NewsRoute
   '/people': typeof PeopleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/territories/$slug': typeof TerritoriesSlugRoute
   '/villages/$slug': typeof VillagesSlugRoute
 }
 export interface FileRoutesById {
@@ -122,8 +138,10 @@ export interface FileRoutesById {
   '/news': typeof NewsRoute
   '/people': typeof PeopleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/territories_/$slug': typeof TerritoriesSlugRoute
   '/villages_/$slug': typeof VillagesSlugRoute
 }
 export interface FileRouteTypes {
@@ -138,8 +156,10 @@ export interface FileRouteTypes {
     | '/news'
     | '/people'
     | '/sitemap.xml'
+    | '/territories'
     | '/tourism'
     | '/villages'
+    | '/territories/$slug'
     | '/villages/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -152,8 +172,10 @@ export interface FileRouteTypes {
     | '/news'
     | '/people'
     | '/sitemap.xml'
+    | '/territories'
     | '/tourism'
     | '/villages'
+    | '/territories/$slug'
     | '/villages/$slug'
   id:
     | '__root__'
@@ -166,8 +188,10 @@ export interface FileRouteTypes {
     | '/news'
     | '/people'
     | '/sitemap.xml'
+    | '/territories'
     | '/tourism'
     | '/villages'
+    | '/territories_/$slug'
     | '/villages_/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -181,8 +205,10 @@ export interface RootRouteChildren {
   NewsRoute: typeof NewsRoute
   PeopleRoute: typeof PeopleRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TerritoriesRoute: typeof TerritoriesRoute
   TourismRoute: typeof TourismRoute
   VillagesRoute: typeof VillagesRoute
+  TerritoriesSlugRoute: typeof TerritoriesSlugRoute
   VillagesSlugRoute: typeof VillagesSlugRoute
 }
 
@@ -200,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/tourism'
       fullPath: '/tourism'
       preLoaderRoute: typeof TourismRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/territories': {
+      id: '/territories'
+      path: '/territories'
+      fullPath: '/territories'
+      preLoaderRoute: typeof TerritoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -272,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VillagesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/territories_/$slug': {
+      id: '/territories_/$slug'
+      path: '/territories/$slug'
+      fullPath: '/territories/$slug'
+      preLoaderRoute: typeof TerritoriesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -285,8 +325,10 @@ const rootRouteChildren: RootRouteChildren = {
   NewsRoute: NewsRoute,
   PeopleRoute: PeopleRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TerritoriesRoute: TerritoriesRoute,
   TourismRoute: TourismRoute,
   VillagesRoute: VillagesRoute,
+  TerritoriesSlugRoute: TerritoriesSlugRoute,
   VillagesSlugRoute: VillagesSlugRoute,
 }
 export const routeTree = rootRouteImport

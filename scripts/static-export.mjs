@@ -3,9 +3,9 @@ import path from "node:path";
 
 const server = (await import("../dist/server/index.js")).default;
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://kara-kulja.kg";
 
-const routes = [
+const sitemapRoutes = [
   "/",
   "/about",
   "/villages",
@@ -20,6 +20,74 @@ const routes = [
   "/news",
   "/contact",
 ];
+
+const territoryRoutes = [
+  "/territories",
+  "/territories/kara-kulja",
+  "/territories/alaikuu",
+  "/territories/kara-guz",
+  "/territories/kara-kochkor",
+  "/territories/oy-tal",
+  "/territories/ryspai-abdykadyrov",
+  "/territories/ylai-talaa",
+];
+
+const villageRoutes = [
+  "/villages/kok-art",
+  "/villages/kan-korgon",
+  "/villages/sai-talaa",
+  "/villages/ara-bulak",
+  "/villages/boru-tokoy",
+  "/villages/zhele-dobo",
+  "/villages/sary-bee",
+  "/villages/kara-tash",
+  "/villages/terek-suu",
+  "/villages/nichke-suu",
+  "/villages/kenesh",
+  "/villages/por",
+  "/villages/zhany-talaa",
+  "/villages/altyn-kurok",
+  "/villages/zhetim-dobo",
+  "/villages/kalmatay",
+  "/villages/kara-zhygach",
+  "/villages/nasirdin",
+  "/villages/kara-kochkor",
+  "/villages/ak-kyya",
+  "/villages/kashka-zhol-kara-kochkor",
+  "/villages/sary-bulak-kara-kochkor",
+  "/villages/biy-myrza",
+  "/villages/birinchi-may",
+  "/villages/sary-kamysh",
+  "/villages/kyzyl-zhar",
+  "/villages/kaiyn-talaa",
+  "/villages/koo-chaty",
+  "/villages/terek",
+  "/villages/chychyrkanak",
+  "/villages/kuyotash",
+  "/villages/ylai-talaa",
+  "/villages/sai",
+  "/villages/sharkyratma",
+  "/villages/zhylkol",
+  "/villages/sary-tash",
+  "/villages/konduk",
+  "/villages/sary-bulak",
+  "/villages/kara-bulak",
+  "/villages/konokbay-talaa",
+  "/villages/kyzyl-bulak",
+  "/villages/sary-kungoy",
+  "/villages/tegerek-saz",
+  "/villages/toguz-bulak",
+  "/villages/tokbay-talaa",
+  "/villages/buyga",
+  "/villages/besh-kempir",
+  "/villages/orto-talaa",
+  "/villages/zhany-talap",
+  "/villages/oktyabr",
+  "/villages/togotoy",
+  "/villages/yntymak",
+];
+
+const routes = [...new Set([...sitemapRoutes, ...territoryRoutes, ...villageRoutes])];
 
 async function renderRoute(routePath) {
   const url = `${BASE_URL}${routePath}`;
@@ -58,7 +126,7 @@ for (const route of routes) {
 // Generate static sitemap.xml
 let sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-for (const r of routes) {
+for (const r of sitemapRoutes) {
   const priority = r === "/" ? "1.0" : "0.7";
   sitemapXml += `  <url><loc>${BASE_URL}${r}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>\n`;
 }

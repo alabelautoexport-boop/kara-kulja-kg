@@ -1,13 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "";
+const BASE_URL = "https://kara-kulja.kg";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const paths = ["/", "/about", "/villages", "/tourism", "/invest", "/people", "/history", "/gallery", "/news", "/contact"];
+        const paths = [
+          "/",
+          "/about",
+          "/villages",
+          "/villages/kara-kulja",
+          "/villages/zhiyde",
+          "/villages/oy-tal",
+          "/tourism",
+          "/invest",
+          "/people",
+          "/history",
+          "/gallery",
+          "/news",
+          "/contact",
+        ];
         const urls = paths.map(
           (p) =>
             `  <url><loc>${BASE_URL}${p}</loc><changefreq>weekly</changefreq><priority>${p === "/" ? "1.0" : "0.7"}</priority></url>`

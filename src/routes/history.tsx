@@ -15,7 +15,7 @@ export const Route = createFileRoute("/history")({
       { name: "description", content: "Historical archive: old photos, Soviet era, oral history." },
       { property: "og:title", content: "History of Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/history" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/history" }],
   }),
   component: HistoryPage,
 });

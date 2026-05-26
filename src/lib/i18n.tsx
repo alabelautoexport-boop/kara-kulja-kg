@@ -4,15 +4,15 @@ export type Lang = "kg" | "ru" | "en";
 
 type Dict = Record<string, string>;
 
-// Slogan stays in Kyrgyz across all languages — cultural identity.
 const SLOGAN_KG = "Көркү, наркы өзгөлөрдөн башкараак\nКара-Кулжа ушул жерден башталат.";
+const SLOGAN_EN = "Where timeless beauty meets the land\nKara-Kulja begins where you stand.";
 
 const KG: Dict = {
   "nav.about": "Район жөнүндө",
-  "nav.villages": "Айылдар",
+  "nav.villages": "Аймактар",
   "nav.tourism": "Туризм",
   "nav.invest": "Инвестициялар",
-  "nav.people": "Адамдар",
+  "nav.people": "Инсандар",
   "nav.history": "Тарых",
   "nav.gallery": "Галерея",
   "nav.news": "Жаңылыктар",
@@ -27,11 +27,11 @@ const KG: Dict = {
   "hero.scroll": "Ылдый сыдырыңыз",
 
   "about.eyebrow": "РАЙОН ЖӨНҮНДӨ",
-  "about.title": "Тоолордун ортосунда жашаган руху",
-  "about.body": "Кара-Кулжа — Ош облусундагы тоолуу район. Бул жерде көчмөн маданияттын тамыры, көк асмандын тазалыгы жана адамдардын ачыктыгы бирге жашайт.",
+  "about.title": "Кара-Кулжа — убакыттын агымы өзгөргөн жер",
+  "about.body": "Табияты өзгөчө, нукура маданияты сакталган аймактардын бири. Бул жерде тунук дарыялар, кең жайлоолор жана кыргыз элинин салттуу жашоо образы өзгөчө атмосфераны жаратат.",
   "about.stat1": "айыл аймагы",
-  "about.stat2": "тургун (01.01.2026)",
-  "about.stat3": "калктуу конуш",
+  "about.stat2": "тургун",
+  "about.stat3": "айыл",
   "about.stat4": "км² аянты",
 
   "about.section.history": "Тарых",
@@ -43,16 +43,16 @@ const KG: Dict = {
   "about.section.culture": "Маданият",
   "about.section.culture.body": "Манас эпосунун дүйнөсү, ат маданияты, эл оозеки чыгармачылыгы, кол өнөрчүлүк.",
   "about.section.overview": "Райондун жалпы көрүнүшү",
-  "about.section.overview.body": "12 айыл аймагы, 49 калктуу конуш, 103 200 тургун (01.01.2026). Борбору — Кара-Кулжа айылы. Айыл чарба жана мал чарбачылык — экономиканын негизи.",
+  "about.section.overview.body": "7 айыл аймагы, 55 айыл, 103 200 тургун. Борбору — Кара-Кулжа айылы. Айыл чарба жана мал чарбачылык — экономиканын негизи.",
   "about.section.symbols": "Символдор",
   "about.section.symbols.body": "Көк асман, ак кар, жашыл өрөөн, ат жана кыргыз калпагы.",
 
   "admin.eyebrow": "АДМИНИСТРАЦИЯЛЫК БӨЛҮНҮШҮ",
-  "admin.title": "12 айыл аймагы, 49 калктуу конуш",
-  "admin.body": "Кара-Кулжа районуна 12 айыл аймагы жана 49 калктуу конуш кирет.",
+  "admin.title": "7 айыл аймагы, 55 айыл",
+  "admin.body": "Кара-Кулжа районуна расмий маалыматтагы 7 айыл аймагы жана 55 айыл кирет.",
 
   "discover.eyebrow": "АЧУУ",
-  "discover.title": "Кара-Кулжаны ачыңыз",
+  "discover.title": "Кара-Кулжаны жаңыча тааныңыз",
   "discover.nature": "Жаратылыш",
   "discover.tourism": "Туризм",
   "discover.invest": "Инвестиция",
@@ -76,9 +76,9 @@ const KG: Dict = {
   "tourism.item.places": "Көрсө болгон жерлер",
   "tourism.item.places.desc": "Көрсө болгон жерлердин толук тизмеси.",
 
-  "villages.eyebrow": "АЙЫЛДАР",
-  "villages.title": "Ар бир айылдын өз тарыхы",
-  "villages.cta": "Толугу менен",
+  "villages.eyebrow": "АЙМАКТАР",
+  "villages.title": "Кара-Кулжанын аймактары аркылуу саякат",
+  "villages.cta": "Аймакка кирүү",
 
   "village.tagline.kara-kulja": "Райондук борбор",
   "village.tagline.alai-kuu": "Тоонун этегиндеги айыл",
@@ -129,7 +129,8 @@ const KG: Dict = {
   "invest.contactOffice": "Инвестиция бөлүмүнө кайрылуу",
 
   "stories.eyebrow": "АДАМДАР",
-  "stories.title": "Кара-Кулжанын жүздөрү",
+  "people.eyebrow": "БЕЛГИЛҮҮ ИНСАНДАР",
+  "stories.title": "Кара-Кулжанын инсандары",
   "stories.role.shepherd": "Малчы",
   "stories.role.craftswoman": "Эл устасы",
   "stories.role.guide": "Туристтик гид",
@@ -187,7 +188,10 @@ const KG: Dict = {
   "history.item.6.title": "Жаңы санариптик доор",
 
   "footer.tag": "Кара-Кулжанын санариптик жүзү",
+  "footer.slogan": SLOGAN_KG,
   "footer.rights": "Бардык укуктар корголгон",
+  "footer.copyright": "© 2026 Kara-Kulja.kg. Бардык укуктар корголгон.",
+  "footer.author": "Долбоордун автору — Азамат Мырзаибраимов",
   "footer.nav": "Навигация",
   "footer.contact": "Байланыш",
   "footer.region": "Ош облусу · Кыргыз Республикасы",
@@ -219,16 +223,16 @@ const KG: Dict = {
   "village.gallery.title": "Көз менен көрүү",
   "village.map.title": "Жайгашуусу",
   "village.map.soon": "Интерактивдүү карта жакында",
-  "village.related.eyebrow": "Жакындагы айылдар",
+  "village.related.eyebrow": "КОШУНА АЙЫЛДАР",
   "village.related.title": "Сапарды улантуу",
 };
 
 const RU: Dict = {
   "nav.about": "О районе",
-  "nav.villages": "Сёла",
+  "nav.villages": "Территории",
   "nav.tourism": "Туризм",
   "nav.invest": "Инвестиции",
-  "nav.people": "Люди",
+  "nav.people": "Личности",
   "nav.history": "История",
   "nav.gallery": "Галерея",
   "nav.news": "Новости",
@@ -243,15 +247,15 @@ const RU: Dict = {
   "hero.scroll": "Прокрутите вниз",
 
   "about.eyebrow": "О РАЙОНЕ",
-  "about.title": "Дух, живущий среди гор",
-  "about.body": "Кара-Кулджа — горный район Ошской области. Здесь сплелись кочевые корни, чистота высокого неба и открытость людей.",
+  "about.title": "Кара-Кульджа — край, где время становится тише",
+  "about.body": "Уголок с уникальной природой и бережно сохранённой культурой. Чистые реки, бескрайние жайлоо и традиционный уклад кыргызского народа создают здесь особую атмосферу.",
   "about.stat1": "айыльных аймаков",
-  "about.stat2": "жителей (01.01.2026)",
-  "about.stat3": "населённых пунктов",
+  "about.stat2": "жителей",
+  "about.stat3": "сёл",
   "about.stat4": "км² площади",
 
   "about.section.history": "История",
-  "about.section.history.body": "История Кара-Кулджи уходит в глубь веков — наследники Великого Шёлкового пути и кочевых племён.",
+  "about.section.history.body": "История Кара-Кульджи уходит в глубь веков — наследники Великого Шёлкового пути и кочевых племён.",
   "about.section.geography": "География",
   "about.section.geography.body": "Расположен на северном склоне Алайского хребта: высокие джайлоо, глубокие ущелья и горные реки.",
   "about.section.nature": "Природа",
@@ -259,16 +263,16 @@ const RU: Dict = {
   "about.section.culture": "Культура",
   "about.section.culture.body": "Мир эпоса «Манас», конная культура, устное народное творчество, ремёсла.",
   "about.section.overview": "Обзор района",
-  "about.section.overview.body": "12 айыльных аймаков, 49 населённых пунктов, 103 200 жителей (01.01.2026). Центр — село Кара-Кулджа. Основа экономики — сельское хозяйство и животноводство.",
+  "about.section.overview.body": "7 айыльных аймаков, 55 сёл, 103 200 жителей. Центр — село Кара-Кульджа. Основа экономики — сельское хозяйство и животноводство.",
   "about.section.symbols": "Символы",
   "about.section.symbols.body": "Синее небо, белый снег, зелёная долина, конь и кыргызский колпак.",
 
   "admin.eyebrow": "АДМИНИСТРАТИВНО-ТЕРРИТОРИАЛЬНОЕ ДЕЛЕНИЕ",
-  "admin.title": "12 айыльных аймаков, 49 населённых пунктов",
-  "admin.body": "В состав Кара-Кулджинского района входят 12 айыльных аймаков и 49 населённых пунктов.",
+  "admin.title": "7 айыльных аймаков, 55 сёл",
+  "admin.body": "В состав района Кара-Кульджа входят 7 официальных айыльных аймаков и 55 сёл.",
 
   "discover.eyebrow": "ОТКРОЙТЕ",
-  "discover.title": "Откройте Кара-Кулджу",
+  "discover.title": "Откройте Кара-Кульджу с новой стороны",
   "discover.nature": "Природа",
   "discover.tourism": "Туризм",
   "discover.invest": "Инвестиции",
@@ -292,9 +296,9 @@ const RU: Dict = {
   "tourism.item.places": "Места для посещения",
   "tourism.item.places.desc": "Полный список мест, которые стоит увидеть.",
 
-  "villages.eyebrow": "СЁЛА",
-  "villages.title": "У каждого села своя история",
-  "villages.cta": "Подробнее",
+  "villages.eyebrow": "ТЕРРИТОРИИ",
+  "villages.title": "Путешествие по уголкам Кара-Кульджи",
+  "villages.cta": "Войти в территорию",
 
   "village.tagline.kara-kulja": "Сердце района",
   "village.tagline.alai-kuu": "Село у подножия гор",
@@ -311,7 +315,7 @@ const RU: Dict = {
   "village.tagline.kashka-zhol": "Аймак вдоль старой дороги",
 
   "invest.eyebrow": "ИНВЕСТИЦИИ",
-  "invest.title": "Инвестируйте в Кара-Кулджу",
+  "invest.title": "Инвестируйте в Кара-Кульджу",
   "invest.desc": "Новые возможности в сельском хозяйстве, животноводстве, туризме и зелёной энергетике.",
   "invest.cta": "Открыть возможности",
   "invest.opp.agri": "Сельское хозяйство",
@@ -321,7 +325,7 @@ const RU: Dict = {
   "invest.opp.infra": "Инфраструктура",
   "invest.opp.business": "Местный бизнес",
 
-  "invest.why.eyebrow": "Почему Кара-Кулджа",
+  "invest.why.eyebrow": "Почему Кара-Кульджа",
   "invest.why.title": "Четыре причины, по которым инвесторы выбирают этот район",
   "invest.reason.location": "Стратегическое расположение",
   "invest.reason.location.body": "Стратегическая граница Ошской области, 12 айыльных аймаков, 49 населённых пунктов.",
@@ -345,7 +349,8 @@ const RU: Dict = {
   "invest.contactOffice": "Связаться с инвестиционным отделом",
 
   "stories.eyebrow": "ЛЮДИ",
-  "stories.title": "Лица Кара-Кулджи",
+  "people.eyebrow": "ИЗВЕСТНЫЕ ЛИЧНОСТИ",
+  "stories.title": "Личности Кара-Кульджи",
   "stories.role.shepherd": "Чабан",
   "stories.role.craftswoman": "Народный мастер",
   "stories.role.guide": "Туристический гид",
@@ -379,20 +384,20 @@ const RU: Dict = {
   "contact.label.email": "Email",
   "contact.label.phone": "Телефон · WhatsApp",
   "contact.label.address": "Адрес",
-  "contact.address.value": "село Кара-Кулджа, Ошская область",
+  "contact.address.value": "село Кара-Кульджа, Ошская область",
   "contact.thanks": "Спасибо! Ваше сообщение отправлено.",
 
   "gallery.hero.eyebrow": "ГАЛЕРЕЯ",
-  "gallery.hero.title": "Кара-Кулджа глазами зрителя",
+  "gallery.hero.title": "Кара-Кульджа глазами зрителя",
   "gallery.title": "Галерея",
   "gallery.viewAll": "Смотреть все",
 
-  "history.hero.title": "История Кара-Кулджи",
+  "history.hero.title": "История Кара-Кульджи",
   "history.hero.subtitle": "Старые фотографии, устная история, школы, исторические моменты.",
   "history.item.1.year": "XIX в.",
   "history.item.1.title": "Наследие кочевых племён",
   "history.item.2.year": "1924",
-  "history.item.2.title": "Образован Кара-Кулджинский район",
+  "history.item.2.title": "Образован Кара-Кульджинский район",
   "history.item.3.year": "1940-е",
   "history.item.3.title": "Школы советской эпохи",
   "history.item.4.year": "1970-е",
@@ -402,8 +407,11 @@ const RU: Dict = {
   "history.item.6.year": "Сегодня",
   "history.item.6.title": "Новая цифровая эпоха",
 
-  "footer.tag": "Цифровое лицо Кара-Кулджи",
+  "footer.tag": "Цифровое лицо Кара-Кульджи",
+  "footer.slogan": SLOGAN_KG,
   "footer.rights": "Все права защищены",
+  "footer.copyright": "© 2026 Kara-Kulja.kg. Все права защищены.",
+  "footer.author": "Автор проекта — Азамат Мырзаибраимов",
   "footer.nav": "Навигация",
   "footer.contact": "Контакты",
   "footer.region": "Ошская область · Кыргызская Республика",
@@ -434,13 +442,13 @@ const RU: Dict = {
   "village.gallery.title": "Глазами зрителя",
   "village.map.title": "Расположение",
   "village.map.soon": "Интерактивная карта скоро",
-  "village.related.eyebrow": "Ближайшие сёла",
+  "village.related.eyebrow": "СОСЕДНИЕ СЁЛА",
   "village.related.title": "Продолжить путь",
 };
 
 const EN: Dict = {
   "nav.about": "About",
-  "nav.villages": "Villages",
+  "nav.villages": "Territories",
   "nav.tourism": "Tourism",
   "nav.invest": "Invest",
   "nav.people": "People",
@@ -451,18 +459,18 @@ const EN: Dict = {
 
   "hero.eyebrow": "KYRGYZ REPUBLIC · OSH REGION",
   "hero.title": "KARA-KULJA",
-  "hero.subtitle": SLOGAN_KG,
+  "hero.subtitle": SLOGAN_EN,
   "hero.cta1": "Discover the district",
   "hero.cta2": "Tourism",
   "hero.cta3": "Investment",
   "hero.scroll": "Scroll",
 
   "about.eyebrow": "ABOUT",
-  "about.title": "A spirit living among mountains",
-  "about.body": "Kara-Kulja is a mountain district in Osh Region. Here, nomadic roots, the clarity of high skies, and the openness of its people are woven into one identity.",
-  "about.stat1": "rural aiyl aimaks",
-  "about.stat2": "inhabitants (01.01.2026)",
-  "about.stat3": "settlements",
+  "about.title": "Kara-Kulja — where time begins to slow down",
+  "about.body": "A place where unique nature and authentic culture have been carefully preserved. Crystal-clear rivers, endless summer pastures, and the traditional Kyrgyz way of life create a truly distinctive atmosphere here.",
+  "about.stat1": "aiyl aimaks",
+  "about.stat2": "residents",
+  "about.stat3": "villages",
   "about.stat4": "km² of territory",
 
   "about.section.history": "History",
@@ -474,16 +482,16 @@ const EN: Dict = {
   "about.section.culture": "Culture",
   "about.section.culture.body": "The world of the Manas epic, horse culture, oral storytelling and traditional crafts.",
   "about.section.overview": "District overview",
-  "about.section.overview.body": "12 aiyl aimaks, 49 settlements, 103,200 inhabitants (01.01.2026). The centre is Kara-Kulja village. Agriculture and livestock form the backbone of the economy.",
+  "about.section.overview.body": "7 aiyl aimaks, 55 villages, and 103,200 residents. The centre is Kara-Kulja village. Agriculture and livestock form the backbone of the economy.",
   "about.section.symbols": "Symbols",
   "about.section.symbols.body": "Blue sky, white snow, green valley, the horse and the Kyrgyz kalpak.",
 
   "admin.eyebrow": "ADMINISTRATIVE DIVISION",
-  "admin.title": "12 aiyl aimaks, 49 settlements",
-  "admin.body": "Kara-Kulja district comprises 12 aiyl aimaks (rural municipalities) and 49 populated settlements.",
+  "admin.title": "7 aiyl aimaks, 55 villages",
+  "admin.body": "Kara-Kulja district comprises 7 official aiyl aimaks and 55 villages.",
 
   "discover.eyebrow": "DISCOVER",
-  "discover.title": "Discover Kara-Kulja",
+  "discover.title": "Experience Kara-Kulja from a new perspective",
   "discover.nature": "Nature",
   "discover.tourism": "Tourism",
   "discover.invest": "Invest",
@@ -507,9 +515,9 @@ const EN: Dict = {
   "tourism.item.places": "Places to visit",
   "tourism.item.places.desc": "A complete list of places worth seeing.",
 
-  "villages.eyebrow": "VILLAGES",
-  "villages.title": "Every village, a story",
-  "villages.cta": "Read more",
+  "villages.eyebrow": "TERRITORIES",
+  "villages.title": "Explore the Diverse Landscapes of Kara-Kulja",
+  "villages.cta": "Enter territory",
 
   "village.tagline.kara-kulja": "Heart of the district",
   "village.tagline.alai-kuu": "A village at the foot of the mountains",
@@ -560,7 +568,8 @@ const EN: Dict = {
   "invest.contactOffice": "Contact investment office",
 
   "stories.eyebrow": "PEOPLE",
-  "stories.title": "Faces of Kara-Kulja",
+  "people.eyebrow": "NOTABLE FIGURES",
+  "stories.title": "People of Kara-Kulja",
   "stories.role.shepherd": "Shepherd",
   "stories.role.craftswoman": "Master craftswoman",
   "stories.role.guide": "Tour guide",
@@ -618,7 +627,10 @@ const EN: Dict = {
   "history.item.6.title": "A new digital era",
 
   "footer.tag": "The digital face of Kara-Kulja",
+  "footer.slogan": SLOGAN_EN,
   "footer.rights": "All rights reserved",
+  "footer.copyright": "© 2026 Kara-Kulja.kg. All rights reserved.",
+  "footer.author": "Project Author — Azamat Myrzaibraimov",
   "footer.nav": "Navigation",
   "footer.contact": "Contact",
   "footer.region": "Osh Region · Kyrgyz Republic",
@@ -649,7 +661,7 @@ const EN: Dict = {
   "village.gallery.title": "Through your own eyes",
   "village.map.title": "Location",
   "village.map.soon": "Interactive map coming soon",
-  "village.related.eyebrow": "Nearby villages",
+  "village.related.eyebrow": "NEIGHBOURING VILLAGES",
   "village.related.title": "Continue the journey",
 };
 

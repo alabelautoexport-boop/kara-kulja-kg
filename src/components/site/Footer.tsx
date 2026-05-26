@@ -20,8 +20,12 @@ export function Footer() {
               <span className="font-display text-2xl tracking-tight">Kara-Kulja</span>
             </div>
             <p className="mt-6 max-w-sm font-display text-xl font-light italic leading-[1.5] text-pretty text-muted-foreground/90">
-              «Көркү, наркы өзгөлөрдөн башкараак{" "}
-              <span className="whitespace-nowrap">Кара-Кулжа</span> ушул жерден башталат.»
+              «{t("footer.slogan").split("\n").map((line, i, arr) => (
+                <span key={i}>
+                  {line}
+                  {i < arr.length - 1 && <br />}
+                </span>
+              ))}»
             </p>
             <p className="mt-8 kbd-eyebrow text-muted-foreground/70">{t("footer.tag")}</p>
           </div>
@@ -31,7 +35,7 @@ export function Footer() {
             <ul className="mt-5 grid grid-cols-2 gap-y-2.5 text-sm">
               {[
                 ["/about", "nav.about"],
-                ["/villages", "nav.villages"],
+                ["/territories", "nav.villages"],
                 ["/tourism", "nav.tourism"],
                 ["/invest", "nav.invest"],
                 ["/people", "nav.people"],
@@ -96,7 +100,10 @@ export function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col justify-between gap-3 border-t hairline pt-6 text-xs text-muted-foreground/70 md:flex-row">
-          <span>© {new Date().getFullYear()} Kara-Kulja District · {t("footer.rights")}</span>
+          <span className="space-y-1">
+            <span className="block">{t("footer.copyright")}</span>
+            <span className="block">{t("footer.author")}</span>
+          </span>
           <span className="tracking-wide">{t("footer.region")}</span>
         </div>
       </div>

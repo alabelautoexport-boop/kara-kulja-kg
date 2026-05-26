@@ -11,6 +11,14 @@ import horseRouteImg from "@/assets/horse-route.jpg";
 import winterVillageImg from "@/assets/winter-village.jpg";
 import kymyzImg from "@/assets/kymyz.jpg";
 import type { Lang } from "@/lib/i18n";
+import {
+  displayTerritoryName,
+  displayVillageName as displayOfficialVillageName,
+  OFFICIAL_VILLAGES,
+  formatPopulation,
+  getOfficialVillage,
+  getTerritoryForVillage,
+} from "@/lib/territories-data";
 
 export type Localized<T> = Record<Lang, T>;
 
@@ -21,7 +29,12 @@ export type InvestmentItem = { title: Localized<string>; body: Localized<string>
 
 export type Village = {
   slug: string;
-  name: string; // proper noun — kept in Kyrgyz across all languages
+  name: string;
+  nameRu?: string;
+  nameEn?: string;
+  population?: number | null;
+  territorySlug?: string;
+  order?: number;
   tagline: Localized<string>;
   hero: string;
   intro: Localized<string>;
@@ -136,10 +149,12 @@ const INFO_LOC = L("Жайгашуусу", "Расположение", "Location
 const INFO_DIST = L("Борборго чейин", "До центра", "Distance to centre");
 const INFO_AO = L("Айыл өкмөтү", "Айыл окмоту", "Aiyl okmotu");
 
-export const VILLAGES: Village[] = [
+const DETAILED_VILLAGES: Village[] = [
   {
     slug: "kara-kulja",
     name: "Кара-Кулжа",
+    nameRu: "Кара-Кульджа",
+    nameEn: "Kara-Kulja",
     tagline: L("Райондун жүрөгү", "Сердце района", "Heart of the district"),
     hero: mountainsImg,
     intro: L(
@@ -150,9 +165,9 @@ export const VILLAGES: Village[] = [
     info: [
       { label: INFO_POP, value: L("≈ 18 000", "≈ 18 000", "≈ 18,000") },
       { label: INFO_ALT, value: L("1 450 м", "1 450 м", "1,450 m") },
-      { label: INFO_LOC, value: L("Кара-Кулжа өрөөнү", "Долина Кара-Кулджа", "Kara-Kulja valley") },
+      { label: INFO_LOC, value: L("Кара-Кулжа өрөөнү", "Долина Кара-Кульджа", "Kara-Kulja valley") },
       { label: INFO_DIST, value: L("0 км", "0 км", "0 km") },
-      { label: INFO_AO, value: L("Кара-Кулжа а/ө", "АО Кара-Кулджа", "Kara-Kulja AO") },
+      { label: INFO_AO, value: L("Кара-Кулжа а/ө", "АО Кара-Кульджа", "Kara-Kulja AO") },
     ],
     history: L(
       "Кылымдар бою бул өрөөн көчмөн уруулардын жайлоосу болуп келген. Убакыттын өтүшү менен ал райондун жүрөгүнө айланды — соода жолдору кошулган, мечит-мектептери курулган, муундардан муундарга жашоо уланган жер.",
@@ -162,7 +177,7 @@ export const VILLAGES: Village[] = [
     tourism: {
       lead: L(
         "Тоолор, дарыя, асман — Кара-Кулжанын табияты сапарга чакырат.",
-        "Горы, реки, небо — природа Кара-Кулджи зовёт в путь.",
+        "Горы, реки, небо — природа Кара-Кульджи зовёт в путь.",
         "Mountains, rivers, sky — the nature of Kara-Kulja calls you on a journey."
       ),
       items: SHARED_TOURISM,
@@ -181,12 +196,14 @@ export const VILLAGES: Village[] = [
       { name: L("Дыйкан", "Земледелец", "Farmer"), role: L("Өрөөн боюнда", "У долины", "Along the valley"), img: agricultureImg },
     ],
     gallery: [villageImg, jailooImg, horsemanImg, mountainRoadImg, waterfallImg, winterVillageImg],
-    mapNote: L("Кара-Кулжа району, Ош облусу", "Кара-Кулджинский район, Ошская область", "Kara-Kulja district, Osh Region"),
+    mapNote: L("Кара-Кулжа району, Ош облусу", "Кара-Кульджинский район, Ошская область", "Kara-Kulja district, Osh Region"),
     related: ["zhiyde", "oy-tal"],
   },
   {
     slug: "zhiyde",
     name: "Жийде",
+    nameRu: "Жийде",
+    nameEn: "Jiide",
     tagline: L("Тоолордун арасындагы тынч айыл", "Тихое село среди гор", "A quiet village among the mountains"),
     hero: valleyImg,
     intro: L(
@@ -199,12 +216,12 @@ export const VILLAGES: Village[] = [
       { label: INFO_ALT, value: L("1 720 м", "1 720 м", "1,720 m") },
       { label: INFO_LOC, value: L("Тоо этегинде", "У подножия гор", "At the foot of the mountains") },
       { label: INFO_DIST, value: L("≈ 24 км", "≈ 24 км", "≈ 24 km") },
-      { label: INFO_AO, value: L("Жийде а/ө", "АО Жийде", "Zhiyde AO") },
+      { label: INFO_AO, value: L("Жийде а/ө", "АО Жийде", "Jiide AO") },
     ],
     history: L(
       "Жийде — аты дарактан, руху адамдарынан. Кылымдар бою үй-бүлөлөр бул жерде туруктуу жашап, өз салтын, өз тилин, өз нанын сактап келишкен.",
       "Жийде — имя от дерева, дух — от людей. Веками семьи жили здесь, сохраняя свои традиции, язык и хлеб.",
-      "Zhiyde — its name from a tree, its spirit from its people. For centuries families have lived here, keeping their traditions, language and bread."
+      "Jiide — its name from a tree, its spirit from its people. For centuries families have lived here, keeping their traditions, language and bread."
     ),
     tourism: {
       lead: L(
@@ -228,30 +245,32 @@ export const VILLAGES: Village[] = [
       { name: L("Атчан", "Всадник", "Horseman"), role: L("Жайлоо жолунда", "На пути к джайлоо", "On the way to the jailoo"), img: horsemanImg },
     ],
     gallery: [valleyImg, mountainsImg, elderImg, mountainRoadImg, waterfallImg, jailooImg],
-    mapNote: L("Жийде айылы, Кара-Кулжа району", "село Жийде, Кара-Кулджинский район", "Zhiyde village, Kara-Kulja district"),
+    mapNote: L("Жийде айылы, Кара-Кулжа району", "село Жийде, Кара-Кульджинский район", "Jiide village, Kara-Kulja district"),
     related: ["kara-kulja", "oy-tal"],
   },
   {
     slug: "oy-tal",
     name: "Ой-Тал",
+    nameRu: "Ой-Тал",
+    nameEn: "Oi-Tal",
     tagline: L("Жайлоолорго жол ачкан өрөөн", "Долина, ведущая к джайлоо", "The valley that opens to the jailoo"),
     hero: horseRouteImg,
     intro: L(
       "Кең өрөөн, бийик асман. Ой-Тал — жайлоого чыккан атчандардын, мал баккан үй-бүлөлөрдүн жери.",
       "Широкая долина, высокое небо. Ой-Тал — земля всадников, поднимающихся на джайлоо, и семей, что пасут скот.",
-      "A wide valley, a high sky. Oy-Tal is the land of horsemen heading to the jailoo and of families who tend their herds."
+      "A wide valley, a high sky. Oi-Tal is the land of horsemen heading to the jailoo and of families who tend their herds."
     ),
     info: [
       { label: INFO_POP, value: L("≈ 5 600", "≈ 5 600", "≈ 5,600") },
       { label: INFO_ALT, value: L("1 880 м", "1 880 м", "1,880 m") },
-      { label: INFO_LOC, value: L("Ой-Тал өрөөнү", "Долина Ой-Тал", "Oy-Tal valley") },
+      { label: INFO_LOC, value: L("Ой-Тал өрөөнү", "Долина Ой-Тал", "Oi-Tal valley") },
       { label: INFO_DIST, value: L("≈ 38 км", "≈ 38 км", "≈ 38 km") },
-      { label: INFO_AO, value: L("Ой-Тал а/ө", "АО Ой-Тал", "Oy-Tal AO") },
+      { label: INFO_AO, value: L("Ой-Тал а/ө", "АО Ой-Тал", "Oi-Tal AO") },
     ],
     history: L(
       "Ой-Тал кылымдар бою көчмөн жашоонун уюткусу болуп келген. Бул жерден жайлоого жол ачылат, бул жерден кымыздын даамы башталат.",
       "Ой-Тал веками был основой кочевой жизни. Отсюда открывается путь к джайлоо, отсюда начинается вкус кумыса.",
-      "For centuries Oy-Tal has been the core of nomadic life. From here the road to the jailoo opens; from here the taste of kumys begins."
+      "For centuries Oi-Tal has been the core of nomadic life. From here the road to the jailoo opens; from here the taste of kumys begins."
     ),
     tourism: {
       lead: L(
@@ -275,11 +294,106 @@ export const VILLAGES: Village[] = [
       { name: L("Жаш спортчу", "Юный спортсмен", "Young athlete"), role: L("Көк бөрү", "Кок-бору", "Kok-boru"), img: agricultureImg },
     ],
     gallery: [horseRouteImg, jailooImg, valleyImg, kymyzImg, elderImg, mountainRoadImg],
-    mapNote: L("Ой-Тал айыл аймагы, Кара-Кулжа району", "АА Ой-Тал, Кара-Кулджинский район", "Oy-Tal aiyl aimak, Kara-Kulja district"),
+    mapNote: L("Ой-Тал айыл аймагы, Кара-Кулжа району", "АА Ой-Тал, Кара-Кульджинский район", "Oi-Tal aiyl aimak, Kara-Kulja district"),
     related: ["kara-kulja", "zhiyde"],
   },
+];
+
+const withOfficialDetails = (village: Village): Village => {
+  const official = getOfficialVillage(village.slug);
+  if (!official) return village;
+
+  return {
+    ...village,
+    nameRu: village.nameRu ?? official.nameRu,
+    nameEn: village.nameEn ?? official.nameEn,
+    population: official.population,
+    territorySlug: official.territorySlug,
+    order: official.order,
+  };
+};
+
+const detailedSlugs = new Set(DETAILED_VILLAGES.map((village) => village.slug));
+
+const GENERATED_VILLAGES: Village[] = OFFICIAL_VILLAGES.filter(
+  (official) => !detailedSlugs.has(official.slug),
+).map((official) => {
+  const territory = getTerritoryForVillage(official.slug);
+  const territoryName = territory?.name ?? official.territoryName;
+  const territoryNameRu = territory ? displayTerritoryName(territory, "ru") : official.territoryNameRu;
+  const territoryNameEn = territory ? displayTerritoryName(territory, "en") : official.territoryNameEn;
+  const villageNameRu = displayOfficialVillageName(official, "ru");
+  const villageNameEn = displayOfficialVillageName(official, "en");
+  const populationText = formatPopulation(official.population);
+  const hero = territory?.image ?? villageImg;
+
+  return {
+    slug: official.slug,
+    name: official.name,
+    nameRu: villageNameRu,
+    nameEn: villageNameEn,
+    population: official.population,
+    territorySlug: official.territorySlug,
+    order: official.order,
+    tagline: L(
+      `${territoryName} аймагындагы айыл`,
+      `Село аймака ${territoryNameRu}`,
+      `A village of ${territoryNameEn}`,
+    ),
+    hero,
+    intro: L(
+      `${official.name} - ${territoryName} аймагындагы айыл. Бул барак анын өзүнчө үнүн жана тоо ичиндеги ордун жай ачат.`,
+      `${villageNameRu} - село аймака ${territoryNameRu}. Эта страница мягко открывает его отдельный голос и место среди гор.`,
+      `${villageNameEn} is a village in ${territoryNameEn}, opened here through its own quiet place among the mountains.`,
+    ),
+    info: [
+      { label: INFO_POP, value: L(populationText, populationText, populationText) },
+      { label: INFO_AO, value: L(territoryName, territoryNameRu, territoryNameEn) },
+    ],
+    history: L(
+      `${official.name} Кара-Кулжанын өрөөндөрү менен жолдорунун ичиндеги чакан, бирок өз алдынча эс. Айылдын күнүмдүк жашоосу тоо абасы, үй-бүлө эмгеги жана муундан муунга өткөн тынч тартип менен уланат.`,
+      `${villageNameRu} - небольшая, но самостоятельная память внутри долин и дорог Кара-Кульджи. Повседневная жизнь села держится на горном воздухе, семейном труде и спокойном ритме поколений.`,
+      `${villageNameEn} carries a small but distinct memory inside Kara-Kulja's valleys and roads. Its daily life continues through mountain air, family work and the quiet rhythm of generations.`,
+    ),
+    tourism: {
+      lead: L(
+        `${official.name} айылы аймакты жай таанууга чакырат: жол, суу, тоо этеги жана адамдардын меймандостугу.`,
+        `${villageNameRu} приглашает узнавать территорию медленно: дорога, вода, предгорье и гостеприимство людей.`,
+        `${villageNameEn} invites a slower reading of the territory: road, water, foothill and local hospitality.`,
+      ),
+      items: SHARED_TOURISM,
+    },
+    investment: {
+      lead: L(
+        `${official.name} үчүн мүмкүнчүлүктөр табигый масштабда ачылат: үй чарбасы, айыл чарба, конок тосуу жана жол боюндагы кызматтар.`,
+        `Возможности для ${villageNameRu} раскрываются в естественном масштабе: хозяйство, аграрные инициативы, гостеприимство и дорожные сервисы.`,
+        `Opportunities for ${villageNameEn} unfold at a natural scale: household production, agriculture, hospitality and road-side services.`,
+      ),
+      items: SHARED_INVESTMENT,
+    },
+    people: [
+      { name: L("Устат", "Наставник", "Mentor"), role: L("Айылдын эс тутуму", "Память села", "Village memory"), img: elderImg },
+      { name: L("Дыйкан", "Земледелец", "Farmer"), role: L("Жер менен иштеген", "Работающий на земле", "Working the land"), img: agricultureImg },
+      { name: L("Жол башчы", "Проводник", "Guide"), role: L("Аймакты тааныткан", "Открывающий территорию", "Opening the territory"), img: horsemanImg },
+    ],
+    gallery: [hero, villageImg, valleyImg, waterfallImg, horsemanImg, elderImg],
+    mapNote: L(
+      `${official.name}, ${territoryName} аймагы`,
+      `${villageNameRu}, аймак ${territoryNameRu}`,
+      `${villageNameEn}, ${territoryNameEn}`,
+    ),
+    related: [],
+  };
+});
+
+export const VILLAGES: Village[] = [
+  ...DETAILED_VILLAGES.map(withOfficialDetails),
+  ...GENERATED_VILLAGES,
 ];
 
 export const getVillage = (slug: string) => VILLAGES.find((v) => v.slug === slug);
 
 export const pick = <T,>(loc: Localized<T>, lang: Lang): T => loc[lang] ?? loc.kg;
+
+export const displayVillageName = (village: Pick<Village, "name" | "nameRu" | "nameEn">, lang: Lang) =>
+  lang === "en" && village.nameEn ? village.nameEn : lang === "ru" && village.nameRu ? village.nameRu : village.name;

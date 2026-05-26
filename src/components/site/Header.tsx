@@ -5,7 +5,7 @@ import { useI18n, type Lang } from "@/lib/i18n";
 
 const NAV = [
   { to: "/about", key: "nav.about" },
-  { to: "/villages", key: "nav.villages" },
+  { to: "/territories", key: "nav.villages" },
   { to: "/tourism", key: "nav.tourism" },
   { to: "/invest", key: "nav.invest" },
   { to: "/people", key: "nav.people" },

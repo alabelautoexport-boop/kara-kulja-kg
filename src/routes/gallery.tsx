@@ -16,7 +16,7 @@ export const Route = createFileRoute("/gallery")({
       { name: "description", content: "Visual archive of Kara-Kulja: mountains, villages, people and culture." },
       { property: "og:title", content: "Gallery — Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/gallery" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/gallery" }],
   }),
   component: GalleryPage,
 });

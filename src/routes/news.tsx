@@ -11,7 +11,7 @@ export const Route = createFileRoute("/news")({
       { name: "description", content: "Latest news from Kara-Kulja district." },
       { property: "og:title", content: "News — Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "/news" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/news" }],
   }),
   component: NewsPage,
 });
