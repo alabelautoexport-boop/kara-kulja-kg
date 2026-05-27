@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
-import img from "@/assets/valley.jpg";
+import { getPageHeroUrl } from "@/lib/r2";
+
+const aboutHeroImg = getPageHeroUrl("about");
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -40,7 +42,7 @@ function AboutPage() {
         eyebrow={t("about.eyebrow")}
         title={t("about.title")}
         subtitle={t("about.body")}
-        image={img}
+        image={aboutHeroImg}
       />
       <section className="py-24 lg:py-32">
         <div className="mx-auto max-w-[1100px] px-6 lg:px-10">

@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 import { PEOPLE, pick } from "@/lib/people-data";
+import { getPageHeroUrl } from "@/lib/r2";
+
+const peopleHeroImg = getPageHeroUrl("insandar");
 
 export const Route = createFileRoute("/people")({
   head: () => ({
@@ -63,7 +66,7 @@ function PeopleHero({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <section className="relative flex min-h-[60vh] items-end overflow-hidden pt-32">
       <img
-        src={PEOPLE[1].image}
+        src={peopleHeroImg}
         alt=""
         loading="eager"
         className="absolute inset-0 h-full w-full object-cover object-[center_22%]"

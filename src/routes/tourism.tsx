@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
+import { getPageHeroUrl } from "@/lib/r2";
 import { Mountain, Droplet, Trees, Footprints, Compass, MapPin } from "lucide-react";
 
-const tourismHeroImg = "/images/nature/hiker-climbing-mountains.jpg";
+const tourismHeroImg = getPageHeroUrl("tourism");
 const mountainsImg = "/images/nature/jagged-mountain-peaks-above-lush-forest-below.jpg";
 const riversImg = "/images/nature/white-water-river.jpg";
 const horseRoutesImg = "/images/nature/person-silhouetted-on-a-horse-in-a-open-field.jpg";

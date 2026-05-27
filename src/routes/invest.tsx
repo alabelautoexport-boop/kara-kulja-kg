@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
+import { getPageHeroUrl } from "@/lib/r2";
 import { ArrowRight, Download } from "lucide-react";
-import agricultureImg from "@/assets/agriculture.jpg";
+
+const investmentsHeroImg = getPageHeroUrl("investments");
 
 export const Route = createFileRoute("/invest")({
   head: () => ({
@@ -38,7 +40,7 @@ function InvestPage() {
         eyebrow={t("invest.eyebrow")}
         title={t("invest.title")}
         subtitle={t("invest.desc")}
-        image={agricultureImg}
+        image={investmentsHeroImg}
       />
 
       <section className="py-24 lg:py-32">

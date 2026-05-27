@@ -2,9 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, MapPin, Users } from "lucide-react";
 import { PageHero, SiteLayout } from "@/components/site/Layout";
 import { useI18n, type Lang } from "@/lib/i18n";
+import { getPageHeroUrl } from "@/lib/r2";
 import { TERRITORIES, displayTerritoryName, formatPopulation, pick } from "@/lib/territories-data";
 
-const territoriesHeroImg = "/images/nature/aerial-image-of-snow-covered-mountains-under-bright-sky.jpg";
+const territoriesHeroImg = getPageHeroUrl("territories");
 
 const labels: Record<Lang, { villages: string; population: string }> = {
   kg: { villages: "айыл", population: "калк" },

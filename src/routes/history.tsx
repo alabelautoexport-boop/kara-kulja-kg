@@ -7,6 +7,9 @@ import horsemanImg from "@/assets/horseman.jpg";
 import valleyImg from "@/assets/valley.jpg";
 import waterfallImg from "@/assets/waterfall.jpg";
 import agricultureImg from "@/assets/agriculture.jpg";
+import { getPageHeroUrl } from "@/lib/r2";
+
+const historyHeroImg = getPageHeroUrl("history");
 
 export const Route = createFileRoute("/history")({
   head: () => ({
@@ -36,7 +39,7 @@ function HistoryPage() {
         eyebrow={t("nav.history")}
         title={t("history.hero.title")}
         subtitle={t("history.hero.subtitle")}
-        image={elderImg}
+        image={historyHeroImg}
       />
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-[1100px] px-6 lg:px-10">
