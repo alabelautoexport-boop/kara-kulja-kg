@@ -4,8 +4,9 @@ import { SiteLayout } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 import { PEOPLE, pick as pickPerson } from "@/lib/people-data";
 import { TERRITORIES, displayTerritoryName, pick } from "@/lib/territories-data";
-import homeHeroImg from "@/assets/hero-mountains.jpg";
+import { getPageHeroUrl } from "@/lib/r2";
 
+const homeHeroImg = getPageHeroUrl("home");
 const heroImg = "/images/nature/aerial-image-of-snow-covered-mountains-under-bright-sky.jpg";
 const villageImg = "/images/nature/autumn-trees-hillside.jpg";
 const valleyImg = "/images/nature/jagged-mountain-peaks-above-lush-forest-below.jpg";
