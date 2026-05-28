@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, MapPin, Users } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n, type Lang } from "@/lib/i18n";
+import { getTerritoryHeroUrl } from "@/lib/r2";
 import { displayTerritoryName, displayVillageName, formatPopulation, getTerritory, pick, type Territory } from "@/lib/territories-data";
 import { getVillage } from "@/lib/villages-data";
 
@@ -83,7 +84,7 @@ function TerritoryPage() {
     <SiteLayout>
       <section className="relative flex min-h-[86vh] items-end overflow-hidden pt-32">
         <img
-          src={territory.image}
+          src={getTerritoryHeroUrl(territory.slug)}
           alt={territoryName}
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover"

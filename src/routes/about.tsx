@@ -30,7 +30,7 @@ function AboutPage() {
   const aimaks = [
     { name: { kg: "Кара-Кулжа", ru: "Кара-Кульджа", en: "Kara-Kulja" }, to: "/territories/kara-kulja" },
     { name: { kg: "Алайкуу", ru: "Алайкуу", en: "Alaikuu" }, to: "/territories/alaikuu" },
-    { name: { kg: "Кара-Гүз", ru: "Кара-Гүз", en: "Kara-Guz" }, to: "/territories/kara-guz" },
+    { name: { kg: "Кара Гуз", ru: "Кара Гуз", en: "Kara-Guz" }, to: "/territories/kara-guz" },
     { name: { kg: "Кара-Кочкор", ru: "Кара-Кочкор", en: "Kara-Kochkor" }, to: "/territories/kara-kochkor" },
     { name: { kg: "Ой-Тал", ru: "Ой-Тал", en: "Oi-Tal" }, to: "/territories/oy-tal" },
     { name: { kg: "Рыспай Абдыкадыров", ru: "Рыспай Абдыкадыров", en: "Ryspai Abdykadyrov" }, to: "/territories/ryspai-abdykadyrov" },

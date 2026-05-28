@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/site/Layout";
+import { getVillageHeroUrl } from "@/lib/r2";
 import { displayVillageName, getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
 import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
 import { useI18n } from "@/lib/i18n";
@@ -183,7 +184,7 @@ function VillagePage() {
       {/* HERO */}
       <section className="relative flex min-h-[88vh] items-end overflow-hidden pt-32">
         <img
-          src={v.hero}
+          src={getVillageHeroUrl(v.territorySlug, v.slug)}
           alt={villageName}
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover"

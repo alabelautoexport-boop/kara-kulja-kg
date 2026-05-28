@@ -83,11 +83,11 @@ export const TERRITORIES: Territory[] = [
   },
   {
     slug: "kara-guz",
-    name: "Кара-Гүз",
-    nameRu: "Кара-Гүз",
+    name: "Кара Гуз",
+    nameRu: "Кара Гуз",
     nameEn: "Kara-Guz",
     subtitle: L("Дыйкан жерлер жана жылуу өрөөн", "Земледельческие земли и тёплая долина", "Farmland and a warm valley"),
-    description: territoryCopy("Кара-Гүз", "Kara-Guz", "айдоо талаалары менен эл эмгегинин аймагы"),
+    description: territoryCopy("Кара Гуз", "Kara-Guz", "айдоо талаалары менен эл эмгегинин аймагы"),
     population: 10306,
     image: karaGuzImg,
     villages: [
