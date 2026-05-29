@@ -20,10 +20,10 @@ R2 includes:
 - hero images
 - territory media
 - village media
-- people portraits
-- tourism media
-- investment media
-- cultural archive media
+- general tourism documents and maps
+- general history documents, maps, and archive media
+- general investment presentations and documents
+- Insandar photos, videos, and documents
 - background and atmospheric assets
 - future video and audio media
 
@@ -37,11 +37,50 @@ The same original asset should not be duplicated into multiple folders for diffe
 
 ```text
 kara-kulja-media/
+  territories/
+    {aimakSlug}/
+      general/
+        photos/
+        videos/
+        documents/
+
+      villages/
+        {villageSlug}/
+          photos/
+          videos/
+          documents/
+          projects/
+
+          stories/
+            photos/
+            videos/
+            documents/
+
+  general/
+    tourism/
+      documents/
+      maps/
+
+    history/
+      documents/
+      maps/
+      archive/
+
+    investments/
+      presentations/
+      documents/
+
+    insandar/
+      photos/
+      videos/
+      documents/
+
   site/
     hero/
       pages/
         home.jpg
         about.jpg
+        territories.jpg
         tourism.jpg
         investments.jpg
         insandar.jpg
@@ -55,52 +94,13 @@ kara-kulja-media/
               hero.jpg
 
     backgrounds/
-      moving-clouds/
+      clouds/
       fog/
+      particles/
       overlays/
       mountains/
       ornaments/
-      particles/
       gradients/
-
-  territories/
-    {aimakSlug}/
-      gallery/
-      archive/
-      maps/
-
-  villages/
-    {villageSlug}/
-      gallery/
-      archive/
-      people/
-      culture/
-
-  people/
-    portraits/
-    archive/
-
-  tourism/
-    places/
-    routes/
-    seasons/
-    gallery/
-
-  invest/
-    sectors/
-    projects/
-    maps/
-
-  culture/
-    heritage/
-    crafts/
-    music/
-    oral-history/
-
-  shared/
-    textures/
-    overlays/
-    thumbnails/
 ```
 
 ## Hero Management Rules
@@ -122,6 +122,7 @@ Approved page-level hero filenames:
 ```text
 site/hero/pages/home.jpg
 site/hero/pages/about.jpg
+site/hero/pages/territories.jpg
 site/hero/pages/tourism.jpg
 site/hero/pages/investments.jpg
 site/hero/pages/insandar.jpg
@@ -147,12 +148,30 @@ This keeps hero media predictable, stable, and easy to replace without changing 
 The `site/backgrounds/` folder is reserved for future atmospheric effects and visual layers.
 
 Approved future background categories include:
-- moving clouds
+- clouds
 - fog
+- particles
 - overlays
 - mountains
 - ornaments
-- particles
 - gradients
 
 These assets should support the cinematic identity of the site without changing the core content architecture.
+
+## Completed R2 Integrations
+
+The following media sources are already connected in frontend code:
+
+- Page heroes use `site/hero/pages/{pageSlug}.jpg`
+- Territory heroes use `site/hero/territories/{aimakSlug}/hero.jpg`
+- Village heroes use `site/hero/territories/{aimakSlug}/villages/{villageSlug}/hero.jpg`
+- Main Insandar portraits use `general/insandar/photos/{filename}`
+
+Current main Insandar portrait files:
+
+```text
+general/insandar/photos/Jusuev.jpg
+general/insandar/photos/Abdykadyrov.jpg
+general/insandar/photos/Akun-Toktosartov.jpg
+general/insandar/photos/Jeenbekov.jpg
+```

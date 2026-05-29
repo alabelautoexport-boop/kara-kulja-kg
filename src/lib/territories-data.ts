@@ -1,12 +1,8 @@
 import type { Lang } from "@/lib/i18n";
+import { getR2Url } from "@/lib/r2";
 
-const karaKuljaImg = "/images/nature/aerial-image-of-snow-covered-mountains-under-bright-sky.jpg";
-const alaikuuImg = "/images/nature/jagged-mountain-peaks-above-lush-forest-below.jpg";
-const karaGuzImg = "/images/nature/autumn-trees-hillside.jpg";
-const karaKochkorImg = "/images/nature/snow-tips-in-clouds.jpg";
-const oyTalImg = "/images/nature/person-silhouetted-on-a-horse-in-a-open-field.jpg";
-const ryspaiAbdykadyrovImg = "/images/nature/freshwater-mountain-creek.jpg";
-const ylaiTalaaImg = "/images/nature/nature-mountains-flower-landscape-adventure.jpg";
+const territoryCardImg = (aimakSlug: string) =>
+  getR2Url(`territories/${aimakSlug}/general/photos/card.jpg`);
 
 export type Localized<T> = Record<Lang, T>;
 
@@ -49,7 +45,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Райондун жүрөгү жана жолдор түйүнү", "Сердце района и узел дорог", "The district heart and meeting of roads"),
     description: territoryCopy("Кара-Кулжа", "Kara-Kulja", "борбордук дем менен тоо тынчтыгы кошулган аймак"),
     population: 26077,
-    image: karaKuljaImg,
+    image: territoryCardImg("kara-kulja"),
     villages: [
       { name: "Кара-Кулжа", nameRu: "Кара-Кульджа", nameEn: "Kara-Kulja", slug: "kara-kulja", population: 13917, order: 1 },
       { name: "Бий-Мырза", nameRu: "Бий-Мырза", nameEn: "Biy-Myrza", slug: "biy-myrza", population: 4741, order: 2 },
@@ -65,7 +61,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Бийик өрөөндөр жана алыскы жайлоолор", "Высокие долины и дальние джайлоо", "High valleys and distant jailoos"),
     description: territoryCopy("Алайкуу", "Alaikuu", "бийик жолдордун жана тоо шамалынын аймагы"),
     population: 12073,
-    image: alaikuuImg,
+    image: territoryCardImg("alaikuu"),
     villages: [
       { name: "Кызыл-Жар", nameRu: "Кызыл-Жар", nameEn: "Kyzyl-Jar", slug: "kyzyl-zhar", population: 682, order: 1 },
       { name: "Кайын-Талаа", nameRu: "Кайын-Талаа", nameEn: "Kaiyn-Talaa", slug: "kaiyn-talaa", population: 1228, order: 2 },
@@ -89,7 +85,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Дыйкан жерлер жана жылуу өрөөн", "Земледельческие земли и тёплая долина", "Farmland and a warm valley"),
     description: territoryCopy("Кара Гуз", "Kara-Guz", "айдоо талаалары менен эл эмгегинин аймагы"),
     population: 10306,
-    image: karaGuzImg,
+    image: territoryCardImg("kara-guz"),
     villages: [
       { name: "Жаңы-Талаа", nameRu: "Жаңы-Талаа", nameEn: "Jany-Talaa", slug: "zhany-talaa", population: 1192, order: 1 },
       { name: "Алтын-Күрөк", nameRu: "Алтын-Күрөк", nameEn: "Altyn-Kurok", slug: "altyn-kurok", population: 440, order: 2 },
@@ -109,7 +105,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Тоолуу аймактын кең деми", "Широкое дыхание горного аймака", "The wide breath of a mountain territory"),
     description: territoryCopy("Кара-Кочкор", "Kara-Kochkor", "жолдор тоого бурулган аймак"),
     population: 18490,
-    image: karaKochkorImg,
+    image: territoryCardImg("kara-kochkor"),
     villages: [
       { name: "Кара-Кочкор", nameRu: "Кара-Кочкор", nameEn: "Kara-Kochkor", slug: "kara-kochkor", population: 4386, order: 1 },
       { name: "Ак-Кыя", nameRu: "Ак-Кыя", nameEn: "Ak-Kyya", slug: "ak-kyya", population: 2952, order: 2 },
@@ -130,7 +126,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Капчыгайлардан жайлоого ачылган өрөөн", "Долина от ущелий к джайлоо", "A valley opening from gorges toward the jailoo"),
     description: territoryCopy("Ой-Тал", "Oi-Tal", "аттын дүбүртү менен жайлоого чыккан аймак"),
     population: 6134,
-    image: oyTalImg,
+    image: territoryCardImg("oy-tal"),
     villages: [
       { name: "Сары-Бээ", nameRu: "Сары-Бээ", nameEn: "Sary-Bee", slug: "sary-bee", population: 1143, order: 1 },
       { name: "Кара-Таш", nameRu: "Кара-Таш", nameEn: "Kara-Tash", slug: "kara-tash", population: 901, order: 2 },
@@ -148,7 +144,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Булактар жана жашыл ойдуңдар", "Родники и зелёные низины", "Springs and green hollows"),
     description: territoryCopy("Рыспай Абдыкадыров", "Ryspai Abdykadyrov", "суунун үнү айылдарды бириктирген аймак"),
     population: 4968,
-    image: ryspaiAbdykadyrovImg,
+    image: territoryCardImg("ryspai-abdykadyrov"),
     villages: [
       { name: "Сары-Булак", nameRu: "Сары-Булак", nameEn: "Sary-Bulak", slug: "sary-bulak", population: 676, order: 1 },
       { name: "Кара-Булак", nameRu: "Кара-Булак", nameEn: "Kara-Bulak", slug: "kara-bulak", population: 696, order: 2 },
@@ -167,7 +163,7 @@ export const TERRITORIES: Territory[] = [
     subtitle: L("Кең талаалар жана узак горизонт", "Широкие поля и дальний горизонт", "Open fields and a long horizon"),
     description: territoryCopy("Ылай-Талаа", "Ylai-Talaa", "талаа, суу жана тоо көрүнгөн аймак"),
     population: 17501,
-    image: ylaiTalaaImg,
+    image: territoryCardImg("ylai-talaa"),
     villages: [
       { name: "Токбай-Талаа", nameRu: "Токбай-Талаа", nameEn: "Tokbay-Talaa", slug: "tokbay-talaa", population: 4647, order: 1 },
       { name: "Буйга", nameRu: "Буйга", nameEn: "Buyga", slug: "buyga", population: 1144, order: 2 },
