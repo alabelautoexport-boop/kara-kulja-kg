@@ -1,7 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { SiteLayout } from "@/components/site/Layout";
-import { VillageMapBlock } from "@/components/site/VillageMapBlock";
 import { getVillageHeroUrl } from "@/lib/r2";
 import { displayVillageName, getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
 import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
@@ -19,6 +18,12 @@ import {
   Map as MapIcon,
   Network,
 } from "lucide-react";
+
+const VillageMapBlock = lazy(() =>
+  import("@/components/site/VillageMapBlock").then((module) => ({
+    default: module.VillageMapBlock,
+  })),
+);
 
 export const Route = createFileRoute("/villages_/$slug")({
   head: ({ params }) => {
@@ -171,6 +176,7 @@ function SectionNav() {
 function VillagePage() {
   const v = Route.useLoaderData() as Village;
   const { t, lang } = useI18n();
+  const [mounted, setMounted] = useState(false);
   const territory = getTerritoryForVillage(v.slug);
   const villageName = displayVillageName(v, lang);
   const territoryName = territory ? displayTerritoryName(territory, lang) : undefined;
@@ -178,6 +184,10 @@ function VillagePage() {
   const related = relatedSlugs
     .map((s: string) => VILLAGES.find((x) => x.slug === s))
     .filter(Boolean) as Village[];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <SiteLayout>
@@ -418,7 +428,13 @@ function VillagePage() {
             </div>
             <p className="text-sm text-muted-foreground">{pick(v.mapNote, lang)}</p>
           </div>
-          <VillageMapBlock villageSlug={v.slug} villageName={villageName} />
+          {mounted ? (
+            <Suspense fallback={<VillageMapLoading />}>
+              <VillageMapBlock villageSlug={v.slug} villageName={villageName} />
+            </Suspense>
+          ) : (
+            <VillageMapLoading />
+          )}
         </div>
       </section>
 
@@ -458,5 +474,13 @@ function VillagePage() {
       </section>
       <BackToTop />
     </SiteLayout>
+  );
+}
+
+function VillageMapLoading() {
+  return (
+    <div className="mt-12 flex min-h-[320px] items-center justify-center border hairline bg-[#efe5cf] px-6 text-sm text-[#26352d]">
+      Loading map...
+    </div>
   );
 }

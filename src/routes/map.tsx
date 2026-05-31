@@ -11,6 +11,7 @@ const KaraKuljaDistrictMap = lazy(() =>
 );
 
 export const Route = createFileRoute("/map")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Map - Kara-Kulja" },
