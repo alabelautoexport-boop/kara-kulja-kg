@@ -1,13 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/site/Layout";
+import { VillageMapBlock } from "@/components/site/VillageMapBlock";
 import { getVillageHeroUrl } from "@/lib/r2";
 import { displayVillageName, getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
 import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
 import { useI18n } from "@/lib/i18n";
 import {
   Users,
-  MapPin,
   ArrowRight,
   ArrowLeft,
   ArrowUp,
@@ -418,22 +418,7 @@ function VillagePage() {
             </div>
             <p className="text-sm text-muted-foreground">{pick(v.mapNote, lang)}</p>
           </div>
-          <div className="relative mt-12 aspect-[21/9] w-full overflow-hidden border hairline bg-foreground/[0.02]">
-            <div
-              aria-hidden
-              className="absolute inset-0 opacity-[0.08]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(var(--beige) 1px, transparent 1px), linear-gradient(90deg, var(--beige) 1px, transparent 1px)",
-                backgroundSize: "48px 48px",
-              }}
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-              <MapPin className="h-6 w-6 text-[var(--beige)]/80" strokeWidth={1.25} />
-              <p className="font-display text-2xl">{villageName}</p>
-              <p className="kbd-eyebrow text-muted-foreground/70">{t("village.map.soon")}</p>
-            </div>
-          </div>
+          <VillageMapBlock villageSlug={v.slug} villageName={villageName} />
         </div>
       </section>
 

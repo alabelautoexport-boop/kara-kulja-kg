@@ -1,0 +1,346 @@
+{
+  "type": "FeatureCollection",
+  "name": "kara-kulja-context-filtered",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8049894,
+          40.5172678
+        ]
+      },
+      "properties": {
+        "@id": "node/4791369250",
+        "contextType": "place",
+        "name": "Ош",
+        "name:ky": "Ош",
+        "name:ru": "Ош",
+        "name:en": "Osh",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.2986632,
+          40.7688144
+        ]
+      },
+      "properties": {
+        "@id": "node/254467940",
+        "contextType": "place",
+        "name": "Өзгөн",
+        "name:ky": "Өзгөн",
+        "name:ru": "Узген",
+        "name:en": "Uzgen",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4438341,
+          40.3118163
+        ]
+      },
+      "properties": {
+        "@id": "node/273177653",
+        "contextType": "place",
+        "name": "Гүлчө",
+        "name:ky": "Гүлчө",
+        "name:ru": "Гульча",
+        "name:en": "Gulcho",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4137301,
+          40.753218
+        ]
+      },
+      "properties": {
+        "@id": "node/297083207",
+        "contextType": "place",
+        "name": "Мырза-Аке",
+        "name:ky": "Мырза-Аке",
+        "name:ru": "Мырза-Аке",
+        "name:en": "Myrza-Ake",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8799131,
+          40.7068689
+        ]
+      },
+      "properties": {
+        "@id": "node/295938290",
+        "contextType": "place",
+        "name": "Кара-Суу",
+        "name:ky": "Кара-Суу",
+        "name:ru": "Кара-Суу",
+        "name:en": "Kara-Suu",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.6177976,
+          40.2657054
+        ]
+      },
+      "properties": {
+        "@id": "node/297803397",
+        "contextType": "place",
+        "name": "Ноокат",
+        "name:ky": "Ноокат",
+        "name:ru": "Ноокат",
+        "name:en": "Nookat",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.13378445000001,
+          40.434856350000004
+        ]
+      },
+      "properties": {
+        "@id": "relation/15570761",
+        "contextType": "district",
+        "name": "Кара-Кулжа району",
+        "name:ky": "Кара-Кулжа району",
+        "name:ru": "Кара-Кульджинский район",
+        "name:en": "Kara-Kulja District",
+        "sourceGeometry": "Polygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.68248550000001,
+          40.80559275
+        ]
+      },
+      "properties": {
+        "@id": "relation/15570597",
+        "contextType": "district",
+        "name": "Өзгөн району",
+        "name:ky": "Өзгөн району",
+        "name:ru": "Узгенский район",
+        "name:en": "Uzgen District",
+        "sourceGeometry": "Polygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.41442035,
+          39.9268307
+        ]
+      },
+      "properties": {
+        "@id": "relation/15570762",
+        "contextType": "district",
+        "name": "Алай району",
+        "name:ky": "Алай району",
+        "name:ru": "Алайский район",
+        "name:en": "Alay District",
+        "sourceGeometry": "Polygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.0222093,
+          40.2899928
+        ]
+      },
+      "properties": {
+        "@id": "relation/15570558",
+        "contextType": "district",
+        "name": "Кара-Суу району",
+        "name:ky": "Кара-Суу району",
+        "name:ru": "Кара-Сууский район",
+        "name:en": "Kara-Suu District",
+        "sourceGeometry": "MultiPolygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.56349835,
+          40.102181400000006
+        ]
+      },
+      "properties": {
+        "@id": "relation/15570396",
+        "contextType": "district",
+        "name": "Ноокат району",
+        "name:ky": "Ноокат району",
+        "name:ru": "Ноокатский район",
+        "name:en": "Nookat District",
+        "sourceGeometry": "Polygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.21103225,
+          39.49364464999999
+        ]
+      },
+      "properties": {
+        "@id": "relation/7491199",
+        "contextType": "district",
+        "name": "Чоң-Алай району",
+        "name:ky": "Чоң-Алай району",
+        "name:ru": "Чон-Алайский район",
+        "name:en": "Chong-Alay District",
+        "sourceGeometry": "Polygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.1931447,
+          40.1082848
+        ]
+      },
+      "properties": {
+        "@id": "node/13392590011",
+        "contextType": "region",
+        "name": "Ош облусу",
+        "name:ky": "Ош облусу",
+        "name:ru": "Ошская область",
+        "name:en": "Osh Region",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.4606289,
+          41.2845348
+        ]
+      },
+      "properties": {
+        "@id": "node/13392590012",
+        "contextType": "region",
+        "name": "Нарын облусу",
+        "name:ky": "Нарын облусу",
+        "name:ru": "Нарынская область",
+        "name:en": "Naryn Region",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.4649525,
+          41.4804383
+        ]
+      },
+      "properties": {
+        "@id": "node/13392590014",
+        "contextType": "region",
+        "name": "Жалал-Абад облусу",
+        "name:ky": "Жалал-Абад облусу",
+        "name:ru": "Джалал-Абадская область",
+        "name:en": "Jalal-Abad Region",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.724091,
+          41.5089324
+        ]
+      },
+      "properties": {
+        "@id": "node/1700777271",
+        "contextType": "country",
+        "name": "Кыргызстан",
+        "name:ky": "Кыргызстан",
+        "name:ru": "Киргизия",
+        "name:en": "Kyrgyzstan",
+        "sourceGeometry": "Point",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.2001234,
+          40.1236475
+        ]
+      },
+      "properties": {
+        "@id": "relation/270056",
+        "contextType": "country",
+        "name": "Кытай",
+        "name:ky": "Кытай",
+        "name:ru": "Китай",
+        "name:en": "China",
+        "sourceGeometry": "MultiPolygon",
+        "source": "filtered from kyrgyzstan-context-raw.geojson"
+      }
+    }
+  ]
+}

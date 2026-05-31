@@ -10,6 +10,7 @@ const SLOGAN_EN = "Where timeless beauty meets the land\nKara-Kulja begins where
 const KG: Dict = {
   "nav.about": "Район жөнүндө",
   "nav.villages": "Аймактар",
+  "nav.map": "Карта",
   "nav.tourism": "Туризм",
   "nav.invest": "Инвестициялар",
   "nav.people": "Инсандар",
@@ -230,6 +231,7 @@ const KG: Dict = {
 const RU: Dict = {
   "nav.about": "О районе",
   "nav.villages": "Территории",
+  "nav.map": "Карта",
   "nav.tourism": "Туризм",
   "nav.invest": "Инвестиции",
   "nav.people": "Личности",
@@ -449,6 +451,7 @@ const RU: Dict = {
 const EN: Dict = {
   "nav.about": "About",
   "nav.villages": "Territories",
+  "nav.map": "Map",
   "nav.tourism": "Tourism",
   "nav.invest": "Invest",
   "nav.people": "People",

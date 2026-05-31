@@ -43,6 +43,20 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    name: L("Жеңишбек Шамшиев", "Женишбек Шамшиев", "Jenishbek Shamshiev"),
+    role: L(
+      "Обончу, аткаруучу жана коомдук ишмер",
+      "Композитор, исполнитель и общественный деятель",
+      "Composer, performer, and public figure",
+    ),
+    image: "https://media.kara-kulja.kg/general/insandar/photos/Shamshiev.jpg",
+    body: L(
+      "Кыргыз музыка өнөрүндө өзгөчө орунду ээлеген белгилүү обончу, аткаруучу жана коомдук ишмер, Кыргыз Республикасынын эмгек сиңирген артисти. Анын 30дан ашуун обону кыргыз музыкасынын алтын фондуна кирип, эл арасында кеңири таанылган.",
+      "Известный кыргызский композитор, исполнитель и общественный деятель, заслуженный артист Кыргызской Республики. Более 30 его произведений вошли в золотой фонд кыргызской музыки и получили широкое признание среди слушателей.",
+      "A prominent Kyrgyz composer, performer, and public figure, Honored Artist of the Kyrgyz Republic. More than 30 of his musical works have become part of the golden collection of Kyrgyz music and are widely recognized by audiences.",
+    ),
+  },
+  {
     name: L("Сооронбай Жээнбеков", "Сооронбай Жээнбеков", "Sooronbay Jeenbekov"),
     role: L("Мамлекеттик жана коомдук ишмер", "Государственный и общественный деятель", "Statesman and public figure"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Jeenbekov.jpg",

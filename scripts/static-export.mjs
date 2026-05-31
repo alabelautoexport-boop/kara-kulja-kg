@@ -15,6 +15,7 @@ const sitemapRoutes = [
   "/tourism",
   "/invest",
   "/people",
+  "/map",
   "/history",
   "/gallery",
   "/news",

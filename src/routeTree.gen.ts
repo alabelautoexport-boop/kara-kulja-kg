@@ -15,6 +15,7 @@ import { Route as TerritoriesRouteImport } from './routes/territories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PeopleRouteImport } from './routes/people'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as MapRouteImport } from './routes/map'
 import { Route as InvestRouteImport } from './routes/invest'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -52,6 +53,11 @@ const PeopleRoute = PeopleRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestRoute = InvestRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
   '/invest': typeof InvestRoute
+  '/map': typeof MapRoute
   '/news': typeof NewsRoute
   '/people': typeof PeopleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
   '/invest': typeof InvestRoute
+  '/map': typeof MapRoute
   '/news': typeof NewsRoute
   '/people': typeof PeopleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
   '/invest': typeof InvestRoute
+  '/map': typeof MapRoute
   '/news': typeof NewsRoute
   '/people': typeof PeopleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/history'
     | '/invest'
+    | '/map'
     | '/news'
     | '/people'
     | '/sitemap.xml'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/history'
     | '/invest'
+    | '/map'
     | '/news'
     | '/people'
     | '/sitemap.xml'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/history'
     | '/invest'
+    | '/map'
     | '/news'
     | '/people'
     | '/sitemap.xml'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   HistoryRoute: typeof HistoryRoute
   InvestRoute: typeof InvestRoute
+  MapRoute: typeof MapRoute
   NewsRoute: typeof NewsRoute
   PeopleRoute: typeof PeopleRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -254,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/invest': {
@@ -322,6 +342,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   HistoryRoute: HistoryRoute,
   InvestRoute: InvestRoute,
+  MapRoute: MapRoute,
   NewsRoute: NewsRoute,
   PeopleRoute: PeopleRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

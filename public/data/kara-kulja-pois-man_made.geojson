@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","name":"kara-kulja-pois-man_made","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[73.431381,40.6354416],[73.4312904,40.6353081],[73.4313907,40.6352689],[73.4314813,40.6354025],[73.431381,40.6354416]]]},"properties":{"@id":"way/419613414","building":"industrial","man_made":"works"}}]}

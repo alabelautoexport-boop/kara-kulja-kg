@@ -36,6 +36,7 @@ export function Footer() {
               {[
                 ["/about", "nav.about"],
                 ["/territories", "nav.villages"],
+                ["/map", "nav.map"],
                 ["/tourism", "nav.tourism"],
                 ["/invest", "nav.invest"],
                 ["/people", "nav.people"],

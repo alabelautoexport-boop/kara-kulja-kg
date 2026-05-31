@@ -1,0 +1,991 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-05-30T20:21:14Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/300601151",
+        "addr:country": "KG",
+        "is_in": "Kyrgyzstan",
+        "name": "Сары-Булак",
+        "name:en": "Sary-Bulak",
+        "name:ky": "Сары-Булак",
+        "name:ru": "Сары-Булак",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5298355,
+          40.6565685
+        ]
+      },
+      "id": "node/300601151"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/300601416",
+        "addr:country": "KG",
+        "addr:region": "Ошская область",
+        "is_in": "Kyrgyzstan",
+        "name": "Первое Мая",
+        "name:en": "Pervoye Maya",
+        "name:ru": "Первое Мая",
+        "place": "village",
+        "population": "6359"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6794664,
+          40.6282027
+        ]
+      },
+      "id": "node/300601416"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/300665432",
+        "addr:country": "KG",
+        "addr:region": "Ошская область",
+        "is_in": "Kyrgyzstan",
+        "name": "Ылай-Талаа",
+        "name:en": "Ylay-Talaa",
+        "name:ru": "Ылай-Талаа",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6027338,
+          40.5909315
+        ]
+      },
+      "id": "node/300665432"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/300666715",
+        "addr:country": "KG",
+        "addr:region": "Ошская область",
+        "is_in": "Kyrgyzstan",
+        "name": "Сары-Бээ",
+        "name:en": "Sary-Bee",
+        "name:ky": "Сары-Бээ",
+        "name:ru": "Сары-Бээ",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.8904382,
+          40.5554655
+        ]
+      },
+      "id": "node/300666715"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2040579496",
+        "addr:country": "KG",
+        "addr:district": "Кара-Кулжинский район",
+        "addr:region": "Ошская область",
+        "name": "Кара-Кулжа",
+        "name:en": "Kara-Kulja",
+        "name:fa": "قره‌کولجه",
+        "name:kk": "Қарақұлжа",
+        "name:kk-Arab": "قاراقۇلجا",
+        "name:kk-Cyrl": "Қарақұлжа",
+        "name:kk-Latn": "Qaraqūlja",
+        "name:ky": "Кара-Кулжа",
+        "name:ky-Arab": "قارا قۇلجا",
+        "name:ml": "ഖറ-കുൽജ",
+        "name:ru": "Кара-Кульджа",
+        "name:tg": "Қоракулча",
+        "name:tr": "Kara-Kulca",
+        "name:uz": "Qorakulcha",
+        "name:uz-Arab": "قره کولچه",
+        "name:uz-Cyrl": "Қоракулча",
+        "name:uz-Latn": "Qorakulcha",
+        "place": "village",
+        "population": "11794",
+        "source": "GPS"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5909741,
+          40.6334207
+        ]
+      },
+      "id": "node/2040579496"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2153071699",
+        "name:en": "Alaykuu Range",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.5511499,
+          40.2718094
+        ]
+      },
+      "id": "node/2153071699"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2153100203",
+        "int_name": "Terek - Tepek",
+        "name": "Терек",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.2192942,
+          40.3637504
+        ]
+      },
+      "id": "node/2153100203"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4401325951",
+        "name": "Ак-Кыя",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6016122,
+          40.6591417
+        ]
+      },
+      "id": "node/4401325951"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4401325955",
+        "name": "Жаны-Талап",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4103636,
+          40.686619
+        ]
+      },
+      "id": "node/4401325955"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4401325956",
+        "name": "Жийде",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.3905823,
+          40.6728177
+        ]
+      },
+      "id": "node/4401325956"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4401325960",
+        "name": "Тоготой",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4328459,
+          40.6651926
+        ]
+      },
+      "id": "node/4401325960"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4401325963",
+        "name": "Октябрь",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4413807,
+          40.682667
+        ]
+      },
+      "id": "node/4401325963"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4409501679",
+        "name": "Жаны-Талаа",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4638596,
+          40.6276601
+        ]
+      },
+      "id": "node/4409501679"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4409501680",
+        "name": "Калматай",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4619284,
+          40.6167154
+        ]
+      },
+      "id": "node/4409501680"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4409501681",
+        "name": "Тегерек-Саз",
+        "name:en": "Tegerek-Saz",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6175877,
+          40.4257583
+        ]
+      },
+      "id": "node/4409501681"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4409501683",
+        "name": "Кенеш",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4264642,
+          40.6349881
+        ]
+      },
+      "id": "node/4409501683"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4409501685",
+        "name": "Пор",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4160144,
+          40.6135391
+        ]
+      },
+      "id": "node/4409501685"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4409501686",
+        "name": "Сай",
+        "name:en": "Say",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.658655,
+          40.5828458
+        ]
+      },
+      "id": "node/4409501686"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4410518307",
+        "name": "Карасу",
+        "name:en": "Karasu",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.7363076,
+          40.5583845
+        ]
+      },
+      "id": "node/4410518307"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4410549659",
+        "name": "Көндүк",
+        "name:en": "Köndük",
+        "name:ky": "Көндүк",
+        "name:ru": "Кондук",
+        "place": "hamlet",
+        "wikidata": "Q17627330",
+        "wikipedia": "en:Köndük"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.1305536,
+          40.4675012
+        ]
+      },
+      "id": "node/4410549659"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4417264298",
+        "name": "Ынтымак",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4149589,
+          40.7102352
+        ]
+      },
+      "id": "node/4417264298"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4417361100",
+        "name": "Кара-Кочкор",
+        "name:en": "Kara-Kochkor",
+        "name:ru": "Кара-Кочкор",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5002437,
+          40.6648579
+        ]
+      },
+      "id": "node/4417361100"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428543737",
+        "name": "Алтын-Кюрек",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5194296,
+          40.5284855
+        ]
+      },
+      "id": "node/4428543737"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428543738",
+        "name": "Жетим-Дебе",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4954506,
+          40.5804319
+        ]
+      },
+      "id": "node/4428543738"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428543739",
+        "name": "Кара-Жыгач",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5247189,
+          40.5023116
+        ]
+      },
+      "id": "node/4428543739"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428543740",
+        "name": "Насирдин",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.523528,
+          40.5409816
+        ]
+      },
+      "id": "node/4428543740"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428543741",
+        "name": "Сары-Камыш",
+        "name:en": "Sary-Kamysh",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5419708,
+          40.6130138
+        ]
+      },
+      "id": "node/4428543741"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428543742",
+        "name": "Сары-Таш",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5544378,
+          40.5977655
+        ]
+      },
+      "id": "node/4428543742"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428570167",
+        "name": "Жылкол",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6863756,
+          40.5884699
+        ]
+      },
+      "id": "node/4428570167"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428607741",
+        "name": "Буйга",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.7881333,
+          40.5155956
+        ]
+      },
+      "id": "node/4428607741"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428607742",
+        "name": "Кара-Таш",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.9735517,
+          40.5495175
+        ]
+      },
+      "id": "node/4428607742"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428607743",
+        "name": "Кара-Таш",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.9322537,
+          40.5509931
+        ]
+      },
+      "id": "node/4428607743"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428607744",
+        "name": "Ничке-Суу",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.7954932,
+          40.53485
+        ]
+      },
+      "id": "node/4428607744"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428607745",
+        "name": "Терек-Суу",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.8258773,
+          40.5315007
+        ]
+      },
+      "id": "node/4428607745"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428607746",
+        "name": "Токбай-Талаа",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.7552601,
+          40.5423024
+        ]
+      },
+      "id": "node/4428607746"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668938",
+        "name": "Ачык-Таш",
+        "name:en": "Achyk-Tash",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.3113011,
+          40.2678453
+        ]
+      },
+      "id": "node/4428668938"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668939",
+        "name": "Бору-Токой",
+        "name:en": "Bory-Tokoy",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.3405661,
+          40.2718241
+        ]
+      },
+      "id": "node/4428668939"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668940",
+        "name": "Кайың-Талаа",
+        "name:en": "Kaying-Talaa",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.2586723,
+          40.3087324
+        ]
+      },
+      "id": "node/4428668940"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668941",
+        "name": "Кызыл-Жар",
+        "name:en": "Kyzyl-Jar",
+        "place": "hamlet",
+        "wikidata": "Q3783215",
+        "wikipedia": "ky:Кызыл-Жар (Кара-Кулжа району)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.2479698,
+          40.3026444
+        ]
+      },
+      "id": "node/4428668941"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668942",
+        "name": "Көк-Арт",
+        "name:en": "Kok-Art",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.3858461,
+          40.2666249
+        ]
+      },
+      "id": "node/4428668942"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668943",
+        "name": "Коо-Чаты",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.2934494,
+          40.3615062
+        ]
+      },
+      "id": "node/4428668943"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4428668945",
+        "name": "Ой-Тал",
+        "name:en": "Oy-Tal",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.100852,
+          40.4271365
+        ]
+      },
+      "id": "node/4428668945"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4438736726",
+        "name": "Кара-Булак",
+        "name:en": "Kara-Bulak",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5828263,
+          40.4240595
+        ]
+      },
+      "id": "node/4438736726"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4438736727",
+        "name": "Конобай-Талаа",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6685979,
+          40.4197776
+        ]
+      },
+      "id": "node/4438736727"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4438736728",
+        "addr:country": "KG",
+        "addr:region": "Ошская область",
+        "name": "Сары-Булак",
+        "name:en": "Sary-Bulak",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6295021,
+          40.4855551
+        ]
+      },
+      "id": "node/4438736728"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4438736729",
+        "name": "Сары-Күңгөй",
+        "name:en": "Sari-Küngöy",
+        "name:ky": "Сары-Күңгөй",
+        "name:ru": "Сары-Кюнгей",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.618387,
+          40.5063436
+        ]
+      },
+      "id": "node/4438736729"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4438736730",
+        "addr:country": "KG",
+        "addr:region": "Ошская область",
+        "name": "Тогуз-Булак",
+        "name:en": "Toguz-Bulak",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6265838,
+          40.4720734
+        ]
+      },
+      "id": "node/4438736730"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11451165204",
+        "name": "Казан-Булак",
+        "name:en": "Kazan-Bulak",
+        "place": "isolated_dwelling"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.1192626,
+          40.4499664
+        ]
+      },
+      "id": "node/11451165204"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12329095426",
+        "name": "Узун Айрык",
+        "name:en": "Uzun Ayryk",
+        "name:ky": "Узун Айрык",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.3812156,
+          40.4525474
+        ]
+      },
+      "id": "node/12329095426"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12608241717",
+        "name": "Сай талаа",
+        "name:en": "Say-Talaa",
+        "name:ky": "Сай талаа",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.2797725,
+          40.3025908
+        ]
+      },
+      "id": "node/12608241717"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12608610222",
+        "name": "Саз жайлоосу",
+        "name:en": "Saz Jayloo",
+        "name:ky": "Саз жайлоосу",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.0795482,
+          40.3345666
+        ]
+      },
+      "id": "node/12608610222"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12614683348",
+        "name": "Зардобука",
+        "name:en": "Zardobuka",
+        "name:ky": "Зардобука",
+        "place": "isolated_dwelling"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.0265645,
+          40.2322588
+        ]
+      },
+      "id": "node/12614683348"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12616409200",
+        "name": "Актакыр",
+        "name:en": "Aktakyr",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.9749508,
+          40.3769591
+        ]
+      },
+      "id": "node/12616409200"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12616409201",
+        "name": "Кыдыруу жайлоосу",
+        "name:en": "Kydyruu Jayloo",
+        "name:ky": "Кыдыруу жайлоосу",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.9462394,
+          40.3443953
+        ]
+      },
+      "id": "node/12616409201"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12616409202",
+        "name": "Бөдөнө",
+        "name:en": "Bödönö",
+        "name:ky": "Бөдөнө",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.9263432,
+          40.3504344
+        ]
+      },
+      "id": "node/12616409202"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13613986672",
+        "name": "Кашка-Жол",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.4460852,
+          40.6652784
+        ]
+      },
+      "id": "node/13613986672"
+    }
+  ]
+}
