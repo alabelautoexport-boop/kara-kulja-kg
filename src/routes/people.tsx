@@ -41,8 +41,11 @@ function PeoplePage() {
                 </div>
               </article>
             ))}
-            {[0, 1].map((item) => (
-              <article key={item} className={`grid items-center gap-10 md:grid-cols-12 ${item % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+            {[0].map((item) => {
+              const sequenceIndex = PEOPLE.length + item;
+
+              return (
+                <article key={item} className={`grid items-center gap-10 md:grid-cols-12 ${sequenceIndex % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
                 <div className="md:col-span-5">
                   <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden border hairline bg-background/70">
                     <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/40 to-transparent" />
@@ -54,7 +57,8 @@ function PeoplePage() {
                   <div className="mt-4 h-px max-w-sm bg-border/70" />
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

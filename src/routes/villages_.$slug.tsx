@@ -417,7 +417,7 @@ function VillagePage() {
       </section>
 
       {/* MAP */}
-      <section id="map" className="scroll-mt-24 border-y hairline py-24 lg:py-32">
+      <section id="map" className="scroll-mt-16 border-y hairline py-16 lg:scroll-mt-24 lg:py-32">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>

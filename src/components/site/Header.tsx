@@ -29,9 +29,11 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-[1200] transition-all duration-500 lg:z-50 ${
         scrolled || open
-          ? "bg-background/85 backdrop-blur-xl border-b hairline"
+          ? open
+            ? "bg-background border-b hairline lg:bg-background/85 lg:backdrop-blur-xl"
+            : "bg-background/85 backdrop-blur-xl border-b hairline"
           : "bg-transparent"
       }`}
     >
@@ -81,7 +83,7 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="border-t hairline bg-background/95 backdrop-blur-xl lg:hidden">
+        <div className="border-t hairline bg-background lg:hidden">
           <nav className="flex flex-col px-6 py-6">
             {NAV.map((n) => (
               <Link

@@ -256,7 +256,7 @@
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [74.211376, 40.094127] },
+      "geometry": { "type": "Point", "coordinates": [74.234784, 40.045453] },
       "properties": {
         "@id": "relation/270056",
         "contextType": "country",

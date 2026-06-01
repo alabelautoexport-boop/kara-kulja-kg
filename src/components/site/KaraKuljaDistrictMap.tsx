@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ComponentType } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import L from "leaflet";
 import {
@@ -6,30 +6,25 @@ import {
   GeoJSON,
   MapContainer,
   Marker,
-  Popup,
   Tooltip,
   TileLayer,
   useMap,
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import {
-  CircleEllipsis,
-  GraduationCap,
-  HeartPulse,
-  Landmark,
-  ShoppingBag,
-  TentTree,
-  type LucideProps,
-} from "lucide-react";
 import { OFFICIAL_VILLAGES, displayVillageName } from "@/lib/territories-data";
 import { useI18n } from "@/lib/i18n";
+import {
+  PoiFilterPanel,
+  PoiMarkers,
+  usePoiCollections,
+  usePoiMarkerIcons,
+} from "@/components/site/MapPoiLayers";
 import {
   BUILDING_MIN_ZOOM,
   DATA_URLS,
   DEEP_MAP_MAX_ZOOM,
   DEFAULT_POI_FILTERS,
-  POI_LAYERS,
   TERRAIN_HILLSHADE,
   bindFeatureTooltip,
   boundaryStyle,
@@ -46,52 +41,9 @@ import {
   roadStyle,
   type GeoJsonCollection,
   type GeoJsonFeature,
-  type PoiLayerKey,
   useDistrictMapData,
   useLazyCollection,
 } from "@/lib/kara-kulja-map";
-
-const POI_ICONS: Record<PoiLayerKey, ComponentType<LucideProps>> = {
-  education: GraduationCap,
-  healthcare: HeartPulse,
-  religion: Landmark,
-  shop: ShoppingBag,
-  tourism: TentTree,
-  amenity: CircleEllipsis,
-};
-
-const POI_MARKER_SVG: Record<PoiLayerKey, string> = {
-  tourism:
-    '<path d="m3 19 6-10 4 7 2-3 6 6Z"/><path d="m8.5 12 1.5 1.5 1.5-1.5"/>',
-  education:
-    '<path d="M4 10.5 12 6l8 4.5-8 4.5Z"/><path d="M7 12.5v3.8c0 .9 2.2 1.7 5 1.7s5-.8 5-1.7v-3.8"/>',
-  healthcare:
-    '<path d="M12 5v14"/><path d="M5 12h14"/><path d="M7.5 4.5h9a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2Z"/>',
-  religion:
-    '<path d="M4 19h16"/><path d="M7 19V9.5"/><path d="M17 19V9.5"/><path d="M6 9.5h2"/><path d="M16 9.5h2"/><path d="M9 19v-5.3a3 3 0 0 1 6 0V19"/><path d="M8 12.5c.7-2.6 2-4 4-4s3.3 1.4 4 4"/><path d="M12 7V4.5"/><path d="M12 4.5c.7.1 1.2.5 1.5 1"/>',
-  shop:
-    '<path d="M5 10h14l-1-5H6Z"/><path d="M7 10v9h10v-9"/><path d="M10 19v-4h4v4"/>',
-  amenity:
-    '<path d="M4 15.5h4.2l3.2 1.6a3 3 0 0 0 2.4.1L20 14"/><path d="M8.3 12.5h4.9a1.6 1.6 0 0 1 0 3.2h-3"/><path d="M4 12v6"/><circle cx="15" cy="7" r="2.1"/><path d="M15 3.5v1"/><path d="M15 9.5v1"/><path d="M11.5 7h1"/><path d="M17.5 7h1"/><path d="m12.5 4.5.7.7"/><path d="m16.8 8.8.7.7"/><path d="m17.5 4.5-.7.7"/><path d="m13.2 8.8-.7.7"/>',
-};
-
-const POI_POPUP_COPY = {
-  kg: {
-    unnamed: "Аталышы жок объект",
-    category: "Категория",
-    tags: "OSM тегдери",
-  },
-  ru: {
-    unnamed: "Объект без названия",
-    category: "Категория",
-    tags: "OSM-теги",
-  },
-  en: {
-    unnamed: "Unnamed POI",
-    category: "Category",
-    tags: "OSM tags",
-  },
-};
 
 const MAP_LEGEND_LABELS = {
   kg: {
@@ -114,49 +66,7 @@ const MAP_LEGEND_LABELS = {
   },
 };
 
-function primitivePropertyEntries(feature: GeoJsonFeature) {
-  return Object.entries(feature.properties || {})
-    .filter((entry): entry is [string, string | number | boolean] => {
-      const [, value] = entry;
-      return (
-        typeof value === "string" ||
-        typeof value === "number" ||
-        typeof value === "boolean"
-      );
-    })
-    .filter(([, value]) => String(value).trim().length > 0)
-    .sort(([a], [b]) => a.localeCompare(b));
-}
-
-function poiDisplayName(feature: GeoJsonFeature) {
-  return (
-    featureName(feature) ||
-    property(feature, "amenity") ||
-    property(feature, "shop") ||
-    property(feature, "tourism") ||
-    property(feature, "healthcare") ||
-    property(feature, "religion") ||
-    ""
-  );
-}
-
-function createPoiMarkerIcon(key: PoiLayerKey, color: string) {
-  return L.divIcon({
-    className: "kara-map-poi-marker",
-    html: `<span class="kara-map-poi-marker-shell" style="--poi-color:${color}"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${POI_MARKER_SVG[key]}</svg></span>`,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13],
-    popupAnchor: [0, -11],
-  });
-}
-
-function FitDistrictBounds({
-  boundary,
-  context,
-}: {
-  boundary: GeoJsonCollection;
-  context: GeoJsonCollection;
-}) {
+function FitDistrictBounds({ boundary }: { boundary: GeoJsonCollection }) {
   const map = useMap();
 
   useEffect(() => {
@@ -164,30 +74,16 @@ function FitDistrictBounds({
     const bounds = layer.getBounds();
 
     if (bounds.isValid()) {
-      const isCompact = map.getSize().x < 640;
+      const width = map.getSize().x;
+      const isMobile = width < 640;
+      const isLaptop = width < 1024;
 
-      context.features.forEach((feature) => {
-        if (feature.geometry.type !== "Point") return;
-
-        const [lng, lat] = feature.geometry.coordinates;
-        const type = property(feature, "contextType");
-        const isNearbyContext =
-          lng >= (isCompact ? 73.1 : 72.55) &&
-          lng <= 75 &&
-          lat >= 39.85 &&
-          lat <= 41.05 &&
-          type !== "region";
-
-        if (isNearbyContext) {
-          bounds.extend([lat, lng]);
-        }
-      });
-
-      map.fitBounds(bounds.pad(0.18), {
-        padding: [34, 34],
+      map.fitBounds(bounds.pad(isMobile ? 0.05 : 0.04), {
+        padding: isMobile ? [14, 14] : [20, 20],
+        maxZoom: isMobile ? 9.25 : isLaptop ? 9.5 : 9.75,
       });
     }
-  }, [boundary, context, map]);
+  }, [boundary, map]);
 
   return null;
 }
@@ -215,21 +111,7 @@ export function KaraKuljaDistrictMap() {
   const [poiFilters, setPoiFilters] = useState(DEFAULT_POI_FILTERS);
 
   const buildings = useLazyCollection(DATA_URLS.buildings, zoom >= BUILDING_MIN_ZOOM);
-  const educationPois = useLazyCollection(DATA_URLS.pois.education, poiFilters.education);
-  const healthcarePois = useLazyCollection(DATA_URLS.pois.healthcare, poiFilters.healthcare);
-  const religionPois = useLazyCollection(DATA_URLS.pois.religion, poiFilters.religion);
-  const shopPois = useLazyCollection(DATA_URLS.pois.shop, poiFilters.shop);
-  const tourismPois = useLazyCollection(DATA_URLS.pois.tourism, poiFilters.tourism);
-  const amenityPois = useLazyCollection(DATA_URLS.pois.amenity, poiFilters.amenity);
-
-  const poiCollections: Record<PoiLayerKey, GeoJsonCollection | null> = {
-    education: educationPois,
-    healthcare: healthcarePois,
-    religion: religionPois,
-    shop: shopPois,
-    tourism: tourismPois,
-    amenity: amenityPois,
-  };
+  const poiCollections = usePoiCollections(poiFilters);
 
   const settlementPoints = useMemo(() => {
     if (!data) return [];
@@ -285,13 +167,7 @@ export function KaraKuljaDistrictMap() {
     [],
   );
 
-  const poiMarkerIcons = useMemo(
-    () =>
-      Object.fromEntries(
-        POI_LAYERS.map((layer) => [layer.key, createPoiMarkerIcon(layer.key, layer.color)]),
-      ) as Record<PoiLayerKey, L.DivIcon>,
-    [],
-  );
+  const poiMarkerIcons = usePoiMarkerIcons();
 
   if (error) {
     return (
@@ -330,7 +206,7 @@ export function KaraKuljaDistrictMap() {
           preferCanvas
           className="h-[68vh] min-h-[460px] w-full md:h-[72vh]"
         >
-          <FitDistrictBounds boundary={data.boundary} context={data.context} />
+          <FitDistrictBounds boundary={data.boundary} />
           <ZoomWatcher onZoomChange={setZoom} />
 
           <TileLayer
@@ -398,50 +274,12 @@ export function KaraKuljaDistrictMap() {
 
           <GeoJSON data={data.boundary} style={boundaryStyle} />
 
-          {POI_LAYERS.map((layer) => {
-            const collection = poiCollections[layer.key];
-            if (!poiFilters[layer.key] || !collection) return null;
-
-            return collection.features.map((feature, index) => {
-              const poiFeature = feature as GeoJsonFeature;
-              const position = featureCenter(poiFeature);
-              if (!position) return null;
-
-              const name = poiDisplayName(poiFeature);
-              const tags = primitivePropertyEntries(poiFeature);
-              const copy = POI_POPUP_COPY[lang];
-
-              return (
-                <Marker
-                  key={`${layer.key}-${property(poiFeature, "@id") || index}`}
-                  position={position}
-                  icon={poiMarkerIcons[layer.key]}
-                >
-                  <Popup className="kara-map-poi-popup" maxWidth={260}>
-                    <div className="kara-map-poi-popup-content">
-                      <strong>{name || copy.unnamed}</strong>
-                      <p>
-                        {copy.category}: {layer.label[lang]}
-                      </p>
-                      {tags.length ? (
-                        <div>
-                          <span>{copy.tags}</span>
-                          <dl>
-                            {tags.map(([key, value]) => (
-                              <div key={key}>
-                                <dt>{key}</dt>
-                                <dd>{String(value)}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                        </div>
-                      ) : null}
-                    </div>
-                  </Popup>
-                </Marker>
-              );
-            });
-          })}
+          <PoiMarkers
+            collections={poiCollections}
+            filters={poiFilters}
+            icons={poiMarkerIcons}
+            lang={lang}
+          />
 
           {settlementPoints.map((point) => (
             <CircleMarker
@@ -483,38 +321,16 @@ export function KaraKuljaDistrictMap() {
           ))}
         </MapContainer>
 
-        <div
-          className="kara-map-filter-panel"
-          aria-label="Optional map layers"
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={(event) => event.stopPropagation()}
-        >
-          {POI_LAYERS.map((layer) => {
-            const Icon = POI_ICONS[layer.key];
-            const label = layer.label[lang];
-
-            return (
-              <button
-                key={layer.key}
-                type="button"
-                className="kara-map-filter-button"
-                data-active={poiFilters[layer.key] ? "true" : "false"}
-                aria-label={label}
-                aria-pressed={poiFilters[layer.key]}
-                title={label}
-                onClick={() =>
-                  setPoiFilters((current) => ({
-                    ...current,
-                    [layer.key]: !current[layer.key],
-                  }))
-                }
-              >
-                <Icon aria-hidden="true" strokeWidth={1.8} />
-                <span>{label}</span>
-              </button>
-            );
-          })}
-        </div>
+        <PoiFilterPanel
+          filters={poiFilters}
+          lang={lang}
+          onToggle={(key) =>
+            setPoiFilters((current) => ({
+              ...current,
+              [key]: !current[key],
+            }))
+          }
+        />
       </div>
 
       <div className="border-t hairline bg-background/95 px-4 py-4">

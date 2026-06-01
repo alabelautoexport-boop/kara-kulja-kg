@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import L from "leaflet";
 import { ArrowRight, MapPin } from "lucide-react";
 import {
   CircleMarker,
   GeoJSON,
   MapContainer,
+  TileLayer,
   Tooltip,
   useMap,
   useMapEvents,
@@ -17,9 +18,18 @@ import {
 } from "@/lib/territories-data";
 import { useI18n } from "@/lib/i18n";
 import {
+  PoiFilterPanel,
+  PoiMarkers,
+  usePoiCollections,
+  usePoiMarkerIcons,
+} from "@/components/site/MapPoiLayers";
+import {
   BUILDING_MIN_ZOOM,
   DATA_URLS,
   DEEP_MAP_MAX_ZOOM,
+  DEFAULT_POI_FILTERS,
+  POI_LAYERS,
+  TERRAIN_HILLSHADE,
   bindFeatureTooltip,
   buildingStyle,
   contextRiverStyle,
@@ -32,6 +42,7 @@ import {
   roadStyle,
   type GeoJsonCollection,
   type GeoJsonFeature,
+  type PoiLayerKey,
   useLazyCollection,
   useVillageMapData,
 } from "@/lib/kara-kulja-map";
@@ -41,6 +52,12 @@ type VillagePoint = {
   name: string;
   position: [number, number];
   slug: string;
+};
+
+const FULL_MAP_LINK_LABEL = {
+  kg: "Райондун толук картасын ачуу",
+  ru: "Открыть полную карту района",
+  en: "Open full district map",
 };
 
 function FitVillageMap({
@@ -87,8 +104,12 @@ export function VillageMapBlock({
 }) {
   const { data, error } = useVillageMapData();
   const { lang } = useI18n();
+  const navigate = useNavigate();
   const [zoom, setZoom] = useState(12);
+  const [poiFilters, setPoiFilters] = useState(DEFAULT_POI_FILTERS);
   const buildings = useLazyCollection(DATA_URLS.buildings, zoom >= BUILDING_MIN_ZOOM);
+  const poiCollections = usePoiCollections(poiFilters);
+  const poiMarkerIcons = usePoiMarkerIcons();
 
   const villagePoints = useMemo(() => {
     if (!data) return [];
@@ -135,6 +156,27 @@ export function VillageMapBlock({
   const nearbyContextRoads = useNearbyLayer(data?.contextRoads, currentPoint?.position, 24);
   const nearbyContextRivers = useNearbyLayer(data?.contextRivers, currentPoint?.position, 24);
   const nearbyBuildings = useNearbyLayer(buildings, currentPoint?.position, 8);
+  const nearbyPoiCollections = useMemo(
+    () =>
+      Object.fromEntries(
+        POI_LAYERS.map((layer) => [
+          layer.key,
+          poiCollections[layer.key] && currentPoint
+            ? nearbyCollection(poiCollections[layer.key], currentPoint.position, 10)
+            : null,
+        ]),
+      ) as Record<PoiLayerKey, GeoJsonCollection | null>,
+    [currentPoint, poiCollections],
+  );
+
+  const navigateToVillage = (slug: string) => {
+    if (slug === villageSlug) return;
+
+    navigate({
+      to: "/villages/$slug",
+      params: { slug },
+    });
+  };
 
   if (error) {
     return (
@@ -162,7 +204,7 @@ export function VillageMapBlock({
 
   return (
     <VillageMapShell villageName={villageName}>
-      <div className="village-mini-map h-[360px] overflow-hidden bg-[#efe5cf] md:h-[430px]">
+      <div className="village-mini-map relative h-[360px] overflow-hidden bg-[#efe5cf] md:h-[430px]">
         <MapContainer
           center={currentPoint.position}
           zoom={12}
@@ -184,6 +226,14 @@ export function VillageMapBlock({
         >
           <FitVillageMap center={currentPoint.position} points={neighborPoints} />
           <ZoomWatcher onZoomChange={setZoom} />
+
+          <TileLayer
+            url={TERRAIN_HILLSHADE.url}
+            opacity={TERRAIN_HILLSHADE.opacity}
+            maxNativeZoom={TERRAIN_HILLSHADE.maxNativeZoom}
+            maxZoom={DEEP_MAP_MAX_ZOOM}
+            className="kara-map-hillshade-layer"
+          />
 
           {nearbyContextRoads ? (
             <GeoJSON
@@ -222,10 +272,20 @@ export function VillageMapBlock({
             <GeoJSON data={nearbyBuildings} style={buildingStyle} interactive={false} />
           ) : null}
 
+          <PoiMarkers
+            collections={nearbyPoiCollections}
+            filters={poiFilters}
+            icons={poiMarkerIcons}
+            lang={lang}
+          />
+
           {neighborPoints.map((point) => (
             <CircleMarker
               key={point.id}
               center={point.position}
+              eventHandlers={{
+                click: () => navigateToVillage(point.slug),
+              }}
               radius={3.2}
               pathOptions={{
                 color: "#496252",
@@ -239,6 +299,10 @@ export function VillageMapBlock({
                 permanent
                 direction="right"
                 offset={[7, 0]}
+                interactive
+                eventHandlers={{
+                  click: () => navigateToVillage(point.slug),
+                }}
                 className="village-mini-map-label neighbor"
               >
                 {point.name}
@@ -267,6 +331,17 @@ export function VillageMapBlock({
             </Tooltip>
           </CircleMarker>
         </MapContainer>
+        <PoiFilterPanel
+          compact
+          filters={poiFilters}
+          lang={lang}
+          onToggle={(key) =>
+            setPoiFilters((current) => ({
+              ...current,
+              [key]: !current[key],
+            }))
+          }
+        />
       </div>
     </VillageMapShell>
   );
@@ -290,6 +365,8 @@ function VillageMapShell({
   children: ReactNode;
   villageName: string;
 }) {
+  const { lang } = useI18n();
+
   return (
     <div className="mt-12 overflow-hidden border hairline bg-[#efe5cf]">
       {children}
@@ -303,11 +380,11 @@ function VillageMapShell({
             to="/map"
             className="inline-flex items-center gap-2 text-foreground transition-colors hover:text-[var(--beige)]"
           >
-            Open full district map <ArrowRight className="h-3.5 w-3.5" />
+            {FULL_MAP_LINK_LABEL[lang]} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
         <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground/55">
-          Map data © OpenStreetMap contributors.
+          Map data © OpenStreetMap contributors. {TERRAIN_HILLSHADE.attribution}.
         </p>
       </div>
     </div>
