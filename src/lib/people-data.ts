@@ -33,6 +33,16 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    name: L("Төрөбек Абакиров", "Торобек Абакиров", "Torobek Abakirov"),
+    role: L("Кыргыз балбаны", "Кыргызский силач", "Kyrgyz strongman"),
+    image: "https://media.kara-kulja.kg/general/insandar/photos/Abakirov.jpg",
+    body: L(
+      "1910-жылы Кара-Кулжа районунун Ылай-Талаа айылында төрөлгөн, Орто Азияга таанылган кыргыз балбаны. Ал күрөш жана ат үстүндөгү оодарыш өнөрүндө өзгөчө чеберчилиги менен элге кеңири белгилүү болгон.",
+      "Родился в 1910 году в селе Ылай-Талаа Кара-Кулжинского района. Известный кыргызский силач, прославившийся мастерством в борьбе и конном состязании оодарыш далеко за пределами Кыргызстана.",
+      "Born in 1910 in Ylay-Talaa village of the Kara-Kulja District. A renowned Kyrgyz strongman widely known for his exceptional skill in traditional wrestling and the horseback contest known as oodarysh.",
+    ),
+  },
+  {
     name: L("Акун Токтосартов", "Акун Токтосартов", "Akun Toktosartov"),
     role: L("Мамлекеттик жана коомдук ишмер", "Государственный и общественный деятель", "Statesman and public figure"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Akun-Toktosartov.jpg",
@@ -57,6 +67,20 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    name: L("Мариш Баатыров", "Мариш Баатыров", "Marish Baatyrov"),
+    role: L(
+      "Мамлекеттик жана коомдук ишмер",
+      "Государственный и общественный деятель",
+      "Statesman and public figure",
+    ),
+    image: "https://media.kara-kulja.kg/general/insandar/photos/Baatyrov.jpg",
+    body: L(
+      "Өмүрүн эл кызматына арнаган мамлекеттик жана коомдук ишмер. Карл Маркс атындагы ири колхозду 25 жыл жетектеп, айыл чарбасын өнүктүрүүгө олуттуу салым кошкон. Эки жолу Кыргыз Республикасынын Жогорку Советинин депутаты болуп шайланган.",
+      "Государственный и общественный деятель, посвятивший свою жизнь служению народу. На протяжении 25 лет руководил крупным колхозом имени Карла Маркса, внес значительный вклад в развитие сельского хозяйства. Дважды избирался депутатом Верховного Совета Кыргызской Республики.",
+      "A statesman and public figure who devoted his life to serving the people. He led the Karl Marx collective farm for 25 years and made a significant contribution to the development of agriculture. He was elected twice as a deputy of the Supreme Soviet of the Kyrgyz Republic.",
+    ),
+  },
+  {
     name: L("Сооронбай Жээнбеков", "Сооронбай Жээнбеков", "Sooronbay Jeenbekov"),
     role: L("Мамлекеттик жана коомдук ишмер", "Государственный и общественный деятель", "Statesman and public figure"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Jeenbekov.jpg",
@@ -64,6 +88,20 @@ export const PEOPLE: PersonProfile[] = [
       "Кыргыз Республикасынын 5-президенти, мамлекеттик жана коомдук ишмер. Өлкөнүн коомдук-саясий турмушунда маанилүү орунду ээлеген белгилүү инсандардын бири.",
       "5-й Президент Кыргызской Республики, государственный и общественный деятель. Один из известных уроженцев Кара-Кульджинского района, сыгравший важную роль в общественно-политической жизни страны.",
       "The 5th President of the Kyrgyz Republic, statesman, and public figure. One of the well-known natives of Kara-Kulja District who played an important role in the country’s public and political life.",
+    ),
+  },
+  {
+    name: L("Максатбек Ажы Токтомушев", "Максатбек Ажы Токтомушев", "Maksatbek Azhy Toktomushev"),
+    role: L(
+      "Мурдагы Азирети Муфтий, диний жана коомдук ишмер",
+      "Бывший Азирети Муфтий, религиозный и общественный деятель",
+      "Former Azireti Mufti, religious and public figure",
+    ),
+    image: "https://media.kara-kulja.kg/general/insandar/photos/Toktomushev.jpg",
+    body: L(
+      "Кыргыз Республикасынын мурдагы Азирети Муфтийи, белгилүү диний жана коомдук ишмер. Ал көп жылдар бою өлкөнүн диний турмушунда активдүү кызмат өтөп, ислам дининин баалуулуктарын, руханий тарбияны жана адеп-ахлак принциптерин жайылтууга олуттуу салым кошуп келет.",
+      "Бывший Азирети Муфтий Кыргызской Республики, известный религиозный и общественный деятель. На протяжении многих лет он активно участвует в религиозной жизни страны, внося значительный вклад в распространение исламских ценностей, духовного воспитания и нравственных принципов.",
+      "Former Azireti Mufti of the Kyrgyz Republic and a prominent religious and public figure. For many years, he has played an active role in the country’s religious life, making a significant contribution to promoting Islamic values, spiritual education, and moral principles.",
     ),
   },
 ];
