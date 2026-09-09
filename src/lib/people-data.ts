@@ -3,16 +3,22 @@ import type { Lang } from "@/lib/i18n";
 export type Localized<T> = Record<Lang, T>;
 
 export type PersonProfile = {
+  slug: string;
   name: Localized<string>;
   role: Localized<string>;
   body: Localized<string>;
-  image: string;
+  image?: string;
+  territorySlugs?: string[];
+  villageSlugs?: string[];
+  featuredOnHome?: boolean;
+  featuredInPeople?: boolean;
 };
 
 const L = (kg: string, ru: string, en: string): Localized<string> => ({ kg, ru, en });
 
 export const PEOPLE: PersonProfile[] = [
   {
+    slug: "sooronbay-jusuev",
     name: L("Сооронбай Жусуев", "Сооронбай Жусуев", "Sooronbay Jusuev"),
     role: L("Кыргыз Республикасынын Баатыры жана Эл акыны.", "Герой Кыргызской Республики. Народный писатель.", "Hero of the Kyrgyz Republic. People’s Writer."),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Jusuev.jpg",
@@ -23,6 +29,7 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "ryspai-abdykadyrov",
     name: L("Рыспай Абдыкадыров", "Рыспай Абдыкадыров", "Ryspai Abdykadyrov"),
     role: L("Обончу, аткаруучу жана композитор", "Композитор, исполнитель и музыкант", "Composer, performer, and musician"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Abdykadyrov.jpg",
@@ -33,6 +40,7 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "torobek-abakirov",
     name: L("Төрөбек Абакиров", "Торобек Абакиров", "Torobek Abakirov"),
     role: L("Кыргыз балбаны", "Кыргызский силач", "Kyrgyz strongman"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Abakirov.jpg",
@@ -43,6 +51,7 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "akun-toktosartov",
     name: L("Акун Токтосартов", "Акун Токтосартов", "Akun Toktosartov"),
     role: L("Мамлекеттик жана коомдук ишмер", "Государственный и общественный деятель", "Statesman and public figure"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Akun-Toktosartov.jpg",
@@ -53,6 +62,7 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "jenishbek-shamshiev",
     name: L("Жеңишбек Шамшиев", "Женишбек Шамшиев", "Jenishbek Shamshiev"),
     role: L(
       "Обончу, аткаруучу жана коомдук ишмер",
@@ -67,6 +77,7 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "marish-baatyrov",
     name: L("Мариш Баатыров", "Мариш Баатыров", "Marish Baatyrov"),
     role: L(
       "Мамлекеттик жана коомдук ишмер",
@@ -74,13 +85,54 @@ export const PEOPLE: PersonProfile[] = [
       "Statesman and public figure",
     ),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Baatyrov.jpg",
+    territorySlugs: ["ylai-talaa"],
+    villageSlugs: ["ylai-talaa"],
+    featuredOnHome: true,
+    featuredInPeople: true,
     body: L(
-      "Өмүрүн эл кызматына арнаган мамлекеттик жана коомдук ишмер. Карл Маркс атындагы ири колхозду 25 жыл жетектеп, айыл чарбасын өнүктүрүүгө олуттуу салым кошкон. Эки жолу Кыргыз Республикасынын Жогорку Советинин депутаты болуп шайланган.",
-      "Государственный и общественный деятель, посвятивший свою жизнь служению народу. На протяжении 25 лет руководил крупным колхозом имени Карла Маркса, внес значительный вклад в развитие сельского хозяйства. Дважды избирался депутатом Верховного Совета Кыргызской Республики.",
-      "A statesman and public figure who devoted his life to serving the people. He led the Karl Marx collective farm for 25 years and made a significant contribution to the development of agriculture. He was elected twice as a deputy of the Supreme Soviet of the Kyrgyz Republic.",
+      "1922-жылы Ылай-Талаа айылында төрөлгөн мамлекеттик жана коомдук ишмер. Карл Маркс атындагы колхозду дээрлик 25 жыл жетектеп, айылдын өнүгүшүнө салым кошкон. Кыргыз ССР Жогорку Советине эки жолу депутат болуп шайланган. Ленин, Эмгек Кызыл Туу жана Ардак Белгиси ордендери менен сыйланган.",
+      "Государственный и общественный деятель, родился в 1922 году в селе Ылай-Талаа. Почти 25 лет руководил колхозом имени Карла Маркса, внес вклад в развитие села. Дважды избирался депутатом Верховного Совета Киргизской ССР. Награжден орденами Ленина, Трудового Красного Знамени и «Знак Почёта».",
+      "A statesman and public figure born in 1922 in the village of Ylai-Talaa. He led the Karl Marx collective farm for nearly 25 years, contributing to the village’s development. He was twice elected to the Supreme Soviet of the Kirghiz SSR and received the Orders of Lenin, the Red Banner of Labour, and the Badge of Honour.",
     ),
   },
   {
+    slug: "bedelbay-isaev",
+    name: L("Беделбай Исаев", "Беделбай Исаев", "Bedelbay Isaev"),
+    role: L(
+      "Колхоз жетекчиси, Социалисттик Эмгектин Баатыры",
+      "Руководитель колхоза, Герой Социалистического Труда",
+      "Collective farm leader, Hero of Socialist Labour",
+    ),
+    territorySlugs: ["ylai-talaa"],
+    villageSlugs: ["tokbay-talaa"],
+    featuredOnHome: false,
+    featuredInPeople: false,
+    body: L(
+      "1911-жылы Токбай-Талаа айылында төрөлгөн колхоз жетекчиси, Социалисттик Эмгектин Баатыры. Ленинчи-Жаш колхозун 18 жыл жетектеп, айылдын өнүгүшүнө салым кошкон. Электрлештирүү, суу менен камсыздоо жана оорукананын курулушуна көмөктөшкөн. Ленин ордени, ардак грамоталар жана медалдар менен сыйланган.",
+      "Руководитель колхоза, Герой Социалистического Труда, родился в 1911 году в селе Токбай-Талаа. Возглавлял колхоз «Ленинчи-Жаш» 18 лет, способствовал развитию села, электрификации, водоснабжению и строительству больницы. Награжден орденом Ленина, почётными грамотами и медалями.",
+      "A collective farm leader and Hero of Socialist Labour, born in 1911 in Tokbay-Talaa. He headed the Leninchi-Zhash collective farm for 18 years, supporting village development, electrification, water supply, and hospital construction. He received the Order of Lenin, honorary certificates, and medals.",
+    ),
+  },
+  {
+    slug: "mamyt-abakirov",
+    name: L("Мамыт Абакиров", "Мамыт Абакиров", "Mamyt Abakirov"),
+    role: L(
+      "Согуш ардагери, Социалисттик Эмгектин Баатыры",
+      "Ветеран войны, Герой Социалистического Труда",
+      "War veteran, Hero of Socialist Labour",
+    ),
+    territorySlugs: ["ylai-talaa"],
+    villageSlugs: ["tokbay-talaa"],
+    featuredOnHome: false,
+    featuredInPeople: false,
+    body: L(
+      "1912-жылы Токбай-Талаа айылында төрөлгөн согуш ардагери, Социалисттик Эмгектин Баатыры. Экинчи дүйнөлүк согушта сапер болуп кызмат өтөп, кийин жылкы чарбасын жетектеген. Ленин, Кызыл Жылдыз жана 3-даражадагы Даңк ордендери менен сыйланган. Токбай-Талаа мектеби анын ысымын алып жүрөт.",
+      "Ветеран войны, Герой Социалистического Труда, родился в 1912 году в селе Токбай-Талаа. Во Второй мировой войне служил сапером, затем руководил коневодческим хозяйством. Награжден орденами Ленина, Красной Звезды и Славы III степени. Школа в Токбай-Талаа носит его имя.",
+      "A war veteran and Hero of Socialist Labour, born in 1912 in Tokbay-Talaa. He served as a combat engineer during World War II and later managed a horse farm. He received the Orders of Lenin, the Red Star, and Glory, Third Class. The school in Tokbay-Talaa bears his name.",
+    ),
+  },
+  {
+    slug: "sooronbay-jeenbekov",
     name: L("Сооронбай Жээнбеков", "Сооронбай Жээнбеков", "Sooronbay Jeenbekov"),
     role: L("Мамлекеттик жана коомдук ишмер", "Государственный и общественный деятель", "Statesman and public figure"),
     image: "https://media.kara-kulja.kg/general/insandar/photos/Jeenbekov.jpg",
@@ -91,6 +143,7 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "maksatbek-azhy-toktomushev",
     name: L("Максатбек Ажы Токтомушев", "Максатбек Ажы Токтомушев", "Maksatbek Azhy Toktomushev"),
     role: L(
       "Мурдагы Азирети Муфтий, диний жана коомдук ишмер",
@@ -107,3 +160,11 @@ export const PEOPLE: PersonProfile[] = [
 ];
 
 export const pick = <T,>(loc: Localized<T>, lang: Lang): T => loc[lang] ?? loc.kg;
+
+export const getPersonBySlug = (slug: string) => PEOPLE.find((person) => person.slug === slug);
+
+export const getPeopleForTerritory = (territorySlug: string) =>
+  PEOPLE.filter((person) => person.territorySlugs?.includes(territorySlug));
+
+export const getPeopleForVillage = (villageSlug: string) =>
+  PEOPLE.filter((person) => person.villageSlugs?.includes(villageSlug));

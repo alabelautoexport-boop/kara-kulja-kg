@@ -37,6 +37,7 @@ export type Village = {
   order?: number;
   tagline: Localized<string>;
   hero: string;
+  showInfo?: boolean;
   intro: Localized<string>;
   info: VillageInfo[];
   history: Localized<string>;
@@ -148,6 +149,62 @@ const INFO_ALT = L("Бийиктиги", "Высота", "Altitude");
 const INFO_LOC = L("Жайгашуусу", "Расположение", "Location");
 const INFO_DIST = L("Борборго чейин", "До центра", "Distance to centre");
 const INFO_AO = L("Айыл өкмөтү", "Айыл окмоту", "Aiyl okmotu");
+const INFO_AIMAK = L("Айыл аймагы", "Айылный аймак", "Aiyl aimak");
+const INFO_FORMER_NAME = L("Мурунку аталышы", "Прежнее название", "Former name");
+const INFO_ECONOMY = L("Негизги чарба багыттары", "Основные направления хозяйства", "Main livelihoods");
+const INFO_RIVER_LOCATION = L("Жайгашуусу", "Расположение", "Location");
+const INFO_FROM_KARA_KULJA = L("Кара-Кулжа айылынан", "От села Кара-Кульджа", "From Kara-Kulja village");
+const INFO_ABOVE_SEA = L("Деңиз деңгээлинен", "Высота над уровнем моря", "Elevation above sea level");
+const INFO_SCHOOL = L("Мектеп", "Школа", "School");
+const INFO_SCHOOL_OPENED = L("Мектеп пайдаланууга берилген", "Школа введена в эксплуатацию", "School opened");
+const INFO_STUDENTS = L("Мектептеги окуучулар", "Ученики школы", "School students");
+const INFO_MEDICAL = L("Медициналык пункт", "Медицинский пункт", "Medical point");
+const INFO_PRESCHOOL = L("Мектепке чейинки мекеме", "Дошкольное учреждение", "Preschool");
+const INFO_FORMER_ADMIN = L("Мурдагы административдик караштуулугу", "Прежняя административная принадлежность", "Former administrative affiliation");
+
+type LegacyVillageSections = Pick<
+  Village,
+  "hero" | "tourism" | "investment" | "people" | "gallery"
+>;
+
+const createLegacyVillageSections = (
+  slug: string,
+  name: string,
+  nameRu: string,
+  nameEn: string,
+): LegacyVillageSections => {
+  const official = getOfficialVillage(slug);
+  if (!official) throw new Error("Unknown official village: " + slug);
+
+  const territory = getTerritoryForVillage(slug);
+  const hero = territory?.image ?? villageImg;
+
+  return {
+    hero,
+    tourism: {
+      lead: L(
+        name + " айылы аймакты жай таанууга чакырат: жол, суу, тоо этеги жана адамдардын меймандостугу.",
+        nameRu + " приглашает узнавать территорию медленно: дорога, вода, предгорье и гостеприимство людей.",
+        nameEn + " invites a slower reading of the territory: road, water, foothill and local hospitality.",
+      ),
+      items: SHARED_TOURISM,
+    },
+    investment: {
+      lead: L(
+        name + " үчүн мүмкүнчүлүктөр табигый масштабда ачылат: үй чарбасы, айыл чарба, конок тосуу жана жол боюндагы кызматтар.",
+        "Возможности для " + nameRu + " раскрываются в естественном масштабе: хозяйство, аграрные инициативы, гостеприимство и дорожные сервисы.",
+        "Opportunities for " + nameEn + " unfold at a natural scale: household production, agriculture, hospitality and road-side services.",
+      ),
+      items: SHARED_INVESTMENT,
+    },
+    people: [
+      { name: L("Устат", "Наставник", "Mentor"), role: L("Айылдын эс тутуму", "Память села", "Village memory"), img: elderImg },
+      { name: L("Дыйкан", "Земледелец", "Farmer"), role: L("Жер менен иштеген", "Работающий на земле", "Working the land"), img: agricultureImg },
+      { name: L("Жол башчы", "Проводник", "Guide"), role: L("Аймакты тааныткан", "Открывающий территорию", "Opening the territory"), img: horsemanImg },
+    ],
+    gallery: [hero, villageImg, valleyImg, waterfallImg, horsemanImg, elderImg],
+  };
+};
 
 const DETAILED_VILLAGES: Village[] = [
   {
@@ -296,6 +353,97 @@ const DETAILED_VILLAGES: Village[] = [
     gallery: [horseRouteImg, jailooImg, valleyImg, kymyzImg, elderImg, mountainRoadImg],
     mapNote: L("Ой-Тал айыл аймагы, Кара-Кулжа району", "АА Ой-Тал, Кара-Кульджинский район", "Oi-Tal aiyl aimak, Kara-Kulja district"),
     related: ["kara-kulja", "zhiyde"],
+  },
+  {
+    slug: "ylai-talaa",
+    name: "Ылай-Талаа",
+    nameRu: "Ылай-Талаа",
+    nameEn: "Ylai-Talaa",
+    showInfo: true,
+    ...createLegacyVillageSections("ylai-talaa", "Ылай-Талаа", "Ылай-Талаа", "Ylai-Talaa"),
+    tagline: L("Тарыхый аталышы - Сөгөт", "Историческое название - Сёгёт", "Historic name - Sogot"),
+    intro: L(
+      "Ылай-Талаа - Ылай-Талаа айыл аймагынын курамындагы айыл. Калкы 7 130 адам. Негизги чарба багыттары - мал чарбачылыгы жана дыйканчылык.",
+      "Ылай-Талаа - село в составе айылного аймака Ылай-Талаа. Население - 7 130 человек. Основные направления хозяйства - животноводство и земледелие.",
+      "Ylai-Talaa is a village in the Ylai-Talaa aiyl aimak. Its population is 7,130. Livestock farming and agriculture are the main local livelihoods.",
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Ылай-Талаа", "Ылай-Талаа", "Ylai-Talaa") },
+      { label: INFO_POP, value: L("7 130", "7 130", "7,130") },
+      { label: INFO_FORMER_NAME, value: L("Сөгөт", "Сёгёт", "Sogot") },
+      { label: INFO_ECONOMY, value: L("Мал чарбачылыгы жана дыйканчылык", "Животноводство и земледелие", "Livestock farming and agriculture") },
+    ],
+    history: L(
+      "Жергиликтүү тарыхый маалыматтарда Ылай-Талаа айылы мурда «Сөгөт» деп аталганы айтылат. 1955-1956-жылдары Ворошилов, Сталин, Кызыл-Жол, Киров жана Молотов колхоздору бириктирилип, Мариш Баатыровдун жетекчилиги астында Карл Маркс атындагы колхоз уюштурулган.",
+      "В местных исторических материалах говорится, что село Ылай-Талаа ранее называлось «Сёгёт». В 1955-1956 годах колхозы имени Ворошилова, Сталина, Кызыл-Жол, Кирова и Молотова были объединены, и под руководством Мариша Баатырова был организован колхоз имени Карла Маркса.",
+      "Local historical materials state that Ylai-Talaa was formerly called Sogot. In 1955-1956, the Voroshilov, Stalin, Kyzyl-Zhol, Kirov, and Molotov collective farms were merged to form the Karl Marx collective farm under the leadership of Marish Baatyrov.",
+    ),
+    mapNote: L("Ылай-Талаа айылы, Кара-Кулжа району", "Село Ылай-Талаа, Кара-Кульджинский район", "Ylai-Talaa village, Kara-Kulja district"),
+    related: [],
+  },
+  {
+    slug: "sai",
+    name: "Сай",
+    nameRu: "Сай",
+    nameEn: "Sai",
+    showInfo: true,
+    ...createLegacyVillageSections("sai", "Сай", "Сай", "Sai"),
+    tagline: L("Тар дарыясынын сол жээгиндеги айыл", "Село на левом берегу реки Тар", "A village on the left bank of the Tar River"),
+    intro: L(
+      "Сай - Тар дарыясынын сол жээгинде жайгашкан айыл. Калкы 2 417 адам. Айыл чарбасы жана мал чарбачылыгы жергиликтүү турмушта маанилүү орунда турат.",
+      "Сай - село на левом берегу реки Тар. Население - 2 417 человек. Сельское хозяйство и животноводство занимают важное место в местной жизни.",
+      "Sai is a village on the left bank of the Tar River. Its population is 2,417. Agriculture and livestock farming are important parts of local life.",
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Ылай-Талаа", "Ылай-Талаа", "Ylai-Talaa") },
+      { label: INFO_POP, value: L("2 417", "2 417", "2,417") },
+      { label: INFO_RIVER_LOCATION, value: L("Тар дарыясынын сол жээгинде", "На левом берегу реки Тар", "On the left bank of the Tar River") },
+      { label: INFO_FROM_KARA_KULJA, value: L("болжол менен 5 км түштүк-чыгышта", "примерно в 5 км к юго-востоку", "Approximately 5 km southeast") },
+      { label: INFO_ABOVE_SEA, value: L("болжол менен 1 319 м", "примерно 1 319 м", "Approximately 1,319 m") },
+      { label: INFO_ECONOMY, value: L("Айыл чарбасы жана мал чарбачылыгы", "Сельское хозяйство и животноводство", "Agriculture and livestock farming") },
+      { label: INFO_SCHOOL, value: L("Мариш Баатыров атындагы мектеп", "Школа имени Мариша Баатырова", "Marish Baatyrov School") },
+      { label: INFO_SCHOOL_OPENED, value: L("1980-1981-жылдары", "в 1980-1981 годах", "1980-1981") },
+      { label: INFO_STUDENTS, value: L("496", "496", "496") },
+      { label: INFO_MEDICAL, value: L("ФАП", "ФАП", "FAP") },
+      { label: INFO_PRESCHOOL, value: L("Бала бакча", "Детский сад", "Kindergarten") },
+    ],
+    history: L(
+      "Жергиликтүү материалдарда Сай айылынын тарыхы Бөксө, Ток-Өрүк жана Капка Чүңөт сыяктуу мурдагы кыштактар менен байланыштуу экени айтылат. 1949-1950-жылдары Ток-Өрүк айылында Кызыл-Жол мектеби ачылган. 1959-жылдагы колхоздоштуруу мезгилинде бир катар кыштактар Карл Маркс атындагы колхозго кошулуп, Сай айылы катары катталган. Мариш Баатыров атындагы мектеп 1980-1981-жылдары пайдаланууга берилген.",
+      "В местных материалах история села Сай связывается с прежними поселениями Бөксө, Ток-Өрүк и Капка Чүңөт. В 1949-1950 годах в Ток-Өрүк была открыта школа Кызыл-Жол. В период укрупнения колхозов в 1959 году ряд поселений вошёл в колхоз имени Карла Маркса и был зарегистрирован как село Сай. Школа имени Мариша Баатырова была введена в эксплуатацию в 1980-1981 годах.",
+      "Local materials connect the history of Sai with the former settlements of Bokso, Tok-Oruk, and Kapka Chunot. In 1949-1950, the Kyzyl-Zhol school opened in Tok-Oruk. During collective farm consolidation in 1959, several settlements joined the Karl Marx collective farm and were registered as Sai village. The Marish Baatyrov School opened in 1980-1981.",
+    ),
+    mapNote: L("Сай айылы, Кара-Кулжа району", "Село Сай, Кара-Кульджинский район", "Sai village, Kara-Kulja district"),
+    related: [],
+  },
+  {
+    slug: "tokbay-talaa",
+    name: "Токбай-Талаа",
+    nameRu: "Токбай-Талаа",
+    nameEn: "Tokbay-Talaa",
+    showInfo: true,
+    ...createLegacyVillageSections("tokbay-talaa", "Токбай-Талаа", "Токбай-Талаа", "Tokbay-Talaa"),
+    tagline: L("Тар дарыясынын сол жээгиндеги тоолуу айыл", "Горное село на левом берегу реки Тар", "A mountain village on the left bank of the Tar River"),
+    intro: L(
+      "Токбай-Талаа - Тар дарыясынын сол жээгинде жайгашкан тоолуу айыл. Калкы 4 647 адам. Мал чарбачылыгы жана жер иштетүү жергиликтүү чарбанын негизги багыттарына кирет.",
+      "Токбай-Талаа - горное село на левом берегу реки Тар. Население - 4 647 человек. Животноводство и земледелие входят в основные направления местного хозяйства.",
+      "Tokbay-Talaa is a mountain village on the left bank of the Tar River. Its population is 4,647. Livestock farming and cultivation are the main local livelihoods.",
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Ылай-Талаа", "Ылай-Талаа", "Ylai-Talaa") },
+      { label: INFO_POP, value: L("4 647", "4 647", "4,647") },
+      { label: INFO_RIVER_LOCATION, value: L("Тар дарыясынын сол жээгинде", "На левом берегу реки Тар", "On the left bank of the Tar River") },
+      { label: INFO_ABOVE_SEA, value: L("болжол менен 1 491 м", "примерно 1 491 м", "Approximately 1,491 m") },
+      { label: INFO_ECONOMY, value: L("Мал чарбачылыгы жана жер иштетүү", "Животноводство и земледелие", "Livestock farming and cultivation") },
+      { label: INFO_SCHOOL, value: L("Мамыт Абакиров атындагы «Токбай-Талаа» жалпы билим берүү мектеби", "Общеобразовательная школа «Токбай-Талаа» имени Мамыта Абакирова", "Mamyt Abakirov Tokbay-Talaa General Education School") },
+      { label: INFO_FORMER_ADMIN, value: L("Чалма айыл округу", "Чалминский айылный округ", "Chalma rural district") },
+    ],
+    history: L(
+      "Токбай-Талаа Кара-Кулжа районунун тоолуу бөлүгүндө, Тар дарыясынын сол жээгинде жайгашкан. Жергиликтүү материалдарда айылдын мурда Чалма айыл округуна караганы көрсөтүлөт. Тоолуу шарт жана жайыттар мал чарбачылыгынын өнүгүшүнө өбөлгө түзгөн.",
+      "Токбай-Талаа расположено в горной части Кара-Кульджинского района, на левом берегу реки Тар. В местных материалах указано, что ранее село относилось к Чалминскому айылному округу. Горные условия и пастбища способствовали развитию животноводства.",
+      "Tokbay-Talaa is located in the mountainous part of Kara-Kulja District on the left bank of the Tar River. Local materials state that the village formerly belonged to the Chalma rural district. Mountain conditions and pastures supported the development of livestock farming.",
+    ),
+    mapNote: L("Токбай-Талаа айылы, Кара-Кулжа району", "Село Токбай-Талаа, Кара-Кульджинский район", "Tokbay-Talaa village, Kara-Kulja district"),
+    related: [],
   },
 ];
 

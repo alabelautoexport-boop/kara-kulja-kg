@@ -15,6 +15,82 @@ export type TerritoryVillage = {
   order: number;
 };
 
+export type TerritoryLinkValue = {
+  label: Localized<string>;
+  slug?: string;
+};
+
+export type TerritoryTextValue = {
+  label: Localized<string>;
+  value: Localized<string>;
+  links?: TerritoryLinkValue[];
+};
+
+export type TerritoryHeroStat = TerritoryTextValue;
+
+export type TerritoryScenicPlace = {
+  name: Localized<string>;
+  filename: string;
+  alt: Localized<string>;
+};
+
+export type TerritoryProfileGroup = {
+  title: Localized<string>;
+  items: TerritoryTextValue[];
+};
+
+export type TerritoryInfrastructureGroup = {
+  title: Localized<string>;
+  primary: Localized<string>[];
+  secondary: Localized<string>[];
+  detail?: Localized<string>[];
+};
+
+export type TerritoryEconomyProfileItem = {
+  label: Localized<string>;
+  values: Localized<string>[];
+};
+
+export type TerritoryGalleryImage = {
+  filename: string;
+  alt: Localized<string>;
+  caption: Localized<string>;
+  layout: "wide" | "standard" | "tall";
+};
+
+export type TerritoryDetail = {
+  heroStats?: TerritoryHeroStat[];
+  heroDarkOverlay?: boolean;
+  villageCardVisual?: "neutral";
+  passport?: {
+    title: Localized<string>;
+    reference: Localized<string>;
+    groups: TerritoryProfileGroup[];
+  };
+  nature?: {
+    title: Localized<string>;
+    intro: Localized<string>;
+    places: TerritoryScenicPlace[];
+  };
+  infrastructure?: {
+    title: Localized<string>;
+    groups: TerritoryInfrastructureGroup[];
+  };
+  economy?: {
+    title: Localized<string>;
+    body: Localized<string>;
+    profile: TerritoryEconomyProfileItem[];
+  };
+  history?: {
+    title: Localized<string>;
+    body: Localized<string>;
+  };
+  gallery?: {
+    title: Localized<string>;
+    images: TerritoryGalleryImage[];
+  };
+};
+
 export type Territory = {
   slug: string;
   name: string;
@@ -25,6 +101,7 @@ export type Territory = {
   population: number;
   image: string;
   villages: TerritoryVillage[];
+  detail?: TerritoryDetail;
 };
 
 const L = (kg: string, ru: string, en: string): Localized<string> => ({ kg, ru, en });
@@ -35,6 +112,177 @@ const territoryCopy = (name: string, nameEn: string, tone: string): Localized<st
     `${name} - ${tone}. Сёла раскрываются в ритме долины.`,
     `${nameEn} - villages unfold at the pace of the valley.`,
   );
+
+const YLAI_NATURE_CAPTION = L(
+  "Ылай-Талаа айыл аймагынын жаратылышы",
+  "Природа айыл аймака Ылай-Талаа",
+  "Nature of Ylai-Talaa Aiyl Aimak",
+);
+
+const YLAI_TALAA_DETAIL: TerritoryDetail = {
+  heroDarkOverlay: true,
+  villageCardVisual: "neutral",
+  heroStats: [
+    { value: L("17 501", "17 501", "17,501"), label: L("калк", "население", "population") },
+    { value: L("9", "9", "9"), label: L("айыл", "сёл", "villages") },
+    { value: L("3 394", "3 394", "3,394"), label: L("кожолук", "хозяйства", "households") },
+    { value: L("85 815 га", "85 815 га", "85,815 ha"), label: L("жалпы аянт", "общая площадь", "total area") },
+  ],
+  passport: {
+    title: L("Айыл аймагы жөнүндө", "Об айыл аймаке", "About the aiyl aimak"),
+    reference: L("Негизги маалымат - 2026-жылдын 1-январына карата", "Основная информация - по состоянию на 1 января 2026 года", "Key information - as of 1 January 2026"),
+    groups: [
+      {
+        title: L("Жайгашуусу", "Расположение", "Location"),
+        items: [
+          { label: L("Облусу", "Область", "Region"), value: L("Ош облусу", "Ошская область", "Osh Region") },
+          { label: L("Району", "Район", "District"), value: L("Кара-Кулжа району", "Кара-Кульджинский район", "Kara-Kulja District") },
+          { label: L("Уюшулган жылы", "Год образования", "Year established"), value: L("2024", "2024", "2024") },
+          { label: L("Район борборунан аралык", "Расстояние от районного центра", "Distance from district centre"), value: L("12 км", "12 км", "12 km") },
+          { label: L("Облус борборунан аралык", "Расстояние от областного центра", "Distance from regional centre"), value: L("112 км", "112 км", "112 km") },
+          { label: L("Жакынкы темир жол станциясына чейин", "До ближайшей железнодорожной станции", "To the nearest railway station"), value: L("90 км", "90 км", "90 km") },
+        ],
+      },
+      {
+        title: L("Жер жана чарба", "Земля и хозяйство", "Land and economy"),
+        items: [
+          { label: L("Айыл чарба багытындагы жерлер", "Земли сельскохозяйственного назначения", "Agricultural land"), value: L("2 242,2 га", "2 242,2 га", "2,242.2 ha") },
+          { label: L("Деңиз деңгээлинен", "Высота над уровнем моря", "Above sea level"), value: L("болжол менен 1 200 м", "примерно 1 200 м", "approximately 1,200 m") },
+          { label: L("Негизги экономикалык багыт", "Основное экономическое направление", "Main economic focus"), value: L("Айыл чарба", "Сельское хозяйство", "Agriculture") },
+          {
+            label: L("Чектеш аймактар", "Соседние территории", "Neighbouring territories"),
+            value: L("Сары-Булак, Кара-Кулжа жана Кара-Гуз айыл аймактары", "айыльные аймаки Сары-Булак, Кара-Кульджа и Кара-Гуз", "Sary-Bulak, Kara-Kulja and Kara-Guz aiyl aimaks"),
+            links: [
+              { label: L("Сары-Булак", "Сары-Булак", "Sary-Bulak") },
+              { label: L("Кара-Кулжа", "Кара-Кульджа", "Kara-Kulja"), slug: "kara-kulja" },
+              { label: L("Кара-Гуз", "Кара-Гуз", "Kara-Guz"), slug: "kara-guz" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  nature: {
+    title: L("Жаратылыш жана кооз жерлер", "Природа и живописные места", "Nature and scenic places"),
+    intro: L(
+      "Ылай-Талаа айыл аймагы тоолуу өрөөндөрү, жайыттары, дарыялары жана табигый көрүнүштөрү менен айырмаланат. Бул сүрөттөр аймактын жаратылышын тааныштырат.",
+      "Айыльный аймак Ылай-Талаа отличается горными долинами, пастбищами, реками и природными видами. Эти фотографии знакомят с природой территории.",
+      "Ylai-Talaa Aiyl Aimak is distinguished by mountain valleys, pastures, rivers and natural scenery. These photographs introduce the nature of the territory.",
+    ),
+    places: [
+      { name: L("Үч-Көл", "Уч-Кёль", "Uch-Kol"), filename: "uch-kol.webp", alt: L("Үч-Көлдүн тоолуу жаратылыш көрүнүшү", "Горный природный вид Уч-Кёля", "Mountain nature view of Uch-Kol") },
+      { name: L("Кадырулуу-Ашуу", "Кадырулуу-Ашуу", "Kadyruluu-Ashuu"), filename: "kadyrluu-ashuu.webp", alt: L("Кадырулуу-Ашуудагы тоо көрүнүшү", "Горный вид в Кадырулуу-Ашуу", "Mountain view at Kadyruluu-Ashuu") },
+      { name: L("Кызыл-Белес", "Кызыл-Белес", "Kyzyl-Beles"), filename: "kyzyl-beles-ashuu.webp", alt: L("Кызыл-Белестин табигый көрүнүшү", "Природный вид Кызыл-Белеса", "Natural view of Kyzyl-Beles") },
+      { name: L("Кум-Бел", "Кум-Бел", "Kum-Bel"), filename: "kum-bel.webp", alt: L("Кум-Белдин тоолуу көрүнүшү", "Горный вид Кум-Беля", "Mountain view of Kum-Bel") },
+      { name: L("Качуура", "Качуура", "Kachuura"), filename: "kachuura4.webp", alt: L("Качууранын жаратылыш көрүнүшү", "Природный вид Качууры", "Natural view of Kachuura") },
+      { name: L("Беш-Тал", "Беш-Тал", "Besh-Tal"), filename: "besh-tal2.webp", alt: L("Беш-Талдагы табигый көрүнүш", "Природный вид в Беш-Тале", "Natural view at Besh-Tal") },
+      { name: L("Шимек", "Шимек", "Shimek"), filename: "shimek.webp", alt: L("Шимектин жаратылыш көрүнүшү", "Природный вид Шимека", "Natural view of Shimek") },
+      { name: L("Тогуз-Булак", "Тогуз-Булак", "Toguz-Bulak"), filename: "toguz-bulak1.webp", alt: L("Тогуз-Булактын табигый көрүнүшү", "Природный вид Тогуз-Булака", "Natural view of Toguz-Bulak") },
+    ],
+  },
+  infrastructure: {
+    title: L("Социалдык инфраструктура", "Социальная инфраструктура", "Social infrastructure"),
+    groups: [
+      {
+        title: L("Билим берүү", "Образование", "Education"),
+        primary: [
+          L("10 мектеп", "10 школ", "10 schools"),
+          L("2 982 окуучу", "2 982 ученика", "2,982 pupils"),
+        ],
+        secondary: [
+          L("8 мектепке чейинки мекеме", "8 дошкольных учреждений", "8 preschool institutions"),
+        ],
+        detail: [
+          L("707 мектепке чейинки орун", "707 дошкольных мест", "707 preschool places"),
+          L("1 575 мектептик орун", "1 575 школьных мест", "1,575 school places"),
+        ],
+      },
+      {
+        title: L("Саламаттык сактоо", "Здравоохранение", "Healthcare"),
+        primary: [
+          L("3 ҮДТ", "3 ГСВ", "3 family doctors groups"),
+          L("7 ФАП", "7 ФАП", "7 feldsher-obstetric points"),
+        ],
+        secondary: [
+          L("2 тез жардам унаасы", "2 машины скорой помощи", "2 ambulances"),
+          L("1 дарыкана", "1 аптека", "1 pharmacy"),
+        ],
+      },
+      {
+        title: L("Маданият", "Культура", "Culture"),
+        primary: [
+          L("2 маданият үйү", "2 дома культуры", "2 houses of culture"),
+          L("3 китепкана", "3 библиотеки", "3 libraries"),
+        ],
+        secondary: [],
+        detail: [
+          L("15 маданият кызматкери", "15 работников культуры", "15 culture workers"),
+        ],
+      },
+      {
+        title: L("Спорт", "Спорт", "Sports"),
+        primary: [
+          L("2 жабык спорт зал", "2 крытых спортивных зала", "2 indoor sports halls"),
+        ],
+        secondary: [
+          L("1 кичи футбол аянтчасы", "1 площадка для мини-футбола", "1 mini-football pitch"),
+          L("1 ачык спорт аянтчасы", "1 открытая спортивная площадка", "1 outdoor sports ground"),
+        ],
+        detail: [
+          L("10 дене тарбия жана спорт кызматкери", "10 работников физической культуры и спорта", "10 physical culture and sports workers"),
+        ],
+      },
+    ],
+  },
+  economy: {
+    title: L("Экономика жана чарба", "Экономика и хозяйство", "Economy and livelihoods"),
+    body: L(
+      "Айыл аймагынын негизги экономикалык багыты - айыл чарба. Калк негизинен мал чарбачылыгы жана дыйканчылык менен алектенет. Айрым чарбаларда багбанчылык жана балчылык да жүргүзүлөт.",
+      "Основное экономическое направление айыл аймака - сельское хозяйство. Население в основном занимается животноводством и земледелием. В отдельных хозяйствах также развиты садоводство и пчеловодство.",
+      "The main economic activity of the aiyl aimak is agriculture. The population is mainly engaged in livestock farming and crop farming. Some farms also practice horticulture and beekeeping.",
+    ),
+    profile: [
+      { label: L("Негизги багыт", "Основное направление", "Main focus"), values: [L("Айыл чарба", "Сельское хозяйство", "Agriculture")] },
+      {
+        label: L("Негизги чарба түрлөрү", "Основные виды хозяйства", "Main livelihoods"),
+        values: [
+          L("Мал чарбачылыгы", "Животноводство", "Livestock breeding"),
+          L("Дыйканчылык", "Земледелие", "Crop farming"),
+          L("Багбанчылык жана балчылык", "Садоводство и пчеловодство", "Horticulture and beekeeping"),
+        ],
+      },
+      { label: L("Муниципалдык ишкана", "Муниципальное предприятие", "Municipal enterprise"), values: [L("1", "1", "1")] },
+    ],
+  },
+  history: {
+    title: L("Тарых", "История", "History"),
+    body: L(
+      "Ылай-Талаа айыл аймагы 2024-жылы уюшулган. Ылай-Талаа айылы тууралуу жергиликтүү тарыхый маалыматтарда бул жер мурда «Сөгөт» деп аталганы айтылат. 1955–1956-жылдары Ворошилов, Сталин, Кызыл-Жол, Киров жана Молотов колхоздору бириктирилип, Мариш Баатыровдун жетекчилиги астында Карл Маркс атындагы колхоз уюштурулган.",
+      "Айыльный аймак Ылай-Талаа был образован в 2024 году. В местных исторических сведениях о селе Ылай-Талаа говорится, что раньше это место называлось «Сёгёт». В 1955–1956 годах колхозы имени Ворошилова, Сталина, Кызыл-Жол, Кирова и Молотова были объединены, и под руководством Мариша Баатырова был создан колхоз имени Карла Маркса.",
+      "Ylai-Talaa Aiyl Aimak was established in 2024. Local historical information about Ylai-Talaa village says that this place was formerly called Sogot. In 1955–1956, the Voroshilov, Stalin, Kyzyl-Jol, Kirov and Molotov collective farms were merged, and the Karl Marx collective farm was organized under the leadership of Marish Baatyrov.",
+    ),
+  },
+  gallery: {
+    title: L("Галерея", "Галерея", "Gallery"),
+    images: [
+      { filename: "ajike-toguz-bulak.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "wide" },
+      { filename: "besh-tal2.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "besh-tal3.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "tall" },
+      { filename: "besh-tal4.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "dunguromo.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "wide" },
+      { filename: "kachuura4.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "kachuura5.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "kadyrluu-ashuu.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "tall" },
+      { filename: "kum-bel.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "wide" },
+      { filename: "kyzyl-beles-ashuu.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "shimek.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "toguz-bulak1.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "wide" },
+      { filename: "uch-kol.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+      { filename: "uch-kol1.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "tall" },
+      { filename: "uch-kol4.webp", alt: YLAI_NATURE_CAPTION, caption: YLAI_NATURE_CAPTION, layout: "standard" },
+    ],
+  },
+};
 
 export const TERRITORIES: Territory[] = [
   {
@@ -160,8 +408,12 @@ export const TERRITORIES: Territory[] = [
     name: "Ылай-Талаа",
     nameRu: "Ылай-Талаа",
     nameEn: "Ylai-Talaa",
-    subtitle: L("Кең талаалар жана узак горизонт", "Широкие поля и дальний горизонт", "Open fields and a long horizon"),
-    description: territoryCopy("Ылай-Талаа", "Ylai-Talaa", "талаа, суу жана тоо көрүнгөн аймак"),
+    subtitle: L("Тар дарыясынын өрөөнүндөгү тоолуу аймак", "Горная территория в долине реки Тар", "Mountain territory in the Tar River valley"),
+    description: L(
+      "Ылай-Талаа - Тар дарыясынын өрөөнүндө жайгашкан тоолуу аймак. Тоолуу жаратылышы туризмди өнүктүрүүгө, ал эми айыл чарба мүмкүнчүлүктөрү агрардык долбоорлорго шарт түзөт. Ылай-Талаа 9 айылды бириктирип, анда 17 501 адам жашайт.",
+      "Ылай-Талаа - горная территория, расположенная в долине реки Тар. Горная природа создает возможности для развития туризма, а сельскохозяйственный потенциал - для аграрных проектов. Ылай-Талаа объединяет 9 сёл, здесь проживает 17 501 человек.",
+      "Ylai-Talaa - a mountainous territory located in the Tar River valley. Its mountain landscape creates opportunities for tourism development, while its agricultural potential supports agrarian projects. Ylai-Talaa brings together 9 villages and has a population of 17,501.",
+    ),
     population: 17501,
     image: territoryCardImg("ylai-talaa"),
     villages: [
@@ -175,6 +427,7 @@ export const TERRITORIES: Territory[] = [
       { name: "Жылкол", nameRu: "Жылкол", nameEn: "Jylkol", slug: "zhylkol", population: 512, order: 8 },
       { name: "Сарыташ", nameRu: "Сарыташ", nameEn: "Sarytash", slug: "sary-tash", population: 237, order: 9 },
     ],
+    detail: YLAI_TALAA_DETAIL,
   },
 ];
 

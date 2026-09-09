@@ -205,7 +205,7 @@ const KG: Dict = {
   "village.section.history": "Тарых",
   "village.section.tourism": "Туризм",
   "village.section.investment": "Инвестициялар",
-  "village.section.people": "Адамдар",
+  "village.section.people": "Инсандар",
   "village.section.archive": "Архив",
   "village.section.gallery": "Галерея",
   "village.section.map": "Карта",

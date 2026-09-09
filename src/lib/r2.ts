@@ -13,6 +13,8 @@ export const getPageHeroUrl = (pageSlug: string) =>
 export const getTerritoryHeroUrl = (aimakSlug: string) =>
   getR2Url(`site/hero/territories/${aimakSlug}/hero.jpg`);
 
+export const getTerritoryPhotoUrl = (aimakSlug: string, filename: string) =>
+  getR2Url(`territories/${aimakSlug}/general/photos/${filename}`);
 export const getVillageHeroUrl = (aimakSlug: string, villageSlug: string) =>
   getR2Url(
     `site/hero/territories/${aimakSlug}/villages/${villageSlug}/hero.jpg`,

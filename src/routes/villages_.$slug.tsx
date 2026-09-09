@@ -5,6 +5,7 @@ import { getVillageHeroUrl } from "@/lib/r2";
 import { displayVillageName, getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
 import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
 import { useI18n } from "@/lib/i18n";
+import { getPeopleForVillage, type PersonProfile } from "@/lib/people-data";
 import {
   Users,
   ArrowRight,
@@ -15,6 +16,7 @@ import {
   Compass,
   TrendingUp,
   Image as ImageIcon,
+  Info,
   Map as MapIcon,
   Network,
 } from "lucide-react";
@@ -76,6 +78,12 @@ function ErrorView() {
   );
 }
 
+const ABOUT_LABEL = {
+  kg: "Айыл жөнүндө",
+  ru: "О селе",
+  en: "About the village",
+} as const;
+
 const SECTIONS = [
   { id: "history", labelKey: "village.section.history", Icon: BookOpen },
   { id: "tourism", labelKey: "village.section.tourism", Icon: Compass },
@@ -113,27 +121,38 @@ function BackToTop() {
   );
 }
 
-function SectionNav() {
-  const { t } = useI18n();
-  const [active, setActive] = useState<string>("history");
+function SectionNav({ showInfo }: { showInfo: boolean }) {
+  const { t, lang } = useI18n();
+  const sections = [
+    ...(showInfo ? [{ id: "about", label: ABOUT_LABEL[lang], Icon: Info }] : []),
+    ...SECTIONS.map(({ id, labelKey, Icon }) => ({ id, label: t(labelKey), Icon })),
+  ];
+  const [active, setActive] = useState<string>(sections[0]?.id ?? "history");
+  const sectionKey = sections.map((section) => section.id).join("|");
 
   useEffect(() => {
-    const els = SECTIONS.map((s) => document.getElementById(s.id)).filter(
-      Boolean
-    ) as HTMLElement[];
-    if (!els.length) return;
-    const io = new IntersectionObserver(
+    setActive((current) =>
+      sections.some((section) => section.id === current) ? current : sections[0]?.id ?? "",
+    );
+
+    const elements = sections
+      .map((section) => document.getElementById(section.id))
+      .filter(Boolean) as HTMLElement[];
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
-          .filter((e) => e.isIntersecting)
+          .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible) setActive(visible.target.id);
       },
-      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] }
+      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] },
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
+
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, [sectionKey]);
 
   return (
     <nav
@@ -142,27 +161,27 @@ function SectionNav() {
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <ul className="-mx-2 flex snap-x snap-mandatory gap-1 overflow-x-auto py-4 lg:flex-wrap lg:justify-center lg:gap-2 lg:overflow-visible lg:py-5">
-          {SECTIONS.map(({ id, labelKey, Icon }) => {
+          {sections.map(({ id, label, Icon }) => {
             const isActive = active === id;
             return (
               <li key={id} className="snap-start shrink-0">
                 <a
-                  href={`#${id}`}
-                  className={`group inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 transition-colors duration-300 ${
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground/70 hover:text-foreground"
-                  }`}
+                  href={"#" + id}
+                  className={
+                    "group inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 transition-colors duration-300 " +
+                    (isActive ? "text-foreground" : "text-muted-foreground/70 hover:text-foreground")
+                  }
                 >
                   <Icon
-                    className={`h-[14px] w-[14px] transition-colors ${
-                      isActive ? "text-[var(--beige)]" : "text-muted-foreground/50 group-hover:text-[var(--beige)]/80"
-                    }`}
+                    className={
+                      "h-[14px] w-[14px] transition-colors " +
+                      (isActive
+                        ? "text-[var(--beige)]"
+                        : "text-muted-foreground/50 group-hover:text-[var(--beige)]/80")
+                    }
                     strokeWidth={1.25}
                   />
-                  <span className="kbd-eyebrow text-[11px] tracking-[0.18em]">
-                    {t(labelKey)}
-                  </span>
+                  <span className="kbd-eyebrow text-[11px] tracking-[0.18em]">{label}</span>
                 </a>
               </li>
             );
@@ -180,6 +199,7 @@ function VillagePage() {
   const territory = getTerritoryForVillage(v.slug);
   const villageName = displayVillageName(v, lang);
   const territoryName = territory ? displayTerritoryName(territory, lang) : undefined;
+  const centralPeople = getPeopleForVillage(v.slug);
   const relatedSlugs = getNeighborVillageSlugs(v.slug);
   const related = relatedSlugs
     .map((s: string) => VILLAGES.find((x) => x.slug === s))
@@ -209,7 +229,12 @@ function VillagePage() {
           >
             <ArrowLeft className="h-3 w-3" /> {territoryName ?? t("village.back")}
           </Link>
-          <h1 className="mt-6 font-display text-6xl leading-[1.02] text-balance text-foreground md:text-8xl">
+          <h1
+            className={
+              "mt-6 font-display leading-[1.02] text-balance text-foreground md:text-8xl " +
+              (v.slug === "tokbay-talaa" ? "text-[42px] sm:text-6xl" : "text-6xl")
+            }
+          >
             {villageName}
           </h1>
           <p className="mt-6 max-w-2xl font-display text-2xl font-light italic leading-[1.4] text-foreground/85 md:text-3xl">
@@ -223,8 +248,31 @@ function VillagePage() {
 
       {/* SECTION NAVIGATION */}
       <div className="sticky top-0 z-30">
-        <SectionNav />
+        <SectionNav showInfo={Boolean(v.showInfo && v.info.length)} />
       </div>
+
+      {v.showInfo && v.info.length ? (
+        <section id="about" className="scroll-mt-24 border-b hairline py-20 lg:py-24">
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+            <p className="kbd-eyebrow text-muted-foreground/70">{villageName}</p>
+            <h2 className="mt-3 font-display text-4xl leading-tight md:text-[42px]">
+              {ABOUT_LABEL[lang]}
+            </h2>
+            <dl className="mt-10 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+              {v.info.map((item) => (
+                <div key={pick(item.label, lang)} className="grid gap-1 border-t hairline py-4">
+                  <dt className="text-sm font-normal leading-6 text-[var(--beige)]/70">
+                    {pick(item.label, lang)}
+                  </dt>
+                  <dd className="text-base font-normal leading-6 text-foreground/85">
+                    {pick(item.value, lang)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      ) : null}
 
       {/* HISTORY */}
       <section id="history" className="scroll-mt-24 py-28 lg:py-36">
@@ -333,28 +381,33 @@ function VillagePage() {
       {/* PEOPLE */}
       <section id="people" className="scroll-mt-24 border-t hairline py-28 lg:py-36">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <p className="kbd-eyebrow text-muted-foreground/70">{t("village.section.people")}</p>
-          <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
-            {t("village.people.title")}
+          <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">
+            {t("village.section.people")}
           </h2>
           <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {v.people.map((p, i) => (
-              <div key={i} className="group">
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <img
-                    src={p.img}
-                    alt={pick(p.name, lang)}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-                </div>
-                <div className="mt-5">
-                  <p className="font-display text-xl">{pick(p.name, lang)}</p>
-                  <p className="mt-1 kbd-eyebrow text-muted-foreground/70">{pick(p.role, lang)}</p>
-                </div>
-              </div>
-            ))}
+            {centralPeople.length
+              ? centralPeople.map((person) => (
+                  <CentralVillagePersonCard key={person.slug} person={person} lang={lang} />
+                ))
+              : v.people.map((person, index) => (
+                  <div key={index} className="group">
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <img
+                        src={person.img}
+                        alt={pick(person.name, lang)}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                    </div>
+                    <div className="mt-5">
+                      <p className="font-display text-xl">{pick(person.name, lang)}</p>
+                      <p className="mt-1 kbd-eyebrow text-muted-foreground/70">
+                        {pick(person.role, lang)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
           </div>
         </div>
       </section>
@@ -364,9 +417,8 @@ function VillagePage() {
         <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-12 lg:px-10">
           <div className="lg:col-span-5">
             <Archive className="h-5 w-5 text-[var(--beige)]/70" strokeWidth={1.25} />
-            <p className="mt-6 kbd-eyebrow text-muted-foreground/70">{t("village.section.archive")}</p>
-            <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
-              {t("village.archive.title")}
+            <h2 className="mt-6 font-display text-4xl leading-[1.05] md:text-5xl">
+              {t("village.section.archive")}
             </h2>
             <p className="mt-6 max-w-md text-base text-pretty text-muted-foreground md:text-lg">
               {t("village.archive.body")}
@@ -392,9 +444,8 @@ function VillagePage() {
       {/* GALLERY */}
       <section id="gallery" className="scroll-mt-24 py-28 lg:py-36">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <p className="kbd-eyebrow text-muted-foreground/70">{t("village.section.gallery")}</p>
-          <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
-            {t("village.gallery.title")}
+          <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">
+            {t("village.section.gallery")}
           </h2>
           <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
             {v.gallery.map((src, i) => (
@@ -421,9 +472,8 @@ function VillagePage() {
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="kbd-eyebrow text-muted-foreground/70">{t("village.section.map")}</p>
-              <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
-                {t("village.map.title")}
+              <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">
+                {t("village.section.map")}
               </h2>
             </div>
             <p className="text-sm text-muted-foreground">{pick(v.mapNote, lang)}</p>
@@ -474,6 +524,53 @@ function VillagePage() {
       </section>
       <BackToTop />
     </SiteLayout>
+  );
+}
+
+function CentralVillagePersonCard({
+  person,
+  lang,
+}: {
+  person: PersonProfile;
+  lang: "kg" | "ru" | "en";
+}) {
+  const content = (
+    <>
+      <div className="relative aspect-[4/5] overflow-hidden border hairline bg-background/70">
+        {person.image ? (
+          <img
+            src={person.image}
+            alt={person.name[lang]}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-contain grayscale transition-all duration-700 group-hover:grayscale-0"
+          />
+        ) : (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-foreground/[0.025]"
+            aria-hidden
+          >
+            <Users className="h-12 w-12 text-muted-foreground/30" strokeWidth={1} />
+          </div>
+        )}
+      </div>
+      <div className="mt-5">
+        <p className="font-display text-xl">{person.name[lang]}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{person.role[lang]}</p>
+        <p className="mt-5 text-base leading-7 text-[var(--beige)]/75">
+          {person.body[lang]}
+        </p>
+      </div>
+    </>
+  );
+
+  if (person.featuredInPeople === false) {
+    return <article className="group">{content}</article>;
+  }
+
+  return (
+    <Link to="/people" hash={person.slug} className="group block">
+      {content}
+    </Link>
   );
 }
 

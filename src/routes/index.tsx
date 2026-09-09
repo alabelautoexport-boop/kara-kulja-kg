@@ -398,7 +398,7 @@ function Invest() {
 /* ---------- Stories / People ---------- */
 function Stories() {
   const { t, lang } = useI18n();
-  const people = PEOPLE;
+  const people = PEOPLE.filter((person) => person.featuredOnHome !== false);
 
   return (
     <section className="border-t hairline py-24 lg:py-32">
@@ -409,7 +409,7 @@ function Stories() {
         </h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {people.map((p) => (
-            <article key={pick(p.name, lang)} className="group">
+            <article key={p.slug} className="group">
               <div className="relative aspect-[4/5] overflow-hidden border hairline bg-background/70">
                 <img
                   src={p.image}

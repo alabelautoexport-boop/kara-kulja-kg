@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Users } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 import { PEOPLE, pick } from "@/lib/people-data";
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/people")({
 
 function PeoplePage() {
   const { t, lang } = useI18n();
+  const people = PEOPLE.filter((person) => person.featuredInPeople !== false);
 
   return (
     <SiteLayout>
@@ -27,11 +29,17 @@ function PeoplePage() {
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-[1100px] px-6 lg:px-10">
           <div className="space-y-20">
-            {PEOPLE.map((p, i) => (
-              <article key={pick(p.name, lang)} className={`grid items-center gap-10 md:grid-cols-12 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+            {people.map((p, i) => (
+              <article id={p.slug} key={p.slug} className={`scroll-mt-24 grid items-center gap-10 md:grid-cols-12 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
                 <div className="md:col-span-5">
                   <div className="relative aspect-[4/5] overflow-hidden border hairline bg-background/70">
-                    <img src={p.image} alt={pick(p.name, lang)} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
+                    {p.image ? (
+                      <img src={p.image} alt={pick(p.name, lang)} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-foreground/[0.025]" aria-hidden>
+                        <Users className="h-12 w-12 text-muted-foreground/30" strokeWidth={1} />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="md:col-span-7">
@@ -42,7 +50,7 @@ function PeoplePage() {
               </article>
             ))}
             {[0].map((item) => {
-              const sequenceIndex = PEOPLE.length + item;
+              const sequenceIndex = people.length + item;
 
               return (
                 <article key={item} className={`grid items-center gap-10 md:grid-cols-12 ${sequenceIndex % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
