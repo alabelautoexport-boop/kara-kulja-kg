@@ -6,7 +6,16 @@ import type { Lang } from "@/lib/i18n";
 
 export type GeoJsonCollection = FeatureCollection<Geometry, Record<string, unknown>>;
 export type GeoJsonFeature = Feature<Geometry, Record<string, unknown>>;
-export type PoiLayerKey = "education" | "healthcare" | "religion" | "shop" | "tourism" | "amenity";
+export type PoiLayerKey =
+  | "education"
+  | "healthcare"
+  | "religion"
+  | "cultureSport"
+  | "tourism"
+  | "investment"
+  | "administration"
+  | "shop"
+  | "amenity";
 
 export type DistrictMapData = {
   boundary: GeoJsonCollection;
@@ -42,8 +51,11 @@ export const DATA_URLS = {
     education: "/data/kara-kulja-pois-education.geojson",
     healthcare: "/data/kara-kulja-pois-healthcare.geojson",
     religion: "/data/kara-kulja-pois-religion.geojson",
-    shop: "/data/kara-kulja-pois-shop.geojson",
+    cultureSport: "/data/kara-kulja-pois-culture-sport.geojson",
     tourism: "/data/kara-kulja-pois-tourism.geojson",
+    investment: "/data/kara-kulja-pois-investment.geojson",
+    administration: "/data/kara-kulja-pois-administration.geojson",
+    shop: "/data/kara-kulja-pois-shop.geojson",
     amenity: "/data/kara-kulja-pois-amenity.geojson",
   },
 } as const;
@@ -53,8 +65,7 @@ export const BUILDING_MIN_ZOOM = 16;
 
 export const TERRAIN_HILLSHADE = {
   url: "https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
-  attribution:
-    "Hillshade © Esri, USGS, NGA, NASA, CGIAR, and the GIS user community",
+  attribution: "Hillshade © Esri, USGS, NGA, NASA, CGIAR, and the GIS user community",
   maxNativeZoom: 13,
   opacity: 0.18,
 } as const;
@@ -72,7 +83,7 @@ export const POI_LAYERS: Array<{
   {
     key: "healthcare",
     color: "#9a3d3d",
-    label: { kg: "Саламаттык", ru: "Здоровье", en: "Healthcare" },
+    label: { kg: "Медицина", ru: "Медицина", en: "Healthcare" },
   },
   {
     key: "religion",
@@ -80,14 +91,29 @@ export const POI_LAYERS: Array<{
     label: { kg: "Дин", ru: "Религия", en: "Religion" },
   },
   {
-    key: "shop",
-    color: "#7c6b4f",
-    label: { kg: "Дүкөндөр", ru: "Магазины", en: "Shops" },
+    key: "cultureSport",
+    color: "#356a78",
+    label: { kg: "Маданият жана спорт", ru: "Культура и спорт", en: "Culture and sport" },
   },
   {
     key: "tourism",
     color: "#b36b2c",
     label: { kg: "Туризм", ru: "Туризм", en: "Tourism" },
+  },
+  {
+    key: "investment",
+    color: "#3f7250",
+    label: { kg: "Инвестиция", ru: "Инвестиции", en: "Investment" },
+  },
+  {
+    key: "administration",
+    color: "#465a75",
+    label: { kg: "Администрация", ru: "Администрация", en: "Administration" },
+  },
+  {
+    key: "shop",
+    color: "#7c6b4f",
+    label: { kg: "Дүкөндөр", ru: "Магазины", en: "Shops" },
   },
   {
     key: "amenity",
@@ -121,12 +147,21 @@ const NAME_OVERRIDES: Record<string, string[]> = {
   "sary-tash": ["Сары-Таш"],
 };
 
-const MANUAL_VERIFIED_VILLAGES: Record<string, { lat: number; lng: number; source: string }> = {
+const MANUAL_VERIFIED_VILLAGES: Record<
+  string,
+  { lat: number; lng: number; source: string; override?: boolean }
+> = {
   "biy-myrza": { lat: 40.635082, lng: 73.571576, source: "2GIS verified" },
   kuyotash: { lat: 40.319857, lng: 74.239662, source: "2GIS verified" },
   "kan-korgon": { lat: 40.267859, lng: 74.312366, source: "2GIS verified" },
   sharkyratma: { lat: 40.54079, lng: 73.647869, source: "2GIS verified" },
   "kyzyl-bulak": { lat: 40.44267, lng: 73.59476, source: "2GIS verified" },
+  "oy-tal": { lat: 40.42714, lng: 74.10085, source: "Oi-Tal local material", override: true },
+  konduk: { lat: 40.46052, lng: 74.11622, source: "Oi-Tal local material", override: true },
+  "sary-bee": { lat: 40.556829, lng: 73.886803, source: "Oi-Tal local material", override: true },
+  "terek-suu": { lat: 40.53263, lng: 73.82733, source: "Oi-Tal local material", override: true },
+  "nichke-suu": { lat: 40.53563, lng: 73.7957, source: "Oi-Tal local material", override: true },
+  "kara-tash": { lat: 40.55046, lng: 73.97487, source: "Oi-Tal local material", override: true },
 };
 
 const CONTEXT_LABEL_NAMES = new Set(
@@ -206,15 +241,42 @@ function officialNameKeys(village: (typeof OFFICIAL_VILLAGES)[number]) {
   ].map(normalizeName);
 }
 
+function manualVillageFeature(
+  village: (typeof OFFICIAL_VILLAGES)[number],
+  manual: { lat: number; lng: number; source: string },
+): GeoJsonFeature {
+  return {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [manual.lng, manual.lat],
+    },
+    properties: {
+      "@id": `manual/${village.slug}`,
+      name: village.name,
+      "name:en": village.nameEn,
+      "name:ru": village.nameRu,
+      place: "village",
+      officialSlug: village.slug,
+      coordinateSource: manual.source,
+      source: manual.source,
+    },
+  };
+}
+
 export function matchOfficialPlaces(places: GeoJsonCollection): GeoJsonCollection {
   const candidates = places.features.filter(
     (feature) =>
-      feature.geometry.type === "Point" &&
-      SETTLEMENTS.has(property(feature, "place") || ""),
+      feature.geometry.type === "Point" && SETTLEMENTS.has(property(feature, "place") || ""),
   );
 
   const used = new Set<number>();
   const matched = OFFICIAL_VILLAGES.flatMap((village) => {
+    const manual = MANUAL_VERIFIED_VILLAGES[village.slug];
+    if (manual?.override) {
+      return [manualVillageFeature(village, manual)];
+    }
+
     const keys = new Set(officialNameKeys(village));
     const index = candidates.findIndex((feature, candidateIndex) => {
       if (used.has(candidateIndex)) return false;
@@ -222,28 +284,7 @@ export function matchOfficialPlaces(places: GeoJsonCollection): GeoJsonCollectio
     });
 
     if (index === -1) {
-      const manual = MANUAL_VERIFIED_VILLAGES[village.slug];
-      if (!manual) return [];
-
-      return [
-        {
-          type: "Feature" as const,
-          geometry: {
-            type: "Point" as const,
-            coordinates: [manual.lng, manual.lat],
-          },
-          properties: {
-            "@id": `manual/${village.slug}`,
-            name: village.name,
-            "name:en": village.nameEn,
-            "name:ru": village.nameRu,
-            place: "village",
-            officialSlug: village.slug,
-            coordinateSource: manual.source,
-            source: manual.source,
-          },
-        },
-      ];
+      return manual ? [manualVillageFeature(village, manual)] : [];
     }
 
     used.add(index);
@@ -297,9 +338,7 @@ export function matchContextLabels(context: GeoJsonCollection): GeoJsonCollectio
     if (!type) return false;
     if (property(feature, "contextType")) return true;
 
-    return namesForFeature(feature).some((name) =>
-      CONTEXT_LABEL_NAMES.has(normalizeName(name)),
-    );
+    return namesForFeature(feature).some((name) => CONTEXT_LABEL_NAMES.has(normalizeName(name)));
   });
 }
 
@@ -481,9 +520,7 @@ export function distanceKm(a: [number, number], b: [number, number]) {
   const lat2 = toRad(b[0]);
   const dLat = toRad(b[0] - a[0]);
   const dLng = toRad(b[1] - a[1]);
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
 
   return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
 }
