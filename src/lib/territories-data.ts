@@ -113,6 +113,98 @@ const territoryCopy = (name: string, nameEn: string, tone: string): Localized<st
     `${nameEn} - villages unfold at the pace of the valley.`,
   );
 
+const OI_TAL_DETAIL: TerritoryDetail = {
+  villageCardVisual: "neutral",
+  heroStats: [
+    { value: L("6 134", "6 134", "6,134"), label: L("калк", "население", "population") },
+    { value: L("6", "6", "6"), label: L("айыл", "сёл", "villages") },
+    { value: L("1 145", "1 145", "1,145"), label: L("кожолук", "хозяйств", "households") },
+    { value: L("", "", ""), label: L("жалпы аянт", "общая площадь", "total area") },
+  ],
+  passport: {
+    title: L("Айыл аймагы жөнүндө", "Об айыл аймаке", "About the aiyl aimak"),
+    reference: L("Негизги маалымат - 2026-жыл", "Основная информация - 2026 год", "Key information - 2026"),
+    groups: [
+      {
+        title: L("Жайгашуусу", "Расположение", "Location"),
+        items: [
+          { label: L("Облусу", "Область", "Region"), value: L("Ош облусу", "Ошская область", "Osh Region") },
+          { label: L("Району", "Район", "District"), value: L("Кара-Кулжа району", "Кара-Кульджинский район", "Kara-Kulja District") },
+          { label: L("Административдик борбору", "Административный центр", "Administrative centre"), value: L("Сары-Бээ айылы", "село Сары-Бээ", "Sary-Bee village") },
+          { label: L("Район борборунан аралык", "Расстояние от районного центра", "Distance from district centre"), value: L("45 км", "45 км", "45 km") },
+          { label: L("Облус борборунан аралык", "Расстояние от областного центра", "Distance from regional centre"), value: L("145 км", "145 км", "145 km") },
+          { label: L("Жакынкы темир жол станциясына чейин", "До ближайшей железнодорожной станции", "To the nearest railway station"), value: L("135 км", "135 км", "135 km") },
+          { label: L("Жакынкы аэропортко чейин", "До ближайшего аэропорта", "To the nearest airport"), value: L("157 км", "157 км", "157 km") },
+        ],
+      },
+      {
+        title: L("Негизги маалымат", "Основная информация", "Key information"),
+        items: [
+          { label: L("Уюшулган жылы", "Год образования", "Year established"), value: L("2024", "2024", "2024") },
+          { label: L("Климаты", "Климат", "Climate"), value: L("Мээлүүн", "Умеренный", "Temperate") },
+          { label: L("Деңиз деңгээлинен", "Высота над уровнем моря", "Elevation above sea level"), value: L("болжол менен 2 000 м", "примерно 2 000 м", "approximately 2,000 m") },
+        ],
+      },
+    ],
+  },
+  infrastructure: {
+    title: L("Социалдык инфраструктура", "Социальная инфраструктура", "Social infrastructure"),
+    groups: [
+      {
+        title: L("Билим берүү", "Образование", "Education"),
+        primary: [
+          L("5 мектеп", "5 школ", "5 schools"),
+          L("987 окуучу", "987 учеников", "987 pupils"),
+        ],
+        secondary: [L("5 мектепке чейинки мекеме", "5 дошкольных учреждений", "5 preschool institutions")],
+      },
+      {
+        title: L("Саламаттык сактоо", "Здравоохранение", "Healthcare"),
+        primary: [
+          L("3 ФАП", "3 ФАП", "3 feldsher-obstetric points"),
+          L("2 ҮДТ", "2 ГСВ", "2 family doctors groups"),
+        ],
+        secondary: [],
+      },
+      {
+        title: L("Маданият", "Культура", "Culture"),
+        primary: [
+          L("5 клуб", "5 клубов", "5 clubs"),
+          L("5 китепкана", "5 библиотек", "5 libraries"),
+        ],
+        secondary: [],
+      },
+    ],
+  },
+  economy: {
+    title: L("Экономика", "Экономика", "Economy"),
+    body: L(
+      "Ой-Тал айыл аймагынын негизги экономикалык багыты - айыл чарба. Айылдарда мал чарбачылыгы, дыйканчылык жана айрым жерлерде балчылык өнүккөн. Тоолуу жайыттар жана жергиликтүү чарба тажрыйбасы айыл экономикасынын негизин түзөт.",
+      "Основное экономическое направление айыл аймака Ой-Тал - сельское хозяйство. В сёлах развиты животноводство, земледелие и в отдельных местах пчеловодство. Горные пастбища и местный хозяйственный опыт составляют основу экономики сёл.",
+      "The main economic focus of Oi-Tal Aiyl Aimak is agriculture. Livestock farming, crop farming, and beekeeping in some areas are developed across its villages. Mountain pastures and local farming experience form the basis of the village economy.",
+    ),
+    profile: [
+      { label: L("Негизги багыт", "Основное направление", "Main focus"), values: [L("Айыл чарба", "Сельское хозяйство", "Agriculture")] },
+      {
+        label: L("Чарбалык багыттар", "Направления хозяйства", "Livelihoods"),
+        values: [
+          L("Мал чарбачылыгы", "Животноводство", "Livestock farming"),
+          L("Дыйканчылык", "Земледелие", "Crop farming"),
+          L("Балчылык", "Пчеловодство", "Beekeeping"),
+        ],
+      },
+    ],
+  },
+  history: {
+    title: L("Тарых", "История", "History"),
+    body: L(
+      "Ой-Тал айыл аймагы 2024-жылдагы административдик-аймактык реформанын негизинде уюшулган. Анын курамына Ой-Тал, Көңдүк, Сары-Бээ, Кара-Таш, Терек-Суу жана Ничке-Суу айылдары кирет. Айыл өкмөтүнүн административдик борбору Сары-Бээ айылында жайгашкан.",
+      "Айыл аймак Ой-Тал был образован на основе административно-территориальной реформы 2024 года. В его состав входят сёла Ой-Тал, Көңдүк, Сары-Бээ, Кара-Таш, Терек-Суу и Ничке-Суу. Административный центр айыл окмоту расположен в селе Сары-Бээ.",
+      "Oi-Tal Aiyl Aimak was established through the 2024 administrative-territorial reform. It includes the villages of Oi-Tal, Konduk, Sary-Bee, Kara-Tash, Terek-Suu, and Nichke-Suu. The administrative centre of the aiyl okmotu is located in Sary-Bee village.",
+    ),
+  },
+};
+
 const YLAI_NATURE_CAPTION = L(
   "Ылай-Талаа айыл аймагынын жаратылышы",
   "Природа айыл аймака Ылай-Талаа",
@@ -371,8 +463,16 @@ export const TERRITORIES: Territory[] = [
     name: "Ой-Тал",
     nameRu: "Ой-Тал",
     nameEn: "Oi-Tal",
-    subtitle: L("Капчыгайлардан жайлоого ачылган өрөөн", "Долина от ущелий к джайлоо", "A valley opening from gorges toward the jailoo"),
-    description: territoryCopy("Ой-Тал", "Oi-Tal", "аттын дүбүртү менен жайлоого чыккан аймак"),
+    subtitle: L(
+      "Кара-Кулжа районунун чыгышындагы тоолуу айыл аймак",
+      "Горный айыл аймак в восточной части Кара-Кульджинского района",
+      "A mountainous aiyl aimak in the eastern part of Kara-Kulja District",
+    ),
+    description: L(
+      "Ой-Тал - Кара-Кулжа районунун чыгыш бөлүгүндө жайгашкан тоолуу айыл аймак. Аймак 6 айылды бириктирип, анда 6 134 адам жашайт. Калктын негизги чарбасы мал чарбачылыгы жана дыйканчылык менен байланышкан, ал эми тоолуу жаратылышы туризмди өнүктүрүүгө мүмкүнчүлүк түзөт.",
+      "Ой-Тал - горный айыл аймак, расположенный в восточной части Кара-Кульджинского района. Аймак объединяет 6 сёл, в которых проживают 6 134 человека. Основные занятия населения связаны с животноводством и земледелием, а горная природа создаёт возможности для развития туризма.",
+      "Oi-Tal is a mountainous aiyl aimak located in the eastern part of Kara-Kulja District. The aimak unites 6 villages with a population of 6,134. The main livelihoods are livestock farming and agriculture, while its mountain landscape creates opportunities for tourism development.",
+    ),
     population: 6134,
     image: territoryCardImg("oy-tal"),
     villages: [
@@ -383,6 +483,7 @@ export const TERRITORIES: Territory[] = [
       { name: "Ой-Тал", nameRu: "Ой-Тал", nameEn: "Oi-Tal", slug: "oy-tal", population: 2077, order: 5 },
       { name: "Көңдүк", nameRu: "Көңдүк", nameEn: "Konduk", slug: "konduk", population: 1208, order: 6 },
     ],
+    detail: OI_TAL_DETAIL,
   },
   {
     slug: "ryspai-abdykadyrov",
