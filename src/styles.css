@@ -509,10 +509,22 @@
   .animate-fog-slower   { animation: drift-fog-x-rev 120s ease-in-out infinite; will-change: transform; }
   .animate-atmos-breathe { animation: atmos-breathe 14s ease-in-out infinite; }
 
+  @keyframes ylai-talaa-hero-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.045); }
+  }
+
+  .ylai-talaa-hero-image {
+    animation: ylai-talaa-hero-zoom 24s ease-in-out infinite alternate;
+    transform-origin: center;
+    will-change: transform;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-fog-slow,
     .animate-fog-slower,
     .animate-atmos-breathe,
-    .animate-slow-zoom { animation: none !important; }
+    .animate-slow-zoom,
+    .ylai-talaa-hero-image { animation: none !important; }
   }
 }

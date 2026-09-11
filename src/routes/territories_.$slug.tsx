@@ -96,6 +96,7 @@ function TerritoryPage() {
   const territoryName = displayTerritoryName(territory, lang);
   const detail = territory.detail;
   const people = getPeopleForTerritory(territory.slug);
+  const animateHero = territory.slug === "ylai-talaa";
 
   return (
     <SiteLayout>
@@ -105,7 +106,10 @@ function TerritoryPage() {
           alt={territoryName}
           loading="eager"
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover"
+          className={
+            "absolute inset-0 h-full w-full object-cover " +
+            (animateHero ? "ylai-talaa-hero-image" : "")
+          }
         />
         {detail?.heroDarkOverlay ? <div className="absolute inset-0 bg-background/35" /> : null}
         <div className="absolute inset-0 gradient-fade-b" />
