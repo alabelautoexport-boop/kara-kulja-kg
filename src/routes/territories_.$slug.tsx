@@ -2,6 +2,13 @@ import type { ReactNode } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Activity, ArrowLeft, ArrowRight, BookOpen, GraduationCap, HeartPulse, Home, Map, MapPin, Users } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { getPeopleForTerritory, type PersonProfile } from "@/lib/people-data";
 import { getTerritoryHeroUrl, getTerritoryPhotoUrl } from "@/lib/r2";
@@ -379,9 +386,11 @@ function VillageList({
                     <h3 className="mt-3 font-display text-2xl leading-tight md:text-3xl">
                       {displayVillageName(village, lang)}
                     </h3>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {formatPopulation(village.population)} {l.population}
-                    </p>
+                    {village.population != null ? (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {formatPopulation(village.population)} {l.population}
+                      </p>
+                    ) : null}
                   </div>
                   <span className="mt-6 inline-flex items-center gap-2 kbd-eyebrow text-[var(--beige)]/80">
                     {l.enter}
@@ -481,9 +490,17 @@ function EconomySection({ body, profile, lang }: { body: TerritoryTextValue["val
 
 function PeopleSection({ people, lang }: { people: PersonProfile[]; lang: Lang }) {
   return (
-    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      {people.map((person) => <TerritoryPersonCard key={person.slug} person={person} lang={lang} />)}
-    </div>
+    <Carousel opts={{ align: "start", containScroll: "trimSnaps" }} className="w-full">
+      <CarouselContent className="-ml-6">
+        {people.map((person) => (
+          <CarouselItem key={person.slug} className="basis-[84%] pl-6 sm:basis-[48%] lg:basis-[32%] xl:basis-[29%]">
+            <TerritoryPersonCard person={person} lang={lang} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="-left-4 hidden border-border/60 bg-background/85 text-foreground shadow-sm backdrop-blur-sm transition-opacity disabled:pointer-events-none disabled:opacity-0 md:inline-flex" />
+      <CarouselNext className="-right-4 hidden border-border/60 bg-background/85 text-foreground shadow-sm backdrop-blur-sm transition-opacity disabled:pointer-events-none disabled:opacity-0 md:inline-flex" />
+    </Carousel>
   );
 }
 

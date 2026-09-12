@@ -121,11 +121,21 @@ function BackToTop() {
   );
 }
 
-function SectionNav({ showInfo }: { showInfo: boolean }) {
+function SectionNav({
+  showInfo,
+  visibleSectionIds,
+}: {
+  showInfo: boolean;
+  visibleSectionIds: ReadonlySet<string>;
+}) {
   const { t, lang } = useI18n();
   const sections = [
     ...(showInfo ? [{ id: "about", label: ABOUT_LABEL[lang], Icon: Info }] : []),
-    ...SECTIONS.map(({ id, labelKey, Icon }) => ({ id, label: t(labelKey), Icon })),
+    ...SECTIONS.filter(({ id }) => visibleSectionIds.has(id)).map(({ id, labelKey, Icon }) => ({
+      id,
+      label: t(labelKey),
+      Icon,
+    })),
   ];
   const [active, setActive] = useState<string>(sections[0]?.id ?? "history");
   const sectionKey = sections.map((section) => section.id).join("|");
@@ -204,6 +214,22 @@ function VillagePage() {
   const related = relatedSlugs
     .map((s: string) => VILLAGES.find((x) => x.slug === s))
     .filter(Boolean) as Village[];
+  const hasHistory = hasLocalizedText(v.history);
+  const hasTourism = hasLocalizedText(v.tourism.lead) || v.tourism.items.length > 0;
+  const hasInvestment = hasLocalizedText(v.investment.lead) || v.investment.items.length > 0;
+  const hasPeople = centralPeople.length > 0 || v.people.length > 0;
+  const hasGallery = v.gallery.length > 0;
+  const hasRelated = related.length > 0;
+  const visibleSectionIds = new Set([
+    ...(hasHistory ? ["history"] : []),
+    ...(hasTourism ? ["tourism"] : []),
+    ...(hasInvestment ? ["investment"] : []),
+    ...(hasPeople ? ["people"] : []),
+    "archive",
+    ...(hasGallery ? ["gallery"] : []),
+    "map",
+    ...(hasRelated ? ["related"] : []),
+  ]);
 
   useEffect(() => {
     setMounted(true);
@@ -248,7 +274,10 @@ function VillagePage() {
 
       {/* SECTION NAVIGATION */}
       <div className="sticky top-0 z-30">
-        <SectionNav showInfo={Boolean(v.showInfo && v.info.length)} />
+        <SectionNav
+          showInfo={Boolean(v.showInfo && v.info.length)}
+          visibleSectionIds={visibleSectionIds}
+        />
       </div>
 
       {v.showInfo && v.info.length ? (
@@ -275,7 +304,8 @@ function VillagePage() {
       ) : null}
 
       {/* HISTORY */}
-      <section id="history" className="scroll-mt-24 py-28 lg:py-36">
+      {hasHistory ? (
+        <section id="history" className="scroll-mt-24 py-28 lg:py-36">
         <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-12 lg:px-10">
           <div className="lg:col-span-4">
             <p className="kbd-eyebrow text-muted-foreground/70">{t("village.section.history")}</p>
@@ -289,13 +319,15 @@ function VillagePage() {
             </p>
           </div>
         </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* TOURISM OPPORTUNITIES */}
-      <section
-        id="tourism"
-        className="scroll-mt-24 relative border-y hairline bg-background/40 py-28 lg:py-36"
-      >
+      {hasTourism ? (
+        <section
+          id="tourism"
+          className="scroll-mt-24 relative border-y hairline bg-background/40 py-28 lg:py-36"
+        >
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="max-w-3xl">
             <p className="kbd-eyebrow text-muted-foreground/70">{t("village.section.tourism")}</p>
@@ -307,8 +339,9 @@ function VillagePage() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {v.tourism.items.map((it, i) => (
+          {v.tourism.items.length ? (
+            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {v.tourism.items.map((it, i) => (
               <article
                 key={i}
                 className="group relative overflow-hidden border hairline"
@@ -334,13 +367,16 @@ function VillagePage() {
                   </div>
                 </div>
               </article>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : null}
         </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* INVESTMENT POTENTIAL */}
-      <section id="investment" className="scroll-mt-24 py-28 lg:py-36">
+      {hasInvestment ? (
+        <section id="investment" className="scroll-mt-24 py-28 lg:py-36">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-4">
@@ -353,8 +389,9 @@ function VillagePage() {
               </p>
             </div>
 
-            <div className="lg:col-span-8">
-              <div className="grid gap-px bg-border/40 sm:grid-cols-2 lg:grid-cols-3">
+            {v.investment.items.length ? (
+              <div className="lg:col-span-8">
+                <div className="grid gap-px bg-border/40 sm:grid-cols-2 lg:grid-cols-3">
                 {v.investment.items.map((it, i) => (
                   <div
                     key={i}
@@ -372,14 +409,17 @@ function VillagePage() {
                     <div className="mt-8 h-px w-8 bg-[var(--beige)]/40 transition-all duration-500 group-hover:w-16 group-hover:bg-[var(--beige)]/80" />
                   </div>
                 ))}
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* PEOPLE */}
-      <section id="people" className="scroll-mt-24 border-t hairline py-28 lg:py-36">
+      {hasPeople ? (
+        <section id="people" className="scroll-mt-24 border-t hairline py-28 lg:py-36">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">
             {t("village.section.people")}
@@ -410,7 +450,8 @@ function VillagePage() {
                 ))}
           </div>
         </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ARCHIVE */}
       <section id="archive" className="scroll-mt-24 border-y hairline py-24 lg:py-32">
@@ -442,7 +483,8 @@ function VillagePage() {
       </section>
 
       {/* GALLERY */}
-      <section id="gallery" className="scroll-mt-24 py-28 lg:py-36">
+      {hasGallery ? (
+        <section id="gallery" className="scroll-mt-24 py-28 lg:py-36">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">
             {t("village.section.gallery")}
@@ -465,7 +507,8 @@ function VillagePage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* MAP */}
       <section id="map" className="scroll-mt-16 border-y hairline py-16 lg:scroll-mt-24 lg:py-32">
@@ -489,7 +532,8 @@ function VillagePage() {
       </section>
 
       {/* RELATED */}
-      <section id="related" className="scroll-mt-24 py-28 lg:py-36">
+      {hasRelated ? (
+        <section id="related" className="scroll-mt-24 py-28 lg:py-36">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <p className="kbd-eyebrow text-muted-foreground/70">{t("village.related.eyebrow")}</p>
           <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
@@ -521,10 +565,15 @@ function VillagePage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      ) : null}
       <BackToTop />
     </SiteLayout>
   );
+}
+
+function hasLocalizedText(value: { kg: string; ru: string; en: string }) {
+  return Object.values(value).some((text) => text.trim().length > 0);
 }
 
 function CentralVillagePersonCard({

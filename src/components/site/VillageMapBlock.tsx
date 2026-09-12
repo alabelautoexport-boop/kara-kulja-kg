@@ -60,6 +60,12 @@ const FULL_MAP_LINK_LABEL = {
   en: "Open full district map",
 };
 
+const LOCATION_PENDING_LABEL = {
+  kg: "Айылдын картадагы так орду такталууда.",
+  ru: "Точное положение села на карте уточняется.",
+  en: "The exact village location on the map is being verified.",
+};
+
 function FitVillageMap({
   center,
   points,
@@ -197,7 +203,7 @@ export function VillageMapBlock({
   if (!currentPoint || !nearbyRoads || !nearbyRivers || !nearbyLakes) {
     return (
       <VillageMapShell villageName={villageName}>
-        <MapPending message="Village coordinates are pending verification." />
+        <MapPending message={LOCATION_PENDING_LABEL[lang]} />
       </VillageMapShell>
     );
   }

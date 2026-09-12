@@ -11,7 +11,7 @@ export type TerritoryVillage = {
   nameRu: string;
   nameEn: string;
   slug: string;
-  population: number;
+  population: number | null;
   order: number;
 };
 
@@ -112,6 +112,111 @@ const territoryCopy = (name: string, nameEn: string, tone: string): Localized<st
     `${name} - ${tone}. Сёла раскрываются в ритме долины.`,
     `${nameEn} - villages unfold at the pace of the valley.`,
   );
+
+
+const ALAYKUU_DETAIL: TerritoryDetail = {
+  villageCardVisual: "neutral",
+  heroStats: [
+    { value: L("12 073", "12 073", "12,073"), label: L("калк", "население", "population") },
+    { value: L("12", "12", "12"), label: L("айыл", "сёл", "villages") },
+    { value: L("", "", ""), label: L("кожолук", "хозяйств", "households") },
+    { value: L("188 271 га", "188 271 га", "188,271 ha"), label: L("жалпы аянт", "общая площадь", "total area") },
+  ],
+  passport: {
+    title: L("Айыл аймагы жөнүндө", "Об айыл аймаке", "About the aiyl aimak"),
+    reference: L("Негизги маалымат", "Основная информация", "Key information"),
+    groups: [
+      {
+        title: L("Жайгашуусу", "Расположение", "Location"),
+        items: [
+          { label: L("Облусу", "Область", "Region"), value: L("Ош облусу", "Ошская область", "Osh Region") },
+          { label: L("Району", "Район", "District"), value: L("Кара-Кулжа району", "Кара-Кульджинский район", "Kara-Kulja District") },
+          {
+            label: L("Географиялык жайгашуусу", "Географическое положение", "Geographic location"),
+            value: L(
+              "Кара-Кулжа районунун чыгышында, Кытай менен чектешкен аймак",
+              "В восточной части Кара-Кулжинского района, на границе с Китаем",
+              "Eastern Kara-Kulja District, bordering China",
+            ),
+          },
+        ],
+      },
+      {
+        title: L("Негизги маалымат", "Основная информация", "Key information"),
+        items: [
+          { label: L("Кайра уюшулган жылы", "Год реорганизации", "Year reorganized"), value: L("2024", "2024", "2024") },
+          { label: L("Деңиз деңгээлинен", "Высота над уровнем моря", "Elevation above sea level"), value: L("болжол менен 2 000-3 000 м", "примерно 2 000-3 000 м", "approximately 2,000-3,000 m") },
+          { label: L("Климаты", "Климат", "Climate"), value: L("Бийик тоолуу континенттик климат", "Высокогорный континентальный климат", "High-altitude continental climate") },
+          { label: L("Негизги экономикалык багыт", "Основное экономическое направление", "Main economic focus"), value: L("Айыл чарба жана мал чарбачылыгы", "Сельское хозяйство и животноводство", "Agriculture and livestock farming") },
+        ],
+      },
+    ],
+  },
+  nature: {
+    title: L("Жаратылыш", "Природа", "Nature"),
+    intro: L(
+      "Алайку бийик тоолор, кең жайлоолор, тоо дарыялары жана алыскы өрөөндөр менен айырмаланган өзгөчө аймак. Өрөөндүн бийик тоолуу жаратылышы мал чарбачылыгы, жайлоо туризми, атчан саякат, жөө маршруттар жана жаратылыш туризми үчүн кең мүмкүнчүлүк түзөт.",
+      "Алайку отличается высокими горами, просторными пастбищами, горными реками и удалёнными долинами. Высокогорная природа создаёт условия для традиционного животноводства, джайлоо-туризма, конных путешествий, пеших маршрутов и природного туризма.",
+      "Alaykuu is defined by high mountains, broad pastures, mountain rivers and remote valleys. Its high-altitude environment provides strong potential for traditional livestock farming, jailoo tourism, horseback travel, hiking and nature-based tourism.",
+    ),
+    places: [],
+  },
+  infrastructure: {
+    title: L("Социалдык инфраструктура", "Социальная инфраструктура", "Social infrastructure"),
+    groups: [
+      {
+        title: L("Билим берүү", "Образование", "Education"),
+        primary: [L("8 мектеп", "8 школ", "8 schools"), L("7 мектепке чейинки мекеме", "7 дошкольных учреждений", "7 preschool institutions")],
+        secondary: [L("1 кесиптик лицей", "1 профессиональный лицей", "1 vocational lyceum")],
+      },
+      {
+        title: L("Саламаттык сактоо", "Здравоохранение", "Healthcare"),
+        primary: [L("1 оорукана", "1 больница", "1 hospital"), L("2 үй-бүлөлүк медицина борбору", "2 центра семейной медицины", "2 family medicine centres"), L("2 үй-бүлөлүк дарыгерлер тобу", "2 группы семейных врачей", "2 family doctor groups"), L("5 ФАП", "5 ФАП", "5 feldsher-obstetric points")],
+        secondary: [L("1 тез жардам бөлүмү", "1 отделение скорой помощи", "1 ambulance department"), L("2 тез жардам унаасы", "2 машины скорой помощи", "2 ambulances"), L("1 дарыкана", "1 аптека", "1 pharmacy")],
+      },
+      {
+        title: L("Маданият", "Культура", "Culture"),
+        primary: [L("5 маданият үйү", "5 домов культуры", "5 houses of culture"), L("6 китепкана", "6 библиотек", "6 libraries")],
+        secondary: [L("1 музей", "1 музей", "1 museum"), L("6 археологиялык жана архитектуралык эстелик", "6 археологических и архитектурных памятников", "6 archaeological and architectural monuments")],
+      },
+      {
+        title: L("Спорт", "Спорт", "Sport"),
+        primary: [L("1 стадион", "1 стадион", "1 stadium"), L("7 жабык спорт зал", "7 крытых спортивных залов", "7 indoor sports halls")],
+        secondary: [L("6 кичи футбол аянтчасы", "6 мини-футбольных площадок", "6 mini-football pitches"), L("2 ачык спорт аянтчасы", "2 открытые спортивные площадки", "2 outdoor sports grounds")],
+      },
+    ],
+  },
+  economy: {
+    title: L("Экономика", "Экономика", "Economy"),
+    body: L(
+      "Алайку айыл аймагынын экономикасынын негизин мал чарбачылыгы түзөт. Тоолуу жайыттарда кой-эчки, бодо мал, жылкы жана топоз багылат. Айрым айылдарда кымыз жана сүт азыктары өндүрүлөт. Климаттык шарттарга байланыштуу дыйканчылык чектелүү болгону менен тоют өсүмдүктөрү жана жергиликтүү керектөөгө ылайык айыл чарба продукциясы өстүрүлөт.",
+      "Основу экономики айыл аймака Алайку составляет животноводство. На горных пастбищах разводят овец и коз, крупный рогатый скот, лошадей и яков. В отдельных сёлах производят кумыс и молочную продукцию. Из-за высокогорного климата земледелие ограничено и в основном связано с кормовыми культурами и продукцией для местного потребления.",
+      "Livestock farming forms the foundation of Alaykuu's economy. Sheep and goats, cattle, horses and yaks are raised on its mountain pastures. Some villages produce kumys and dairy products. Crop farming is limited by the high-altitude climate and is mainly focused on fodder crops and production for local use.",
+    ),
+    profile: [
+      { label: L("Негизги багыт", "Основное направление", "Main focus"), values: [L("Айыл чарба", "Сельское хозяйство", "Agriculture"), L("Мал чарбачылыгы", "Животноводство", "Livestock farming")] },
+      {
+        label: L("Чарбалык багыттар", "Направления хозяйства", "Livelihoods"),
+        values: [
+          L("Кой-эчки багуу", "Разведение овец и коз", "Sheep and goat farming"),
+          L("Бодо мал багуу", "Разведение крупного рогатого скота", "Cattle farming"),
+          L("Жылкы чарбачылыгы", "Коневодство", "Horse breeding"),
+          L("Топоз багуу", "Разведение яков", "Yak farming"),
+          L("Кымыз жана сүт азыктары", "Кумыс и молочная продукция", "Kumys and dairy products"),
+          L("Чектелүү дыйканчылык", "Ограниченное земледелие", "Limited crop farming"),
+        ],
+      },
+    ],
+  },
+  history: {
+    title: L("Тарых", "История", "History"),
+    body: L(
+      "Алайку өрөөнү кылымдар бою бийик тоолуу жайыттары жана көчмөн мал чарбачылыгы менен байланышкан. Өрөөндөгү азыркы айылдардын көбү XX кылымдын биринчи жарымында туруктуу калктуу конуш катары калыптана баштаган. 2024-жылдагы административдик-аймактык реформанын негизинде Алайку айыл аймагы ирилештирилип, анын курамына 12 айыл кирген.",
+      "История Алайку на протяжении многих поколений была связана с высокогорными пастбищами и кочевым животноводством. Большинство современных сёл долины начали формироваться как постоянные населённые пункты в первой половине XX века. После административно-территориальной реформы 2024 года укрупнённый айыл аймак Алайку объединил 12 сёл.",
+      "For generations, the history of Alaykuu has been closely connected with high-altitude pastures and nomadic livestock farming. Most of today's villages developed into permanent settlements during the first half of the twentieth century. Following the 2024 administrative-territorial reform, the enlarged Alaykuu Aiyl Aimak brought together 12 villages.",
+    ),
+  },
+};
 
 const OI_TAL_DETAIL: TerritoryDetail = {
   villageCardVisual: "neutral",
@@ -395,27 +500,36 @@ export const TERRITORIES: Territory[] = [
   },
   {
     slug: "alaikuu",
-    name: "Алайкуу",
-    nameRu: "Алайкуу",
-    nameEn: "Alaikuu",
-    subtitle: L("Бийик өрөөндөр жана алыскы жайлоолор", "Высокие долины и дальние джайлоо", "High valleys and distant jailoos"),
-    description: territoryCopy("Алайкуу", "Alaikuu", "бийик жолдордун жана тоо шамалынын аймагы"),
+    name: "Алайку",
+    nameRu: "Алайку",
+    nameEn: "Alaykuu",
+    subtitle: L(
+      "Кара-Кулжа районунун эң алыскы жана бийик тоолуу аймактарынын бири",
+      "Один из самых отдалённых и высокогорных аймаков Кара-Кулжинского района",
+      "One of the most remote and high-altitude areas of Kara-Kulja District",
+    ),
+    description: L(
+      "Алайку - Кара-Кулжа районунун чыгышында, Кытай менен чектешкен бийик тоолуу өрөөн. Аймак 12 айылды бириктирип, анда 12 073 адам жашайт. Кең жайлоолору, тоолору, тунук суулары, салттуу мал чарбачылыгы жана өзгөчө жаратылышы Алайкуну туризм, айыл чарба жана инвестиция үчүн кызыктуу аймакка айлантат.",
+      "Алайку - высокогорная долина на востоке Кара-Кулжинского района, граничащая с Китаем. Айыл аймак объединяет 12 сёл, где проживает 12 073 человека. Просторные пастбища, горы, чистые воды, традиционное животноводство и самобытная природа создают здесь хорошие возможности для туризма, сельского хозяйства и инвестиций.",
+      "Alaykuu is a high-altitude valley in the eastern part of Kara-Kulja District, bordering China. The aiyl aimak brings together 12 villages with a population of 12,073. Its broad pastures, mountains, clear waters, traditional livestock farming and distinctive landscapes create strong potential for tourism, agriculture and investment.",
+    ),
     population: 12073,
     image: territoryCardImg("alaikuu"),
     villages: [
-      { name: "Кызыл-Жар", nameRu: "Кызыл-Жар", nameEn: "Kyzyl-Jar", slug: "kyzyl-zhar", population: 682, order: 1 },
-      { name: "Кайын-Талаа", nameRu: "Кайын-Талаа", nameEn: "Kaiyn-Talaa", slug: "kaiyn-talaa", population: 1228, order: 2 },
-      { name: "Коо-Чаты", nameRu: "Коо-Чаты", nameEn: "Koo-Chaty", slug: "koo-chaty", population: 2117, order: 3 },
-      { name: "Терек", nameRu: "Терек", nameEn: "Terek", slug: "terek", population: 1207, order: 4 },
-      { name: "Чычырканак", nameRu: "Чычырканак", nameEn: "Chychyrkanak", slug: "chychyrkanak", population: 302, order: 5 },
-      { name: "Күйөө-Таш", nameRu: "Күйөө-Таш", nameEn: "Kuyoo-Tash", slug: "kuyotash", population: 1030, order: 6 },
-      { name: "Көк-Арт", nameRu: "Көк-Арт", nameEn: "Kok-Art", slug: "kok-art", population: 2487, order: 7 },
-      { name: "Кан-Коргон", nameRu: "Кан-Коргон", nameEn: "Kan-Korgon", slug: "kan-korgon", population: 2080, order: 8 },
-      { name: "Сайталаа", nameRu: "Сайталаа", nameEn: "Saitalaa", slug: "sai-talaa", population: 401, order: 9 },
-      { name: "Ара-Булак", nameRu: "Ара-Булак", nameEn: "Ara-Bulak", slug: "ara-bulak", population: 125, order: 10 },
-      { name: "Бөрү-Токой", nameRu: "Бөрү-Токой", nameEn: "Boru-Tokoy", slug: "boru-tokoy", population: 177, order: 11 },
-      { name: "Желе-Дөбө", nameRu: "Желе-Дөбө", nameEn: "Jele-Dobo", slug: "zhele-dobo", population: 237, order: 12 },
+      { name: "Көк-Арт", nameRu: "Көк-Арт", nameEn: "Kok-Art", slug: "kok-art", population: 2487, order: 1 },
+      { name: "Кан-Коргон", nameRu: "Кан-Коргон", nameEn: "Kan-Korgon", slug: "kan-korgon", population: 2080, order: 2 },
+      { name: "Бөрү-Токой", nameRu: "Бөрү-Токой", nameEn: "Boru-Tokoi", slug: "boru-tokoy", population: 177, order: 3 },
+      { name: "Желе-Дөбө", nameRu: "Желе-Дөбө", nameEn: "Zhele-Dobo", slug: "zhele-dobo", population: 237, order: 4 },
+      { name: "Ара-Булак", nameRu: "Ара-Булак", nameEn: "Ara-Bulak", slug: "ara-bulak", population: 177, order: 5 },
+      { name: "Сай-Талаа", nameRu: "Сай-Талаа", nameEn: "Sai-Talaa", slug: "sai-talaa", population: null, order: 6 },
+      { name: "Кайың-Талаа", nameRu: "Кайың-Талаа", nameEn: "Kaiyn-Talaa", slug: "kaiyn-talaa", population: 1228, order: 7 },
+      { name: "Кызыл-Жар", nameRu: "Кызыл-Жар", nameEn: "Kyzyl-Zhar", slug: "kyzyl-zhar", population: 682, order: 8 },
+      { name: "Күйө-Таш", nameRu: "Күйө-Таш", nameEn: "Kuyo-Tash", slug: "kuyotash", population: 1019, order: 9 },
+      { name: "Чычырганак", nameRu: "Чычырганак", nameEn: "Chychyrganak", slug: "chychyrkanak", population: null, order: 10 },
+      { name: "Коо-Чаты", nameRu: "Коо-Чаты", nameEn: "Koo-Chaty", slug: "koo-chaty", population: 2106, order: 11 },
+      { name: "Терек", nameRu: "Терек", nameEn: "Terek", slug: "terek", population: 1197, order: 12 },
     ],
+    detail: ALAYKUU_DETAIL,
   },
   {
     slug: "kara-guz",
