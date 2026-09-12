@@ -1,1 +1,1 @@
-{"type":"FeatureCollection","name":"kara-kulja-pois-administration","features":[]}
+{"type":"FeatureCollection","name":"kara-kulja-pois-administration","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[73.5240056,40.6574944]},"properties":{"@id":"manual/kara-kochkor/aiyl-okmotu","name":"Айыл өкмөтүнүн имараты","name:ky":"Айыл өкмөтүнүн имараты","name:ru":"Здание айыл окмоту","name:en":"Aiyl okmotu building","source":"Kara-Kochkor local administration","office":"government","villageSlug":"kara-kochkor","territorySlug":"kara-kochkor"}}]}

@@ -84,6 +84,33 @@ export const PEOPLE: PersonProfile[] = [
     ),
   },
   {
+    slug: "bedelbay-amirakulov",
+    name: L("Беделбай Амиракулов", "Бедельбай Амиракулов", "Bedelbay Amirakulov"),
+    role: L("Спортчу жана марафончу", "Спортсмен и марафонец", "Athlete and marathon runner"),
+    territorySlugs: ["kara-kochkor"],
+    villageSlugs: ["ak-kyya"],
+    featuredOnHome: false,
+    featuredInPeople: false,
+    body: L(
+      "1940-жылы Ак-Кыя айылында төрөлгөн спортчу жана марафончу. 1971-жылы марафон боюнча СССР спортунун мастери наамына жетип, ошол жылы СССРдин мыкты он марафончусунун катарына кирген. 1977-жылы каза болгон.",
+      "Спортсмен и марафонец, родился в 1940 году в селе Ак-Кыя. В 1971 году получил звание мастера спорта СССР по марафону и в том же году вошёл в десятку лучших марафонцев СССР. Умер в 1977 году.",
+      "An athlete and marathon runner born in Ak-Kyya in 1940. In 1971 he became a USSR Master of Sport in the marathon and ranked among the ten leading Soviet marathon runners that year. He died in 1977."
+    ),
+  },
+  {
+    slug: "osmon-turdubaev",
+    name: L("Осмон Турдубаев", "Осмон Турдубаев", "Osmon Turdubaev"),
+    role: L("Агартуучу, социалдык тармактын кызматкери жана автор", "Педагог, работник социальной сферы и автор", "Educator, social-sector worker, and author"),
+    territorySlugs: ["kara-kochkor"],
+    featuredOnHome: false,
+    featuredInPeople: false,
+    body: L(
+      "1951-жылы Ак-Кыя айылында төрөлгөн агартуучу, социалдык тармактын кызматкери жана автор. Билим берүү жана райондук мамлекеттик башкаруу тармактарында эмгектенип, ырларды жана адабий чыгармаларды жазган.",
+      "Педагог, работник социальной сферы и автор, родился в 1951 году в селе Ак-Кыя. Работал в сфере образования и районного государственного управления, писал стихи и литературные произведения.",
+      "An educator, social-sector worker, and author born in Ak-Kyya in 1951. He worked in education and district public administration and wrote poetry and literary works."
+    ),
+  },
+  {
     slug: "ryspai-abdykadyrov",
     name: L("Рыспай Абдыкадыров", "Рыспай Абдыкадыров", "Ryspai Abdykadyrov"),
     role: L("Обончу, аткаруучу жана композитор", "Композитор, исполнитель и музыкант", "Composer, performer, and musician"),

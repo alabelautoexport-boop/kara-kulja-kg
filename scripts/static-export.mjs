@@ -54,7 +54,6 @@ const villageRoutes = [
   "/villages/nasirdin",
   "/villages/kara-kochkor",
   "/villages/ak-kyya",
-  "/villages/kashka-zhol-kara-kochkor",
   "/villages/sary-bulak-kara-kochkor",
   "/villages/biy-myrza",
   "/villages/birinchi-may",

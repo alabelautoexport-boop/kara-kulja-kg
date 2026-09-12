@@ -114,6 +114,60 @@ const territoryCopy = (name: string, nameEn: string, tone: string): Localized<st
   );
 
 
+const KARA_KOCHKOR_DETAIL: TerritoryDetail = {
+  villageCardVisual: "neutral",
+  heroStats: [
+    { value: L("18 940", "18 940", "18,940"), label: L("калк", "население", "population") },
+    { value: L("8", "8", "8"), label: L("айыл", "сёл", "villages") },
+    { value: L("4 001", "4 001", "4,001"), label: L("кожолук", "хозяйств", "households") },
+    { value: L("", "", ""), label: L("жалпы аянт", "общая площадь", "total area") },
+  ],
+  passport: {
+    title: L("Айыл аймагы жөнүндө", "Об айыл аймаке", "About the aiyl aimak"),
+    reference: L("Негизги маалымат - 2026-жыл", "Основная информация - 2026 год", "Key information - 2026"),
+    groups: [{
+      title: L("Негизги маалымат", "Основная информация", "Key information"),
+      items: [
+        { label: L("Облусу", "Область", "Region"), value: L("Ош облусу", "Ошская область", "Osh Region") },
+        { label: L("Району", "Район", "District"), value: L("Кара-Кулжа району", "Кара-Кульджинский район", "Kara-Kulja District") },
+        { label: L("Калкы", "Население", "Population"), value: L("18 940", "18 940", "18,940") },
+        { label: L("Айылдары", "Сёла", "Villages"), value: L("8", "8", "8") },
+        { label: L("Кожолуктар", "Хозяйства", "Households"), value: L("4 001", "4 001", "4,001") },
+      ],
+    }],
+  },
+  nature: {
+    title: L("Жаратылыш жана туризм", "Природа и туризм", "Nature and tourism"),
+    intro: L(
+      "Кара-Кочкор айыл аймагында айылдык жана тоо этегиндеги көрүнүштөр, айдоо жерлери, жайыттар, дарыялар жана суу булактары бар. Тоготой айылынын жанындагы Тогуз-Булак эс алуу жайы жана Кара-Дарыя тарыхый-маданий мурас объектиси аймактын таанымдык жана эс алуу багытын өнүктүрүүгө негиз түзөт.",
+      "В айыл аймаке Кара-Кочкор сочетаются сельские и предгорные ландшафты, сельскохозяйственные земли, пастбища, реки и водные источники. Зона отдыха Тогуз-Булак и объект историко-культурного наследия Кара-Дарья возле села Тоготой создают основу для развития познавательного туризма и отдыха.",
+      "Kara-Kochkor Aiyl Aimak combines rural and foothill landscapes, farmland, pastures, rivers, and water sources. The Toguz-Bulak recreation area and the Kara-Darya historical-cultural heritage site near Togotoy provide a foundation for educational visits and recreation.",
+    ),
+    places: [],
+  },
+  infrastructure: {
+    title: L("Социалдык инфраструктура", "Социальная инфраструктура", "Social infrastructure"),
+    groups: [
+      { title: L("Билим берүү", "Образование", "Education"), primary: [L("8 мектеп", "8 школ", "8 schools"), L("10 мектепке чейинки мекеме", "10 дошкольных учреждений", "10 preschool institutions")], secondary: [] },
+      { title: L("Саламаттык сактоо", "Здравоохранение", "Healthcare"), primary: [L("Айылдарда ҮДТ жана ФАПтар иштейт", "В сёлах работают ГСВ и ФАПы", "Family doctor groups and feldsher-obstetric points serve the villages")], secondary: [] },
+      { title: L("Маданият", "Культура", "Culture"), primary: [L("Маданият үйлөрү жана айылдык китепканалар бар", "Работают дома культуры и сельские библиотеки", "Houses of culture and village libraries are present")], secondary: [L("Тарыхый-маданий мурас объекттери бар", "Имеются объекты историко-культурного наследия", "Historical-cultural heritage sites are present")] },
+      { title: L("Спорт", "Спорт", "Sport"), primary: [L("Айылдарда спорт аянтчалары бар", "В сёлах имеются спортивные площадки", "Sports grounds are available in the villages")], secondary: [] },
+    ],
+  },
+  economy: {
+    title: L("Экономика", "Экономика", "Economy"),
+    body: L(
+      "Кара-Кочкор айыл аймагынын экономикасынын негизги багыттары - мал чарбачылыгы жана дыйканчылык. Айрым айылдарда сугат дыйканчылыгы өнүккөн. Жергиликтүү айыл чарба өндүрүшү үй-бүлөлүк чарбаларга, айдоо жерлерине жана жайыттарга таянат.",
+      "Основные направления экономики айыл аймака Кара-Кочкор - животноводство и земледелие. В отдельных сёлах развито орошаемое земледелие. Местное сельскохозяйственное производство опирается на семейные хозяйства, пашни и пастбища.",
+      "The main economic activities in Kara-Kochkor Aiyl Aimak are livestock and crop farming. Irrigated agriculture is developed in some villages. Local agricultural production is based on family farms, cultivated land, and pastures.",
+    ),
+    profile: [
+      { label: L("Негизги багыттар", "Основные направления", "Main activities"), values: [L("Мал чарбачылыгы", "Животноводство", "Livestock farming"), L("Дыйканчылык", "Земледелие", "Crop farming")] },
+      { label: L("Айрым айылдарда", "В отдельных сёлах", "In some villages"), values: [L("Сугат дыйканчылыгы", "Орошаемое земледелие", "Irrigated agriculture")] },
+    ],
+  },
+};
+
 const ALAYKUU_DETAIL: TerritoryDetail = {
   villageCardVisual: "neutral",
   heroStats: [
@@ -556,21 +610,29 @@ export const TERRITORIES: Territory[] = [
     name: "Кара-Кочкор",
     nameRu: "Кара-Кочкор",
     nameEn: "Kara-Kochkor",
-    subtitle: L("Тоолуу аймактын кең деми", "Широкое дыхание горного аймака", "The wide breath of a mountain territory"),
-    description: territoryCopy("Кара-Кочкор", "Kara-Kochkor", "жолдор тоого бурулган аймак"),
-    population: 18490,
+    subtitle: L(
+      "Район борборуна жакын дыйканчылык жана мал чарбачылык аймагы",
+      "Территория земледелия и животноводства рядом с районным центром",
+      "A farming territory close to the district centre",
+    ),
+    description: L(
+      "Кара-Кочкор айыл аймагы Кара-Кулжа районунун борборуна жакын жайгашкан айыл аймактарынын бири. Аймак 8 айылды бириктирип, анда 18 940 адам жашайт. Негизги чарбалык багыттары - мал чарбачылыгы жана дыйканчылык. Айыл аймакта социалдык инфраструктураны, айыл чарбасын, тарыхый-маданий мурасты жана эс алуу багыттарын өнүктүрүүгө мүмкүнчүлүктөр бар.",
+      "Кара-Кочкор - один из айыл аймаков, расположенных недалеко от районного центра Кара-Кульджинского района. Он объединяет 8 сёл с населением 18 940 человек. Основные направления хозяйства - животноводство и земледелие. Здесь имеются возможности для развития социальной инфраструктуры, сельского хозяйства, историко-культурного наследия и отдыха.",
+      "Kara-Kochkor is one of the aiyl aimaks located near the centre of Kara-Kulja District. It brings together 8 villages with a population of 18,940. Its main livelihoods are livestock and crop farming. The territory has opportunities to develop social infrastructure, agriculture, historical-cultural heritage, and recreation.",
+    ),
+    population: 18940,
     image: territoryCardImg("kara-kochkor"),
     villages: [
-      { name: "Кара-Кочкор", nameRu: "Кара-Кочкор", nameEn: "Kara-Kochkor", slug: "kara-kochkor", population: 4386, order: 1 },
+      { name: "Кара-Кочкор", nameRu: "Кара-Кочкор", nameEn: "Kara-Kochkor", slug: "kara-kochkor", population: 4836, order: 1 },
       { name: "Ак-Кыя", nameRu: "Ак-Кыя", nameEn: "Ak-Kyya", slug: "ak-kyya", population: 2952, order: 2 },
-      { name: "Кашка-Жол", nameRu: "Кашка-Жол", nameEn: "Kashka-Jol", slug: "kashka-zhol-kara-kochkor", population: 1981, order: 3 },
-      { name: "Сары-Булак", nameRu: "Сары-Булак", nameEn: "Sary-Bulak", slug: "sary-bulak-kara-kochkor", population: 1981, order: 4 },
-      { name: "Жаңы-Талап", nameRu: "Жаңы-Талап", nameEn: "Jany-Talap", slug: "zhany-talap", population: 1873, order: 5 },
-      { name: "Жийде", nameRu: "Жийде", nameEn: "Jiide", slug: "zhiyde", population: 1244, order: 6 },
-      { name: "Октябрь", nameRu: "Октябрь", nameEn: "Oktyabr", slug: "oktyabr", population: 2746, order: 7 },
-      { name: "Тоготой", nameRu: "Тоготой", nameEn: "Togotoy", slug: "togotoy", population: 2551, order: 8 },
-      { name: "Ынтымак", nameRu: "Ынтымак", nameEn: "Yntymak", slug: "yntymak", population: 757, order: 9 },
+      { name: "Сары-Булак", nameRu: "Сары-Булак", nameEn: "Sary-Bulak", slug: "sary-bulak-kara-kochkor", population: 1981, order: 3 },
+      { name: "Жаңы-Талап", nameRu: "Жаңы-Талап", nameEn: "Jany-Talap", slug: "zhany-talap", population: 1873, order: 4 },
+      { name: "Жийде", nameRu: "Жийде", nameEn: "Jiide", slug: "zhiyde", population: 1244, order: 5 },
+      { name: "Октябрь", nameRu: "Октябрь", nameEn: "Oktyabr", slug: "oktyabr", population: 2746, order: 6 },
+      { name: "Тоготой", nameRu: "Тоготой", nameEn: "Togotoy", slug: "togotoy", population: 2551, order: 7 },
+      { name: "Ынтымак", nameRu: "Ынтымак", nameEn: "Yntymak", slug: "yntymak", population: 757, order: 8 },
     ],
+    detail: KARA_KOCHKOR_DETAIL,
   },
   {
     slug: "oy-tal",

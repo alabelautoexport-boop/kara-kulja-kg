@@ -150,6 +150,9 @@ const INFO_HOUSEHOLDS = L("Кожолук", "Хозяйства", "Households");
 const INFO_VILLAGE_COORDINATES = L("Айыл борборунун координаты", "Координаты центра села", "Village centre coordinates");
 const INFO_LOC = L("Жайгашуусу", "Расположение", "Location");
 const INFO_DIST = L("Борборго чейин", "До центра", "Distance to centre");
+const INFO_TRAVEL_TIME = L("Жол жүрүү убактысы", "Время в пути", "Travel time");
+const INFO_ROAD = L("Жолу", "Дорога", "Road");
+const INFO_UTILITIES = L("Коммуналдык кызматтар", "Коммунальные услуги", "Utilities");
 const INFO_AO = L("Айыл өкмөтү", "Айыл окмоту", "Aiyl okmotu");
 const INFO_AIMAK = L("Айыл аймагы", "Айылный аймак", "Aiyl aimak");
 const INFO_FORMER_NAME = L("Мурунку аталышы", "Прежнее название", "Former name");
@@ -259,53 +262,163 @@ const DETAILED_VILLAGES: Village[] = [
     related: ["zhiyde", "oy-tal"],
   },
   {
-    slug: "zhiyde",
-    name: "Жийде",
-    nameRu: "Жийде",
-    nameEn: "Jiide",
-    tagline: L("Тоолордун арасындагы тынч айыл", "Тихое село среди гор", "A quiet village among the mountains"),
-    hero: valleyImg,
+    slug: "kara-kochkor", name: "Кара-Кочкор", nameRu: "Кара-Кочкор", nameEn: "Kara-Kochkor", showInfo: true,
+    ...createLegacyVillageSections("kara-kochkor", "Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor"),
+    tagline: L("Районго кире бериште жайгашкан, жолу ыңгайлуу айыл", "Село с удобным сообщением у въезда в район", "A well-connected village near the entrance to the district"),
     intro: L(
-      "Тоолордун арасында жашынган, убакыт жайыраак өткөн айыл. Ар бир үй — бир окуя, ар бир жол — бир эс.",
-      "Село, спрятанное среди гор, где время идёт медленнее. Каждый дом — история, каждая дорога — память.",
-      "A village hidden among the mountains, where time runs slower. Every house is a story, every road a memory."
+      "Кара-Кочкор айылында 4 836 адам жана 927 кожолук жашайт. Айыл райондун кире беришине жакын жайгашып, мал чарбачылыгы жана дыйканчылык менен алектенет. Асфальт жолу, ичүүчү суусу, электр энергиясы жана интернети бар. Көчө жарыгы, тротуар жана суу агызуучу каналдар жакшыртылып, спорт зал менен жабык кичи футбол жайы курулууда.",
+      "В селе Кара-Кочкор проживают 4 836 человек в 927 хозяйствах. Оно расположено у въезда в район; основные занятия - животноводство и земледелие. Есть асфальтированная дорога, питьевая вода, электричество и интернет. Улучшены освещение, тротуары и водоотводные каналы, строятся спортивный зал и крытая площадка для мини-футбола.",
+      "Kara-Kochkor has 4,836 residents and 927 households. Near the district entrance, its main livelihoods are livestock and crop farming. It has an asphalt road, drinking water, electricity, and internet. Lighting, sidewalks, and drainage have improved, while a sports hall and indoor mini-football facility are under construction."
     ),
     info: [
-      { label: INFO_POP, value: L("≈ 2 400", "≈ 2 400", "≈ 2,400") },
-      { label: INFO_ALT, value: L("1 720 м", "1 720 м", "1,720 m") },
-      { label: INFO_LOC, value: L("Тоо этегинде", "У подножия гор", "At the foot of the mountains") },
-      { label: INFO_DIST, value: L("≈ 24 км", "≈ 24 км", "≈ 24 km") },
-      { label: INFO_AO, value: L("Жийде а/ө", "АО Жийде", "Jiide AO") },
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("4 836", "4 836", "4,836") }, { label: INFO_HOUSEHOLDS, value: L("927", "927", "927") },
+      { label: INFO_ABOVE_SEA, value: L("1 254 м", "1 254 м", "1,254 m") }, { label: INFO_FROM_KARA_KULJA, value: L("8 км", "8 км", "8 km") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6661306, 73.4951583", "40.6661306, 73.4951583", "40.6661306, 73.4951583") },
+      { label: INFO_ECONOMY, value: L("Мал чарбачылыгы жана дыйканчылык", "Животноводство и земледелие", "Livestock and crop farming") },
+      { label: INFO_ROAD, value: L("Асфальт жол, транспорттук байланыш жакшы", "Асфальтированная дорога, хорошее сообщение", "Asphalt road with good connections") },
+      { label: INFO_UTILITIES, value: L("Ичүүчү суу, электр энергиясы жана интернет бар", "Есть питьевая вода, электричество и интернет", "Drinking water, electricity, and internet are available") },
+    ],
+    history: L("", "", ""), tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Кара-Кочкор айылы, Кара-Кулжа району", "Село Кара-Кочкор, Кара-Кульджинский район", "Kara-Kochkor village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "ak-kyya", name: "Ак-Кыя", nameRu: "Ак-Кыя", nameEn: "Ak-Kyya", showInfo: true,
+    ...createLegacyVillageSections("ak-kyya", "Ак-Кыя", "Ак-Кыя", "Ak-Kyya"),
+    tagline: L("Дарыясы, кең жайыттары жана таза абасы бар айыл", "Село с рекой, пастбищами и чистым воздухом", "A village with a river, broad pastures, and clean air"),
+    intro: L(
+      "Ак-Кыя айылында 2 952 адам жана 614 кожолук жашайт. Айыл район борборуна жакын, дарыянын боюнда жана кең жайыттарга жакын жайгашкан. Негизги тиричилик багыты - мал чарбачылыгы. Асфальт жолу, электр энергиясы жана интернети бар.",
+      "В селе Ак-Кыя проживают 2 952 человека в 614 хозяйствах. Оно расположено недалеко от районного центра, у реки и обширных пастбищ. Основное занятие - животноводство. Есть асфальтированная дорога, электричество и интернет.",
+      "Ak-Kyya has 2,952 residents and 614 households. It lies near the district centre, beside a river and broad pastures. Livestock farming is the main livelihood. It has an asphalt road, electricity, and internet."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("2 952", "2 952", "2,952") }, { label: INFO_HOUSEHOLDS, value: L("614", "614", "614") },
+      { label: INFO_ABOVE_SEA, value: L("1 500 м", "1 500 м", "1,500 m") }, { label: INFO_FROM_KARA_KULJA, value: L("6 км", "6 км", "6 km") }, { label: INFO_TRAVEL_TIME, value: L("15 мүнөт", "15 минут", "15 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6669583, 73.6123333", "40.6669583, 73.6123333", "40.6669583, 73.6123333") },
+      { label: INFO_ECONOMY, value: L("Мал чарбачылыгы", "Животноводство", "Livestock farming") }, { label: INFO_ROAD, value: L("Асфальт жол, транспорттук байланыш жакшы", "Асфальтированная дорога, хорошее сообщение", "Asphalt road with good connections") },
+      { label: INFO_UTILITIES, value: L("Электр энергиясы жана интернет бар", "Есть электричество и интернет", "Electricity and internet are available") },
     ],
     history: L(
-      "Жийде — аты дарактан, руху адамдарынан. Кылымдар бою үй-бүлөлөр бул жерде туруктуу жашап, өз салтын, өз тилин, өз нанын сактап келишкен.",
-      "Жийде — имя от дерева, дух — от людей. Веками семьи жили здесь, сохраняя свои традиции, язык и хлеб.",
-      "Jiide — its name from a tree, its spirit from its people. For centuries families have lived here, keeping their traditions, language and bread."
+      "Айылдын негизделген так датасы белгисиз. Жергиликтүү материалда айыл мурда Көк-Жаңгак деп аталганы айтылат: тескей тарабында калың жаңгак токою өскөн. Токойдун көбү жоголгондон кийин конуш чыгыш тарабындагы ак түстүү кыяга жана жолго байланыштуу Ак-Кыя деп атала баштаган. Бүгүн жаңгак токою токой чарбасы аркылуу кайра калыбына келтирилүүдө.",
+      "Точная дата основания неизвестна. Согласно местному материалу, раньше село называлось Көк-Жаңгак из-за густого орехового леса на теневой стороне. После исчезновения большей части леса его стали называть Ак-Кыя по светлому склону и дороге с восточной стороны. Сейчас ореховый лес восстанавливается лесным хозяйством.",
+      "The exact establishment date is unknown. Local material says the village was formerly called Kok-Jangak because of a dense walnut forest on its shaded side. After much of it disappeared, the settlement became Ak-Kyya after the light-coloured eastern slope and road. Forestry work is now restoring the walnut forest."
     ),
-    tourism: {
-      lead: L(
-        "Тынч өрөөн, муздак булактар, кеңири жайыттар — табияттын жакындыгы.",
-        "Тихая долина, прохладные родники, широкие пастбища — близость природы.",
-        "A quiet valley, cool springs, wide pastures — nature close at hand."
-      ),
-      items: SHARED_TOURISM,
-    },
-    investment: {
-      lead: L(
-        "Кичинекей айыл — чоң мүмкүнчүлүктөр. Үй чарбасы менен экотуризм.",
-        "Маленькое село — большие возможности. Семейное хозяйство и экотуризм.",
-        "A small village with big potential. Family farming and ecotourism."
-      ),
-      items: SHARED_INVESTMENT,
-    },
-    people: [
-      { name: L("Карыя", "Старейшина", "Elder"), role: L("Айылдын эси", "Память села", "Memory of the village"), img: elderImg },
-      { name: L("Дыйкан", "Земледелец", "Farmer"), role: L("Жер иштеткен", "Работающий на земле", "Working the land"), img: agricultureImg },
-      { name: L("Атчан", "Всадник", "Horseman"), role: L("Жайлоо жолунда", "На пути к джайлоо", "On the way to the jailoo"), img: horsemanImg },
+    tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Ак-Кыя айылы, Кара-Кулжа району", "Село Ак-Кыя, Кара-Кульджинский район", "Ak-Kyya village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "sary-bulak-kara-kochkor", name: "Сары-Булак", nameRu: "Сары-Булак", nameEn: "Sary-Bulak", showInfo: true,
+    ...createLegacyVillageSections("sary-bulak-kara-kochkor", "Сары-Булак", "Сары-Булак", "Sary-Bulak"),
+    tagline: L("Негизги жолдун боюндагы айыл", "Село вдоль главной дороги", "A village along the main road"),
+    intro: L(
+      "Сары-Булак айылында 1 981 адам жана 478 кожолук жашайт. Айыл район борборуна жакын, негизги жолдун боюнда жайгашкан. Мал чарбачылыгы жана дыйканчылык өнүккөн. Кошумча скважина жана суу сактагыч аркылуу таза суу менен толук камсыздалган; асфальт жол, көчө жарыгы, тротуар жана жаңы ачык футбол аянтчасы бар.",
+      "В селе Сары-Булак проживают 1 981 человек в 478 хозяйствах. Оно расположено вдоль главной дороги недалеко от районного центра. Развиты животноводство и земледелие. Дополнительная скважина и резервуар обеспечили село чистой водой; есть асфальтированная дорога, освещение, тротуары и новое открытое футбольное поле.",
+      "Sary-Bulak has 1,981 residents and 478 households. It lies along the main road near the district centre. Livestock and crop farming are developed. A borehole and reservoir provide full clean-water coverage, and it has an asphalt road, lighting, sidewalks, and a new outdoor football pitch."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("1 981", "1 981", "1,981") }, { label: INFO_HOUSEHOLDS, value: L("478", "478", "478") },
+      { label: INFO_ABOVE_SEA, value: L("1 300 м", "1 300 м", "1,300 m") }, { label: INFO_FROM_KARA_KULJA, value: L("4 км", "4 км", "4 km") }, { label: INFO_TRAVEL_TIME, value: L("10 мүнөт", "10 минут", "10 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6524944, 73.5406722", "40.6524944, 73.5406722", "40.6524944, 73.5406722") }, { label: INFO_ECONOMY, value: L("Мал чарбачылыгы жана дыйканчылык", "Животноводство и земледелие", "Livestock and crop farming") },
     ],
-    gallery: [valleyImg, mountainsImg, elderImg, mountainRoadImg, waterfallImg, jailooImg],
-    mapNote: L("Жийде айылы, Кара-Кулжа району", "село Жийде, Кара-Кульджинский район", "Jiide village, Kara-Kulja district"),
-    related: ["kara-kulja", "oy-tal"],
+    history: L("", "", ""), tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Сары-Булак айылы, Кара-Кулжа району", "Село Сары-Булак, Кара-Кульджинский район", "Sary-Bulak village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "zhany-talap", name: "Жаңы-Талап", nameRu: "Жаңы-Талап", nameEn: "Jany-Talap", showInfo: true,
+    ...createLegacyVillageSections("zhany-talap", "Жаңы-Талап", "Жаңы-Талап", "Jany-Talap"),
+    tagline: L("Айдоо жана мал чарбасы айкалышкан айыл", "Село земледелия и животноводства", "A village of crop and livestock farming"),
+    intro: L(
+      "Жаңы-Талап айылында 1 873 адам жана 365 кожолук жашайт. Негизги чарбалык багыттары - дыйканчылык жана мал чарбачылыгы. Айылга асфальт жол жетет, транспорттук байланыш жакшы; ичүүчү суу, электр энергиясы жана интернет бар. Көчө жарыгы орнотулуп, ички жолдорго шагыл төшөлгөн.",
+      "В селе Жаңы-Талап проживают 1 873 человека в 365 хозяйствах. Основные направления - земледелие и животноводство. К селу ведёт асфальтированная дорога, сообщение хорошее; доступны питьевая вода, электричество и интернет. Установлено освещение, внутренние дороги покрыты гравием.",
+      "Jany-Talap has 1,873 residents and 365 households. Its main livelihoods are crop and livestock farming. It has asphalt access, good connections, drinking water, electricity, and internet. Street lighting is installed and internal roads are surfaced with gravel."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("1 873", "1 873", "1,873") }, { label: INFO_HOUSEHOLDS, value: L("365", "365", "365") },
+      { label: INFO_ABOVE_SEA, value: L("1 170 м", "1 170 м", "1,170 m") }, { label: INFO_FROM_KARA_KULJA, value: L("20 км", "20 км", "20 km") }, { label: INFO_TRAVEL_TIME, value: L("30 мүнөт", "30 минут", "30 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6865194, 73.4094139", "40.6865194, 73.4094139", "40.6865194, 73.4094139") }, { label: INFO_ECONOMY, value: L("Дыйканчылык жана мал чарбачылыгы", "Земледелие и животноводство", "Crop and livestock farming") },
+      { label: INFO_ROAD, value: L("Асфальт жол, транспорттук байланыш жакшы", "Асфальтированная дорога, хорошее сообщение", "Asphalt road with good connections") }, { label: INFO_UTILITIES, value: L("Ичүүчү суу, электр энергиясы жана интернет бар", "Есть питьевая вода, электричество и интернет", "Drinking water, electricity, and internet are available") },
+    ],
+    history: L("", "", ""), tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Жаңы-Талап айылы, Кара-Кулжа району", "Село Жаңы-Талап, Кара-Кульджинский район", "Jany-Talap village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "zhiyde",
+    name: "Жийде", nameRu: "Жийде", nameEn: "Jiide", showInfo: true,
+    ...createLegacyVillageSections("zhiyde", "Жийде", "Жийде", "Jiide"),
+    tagline: L("Өзгөн району менен чектешкен дыйканчылык айылы", "Земледельческое село на границе с Узгенским районом", "A farming village bordering Uzgen District"),
+    intro: L(
+      "Жийде айылында 1 244 адам жана 281 кожолук жашайт. Айыл Өзгөн району менен чектешет. Дыйканчылык жакшы өнүккөн, мал чарбачылыгы да жергиликтүү тиричиликтин негизги багыттарынын бири.",
+      "В селе Жийде проживают 1 244 человека в 281 хозяйстве. Село граничит с Узгенским районом. Здесь хорошо развито земледелие, а животноводство также остаётся одним из основных занятий жителей.",
+      "Jiide has 1,244 residents and 281 households. The village borders Uzgen District. Crop farming is well developed, while livestock farming is also one of the main local livelihoods."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") },
+      { label: INFO_POP, value: L("1 244", "1 244", "1,244") },
+      { label: INFO_HOUSEHOLDS, value: L("281", "281", "281") },
+      { label: INFO_ABOVE_SEA, value: L("1 117 м", "1 117 м", "1,117 m") },
+      { label: INFO_FROM_KARA_KULJA, value: L("21 км", "21 км", "21 km") },
+      { label: INFO_TRAVEL_TIME, value: L("30 мүнөт", "30 минут", "30 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6723389, 73.3904500", "40.6723389, 73.3904500", "40.6723389, 73.3904500") },
+      { label: INFO_ECONOMY, value: L("Дыйканчылык жана мал чарбачылыгы", "Земледелие и животноводство", "Crop and livestock farming") },
+    ],
+    history: L("", "", ""), tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] },
+    people: [], gallery: [], mapNote: L("Жийде айылы, Кара-Кулжа району", "Село Жийде, Кара-Кульджинский район", "Jiide village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "oktyabr", name: "Октябрь", nameRu: "Октябрь", nameEn: "Oktyabr", showInfo: true,
+    ...createLegacyVillageSections("oktyabr", "Октябрь", "Октябрь", "Oktyabr"),
+    tagline: L("Сугат дыйканчылыгы өнүккөн айыл", "Село с развитым орошаемым земледелием", "A village with developed irrigated agriculture"),
+    intro: L(
+      "Октябрь айылында 2 746 адам жана 621 кожолук жашайт. Мал чарбачылыгы жана дыйканчылык негизги багыттарды түзөт. Айылдын сугат айдоо жерлери кең. Асфальт жол жаңыланып, көчө жарыгы орнотулган; спорт зал курулууда.",
+      "В селе Октябрь проживают 2 746 человек в 621 хозяйстве. Основные направления - животноводство и земледелие. Село располагает значительными орошаемыми землями. Асфальтированная дорога обновлена, установлено освещение; строится спортивный зал.",
+      "Oktyabr has 2,746 residents and 621 households. Livestock and crop farming are the main activities, with extensive irrigated land. Its asphalt access road is renewed and street lighting installed, while a sports hall is under construction."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("2 746", "2 746", "2,746") }, { label: INFO_HOUSEHOLDS, value: L("621", "621", "621") },
+      { label: INFO_ABOVE_SEA, value: L("1 220 м", "1 220 м", "1,220 m") }, { label: INFO_FROM_KARA_KULJA, value: L("14 км", "14 км", "14 km") }, { label: INFO_TRAVEL_TIME, value: L("25 мүнөт", "25 минут", "25 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6827778, 73.4397222", "40.6827778, 73.4397222", "40.6827778, 73.4397222") }, { label: INFO_ECONOMY, value: L("Мал чарбачылыгы, дыйканчылык жана сугат дыйканчылыгы", "Животноводство, земледелие и орошаемое земледелие", "Livestock, crop farming, and irrigated agriculture") },
+    ],
+    history: L("", "", ""), tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Октябрь айылы, Кара-Кулжа району", "Село Октябрь, Кара-Кульджинский район", "Oktyabr village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "togotoy", name: "Тоготой", nameRu: "Тоготой", nameEn: "Togotoy", showInfo: true,
+    ...createLegacyVillageSections("togotoy", "Тоготой", "Тоготой", "Togotoy"),
+    tagline: L("Эс алуу жайы жана тарыхый мурасы бар айыл", "Село с зоной отдыха и историческим наследием", "A village with recreation and historical heritage"),
+    intro: L(
+      "Тоготой айылында 2 551 адам жана 585 кожолук жашайт. Негизги чарбалык багыттары - мал чарбачылыгы жана дыйканчылык. Айылдын жанында Тогуз-Булак эс алуу жайы жана Кара-Дарыя тарыхый-маданий мурас объектиси бар.",
+      "В селе Тоготой проживает 2 551 человек в 585 хозяйствах. Основные направления - животноводство и земледелие. Рядом расположены зона отдыха Тогуз-Булак и объект историко-культурного наследия Кара-Дарья.",
+      "Togotoy has 2,551 residents and 585 households. Its main livelihoods are livestock and crop farming. The Toguz-Bulak recreation area and Kara-Darya historical-cultural heritage site are nearby."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("2 551", "2 551", "2,551") }, { label: INFO_HOUSEHOLDS, value: L("585", "585", "585") },
+      { label: INFO_ABOVE_SEA, value: L("1 220 м", "1 220 м", "1,220 m") }, { label: INFO_FROM_KARA_KULJA, value: L("17 км", "17 км", "17 km") }, { label: INFO_TRAVEL_TIME, value: L("25 мүнөт", "25 минут", "25 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.6650000, 73.4325000", "40.6650000, 73.4325000", "40.6650000, 73.4325000") }, { label: INFO_ECONOMY, value: L("Мал чарбачылыгы жана дыйканчылык", "Животноводство и земледелие", "Livestock and crop farming") },
+    ],
+    history: L(
+      "Кара-Дарыя шаарчасы - Тоготой айылынын жанындагы тарыхый-маданий мурас объектиси. Жергиликтүү материалда ал болжол менен биздин заманга чейинки IV-III кылымдарга таандык экени айтылат. Объектти археолог жана тарыхчы Ф. А. Заднепровский 1950-жылдары изилдеп, анын эмгеги 1960-жылы жарыяланган. Материалда шаарчанын өлчөмү болжол менен 330 х 320 метр деп көрсөтүлгөн.",
+      "Городище Кара-Дарья - объект историко-культурного наследия возле села Тоготой. В местном материале оно датируется приблизительно IV-III веками до нашей эры. Объект исследовал археолог и историк Ф. А. Заднепровский в 1950-х годах; его работа была опубликована в 1960 году. Размеры составляют примерно 330 х 320 метров.",
+      "The Kara-Darya settlement is a historical-cultural heritage site near Togotoy. Local material dates it approximately to the fourth-third centuries BCE. Archaeologist and historian F. A. Zadneprovskiy studied it in the 1950s, and the material refers to publication of his work in 1960. The site measures approximately 330 by 320 metres."
+    ),
+    tourism: { lead: L("Тогуз-Булак - Тоготой айылынын жанындагы аталышы жана координаты такталган эс алуу жайы.", "Тогуз-Булак - зона отдыха возле села Тоготой с подтверждённым названием и координатами.", "Toguz-Bulak is a named recreation area near Togotoy with a supplied verified location."), items: [] },
+    investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Тоготой айылы, Кара-Кулжа району", "Село Тоготой, Кара-Кульджинский район", "Togotoy village, Kara-Kulja District"), related: [],
+  },
+  {
+    slug: "yntymak", name: "Ынтымак", nameRu: "Ынтымак", nameEn: "Yntymak", showInfo: true,
+    ...createLegacyVillageSections("yntymak", "Ынтымак", "Ынтымак", "Yntymak"),
+    tagline: L("Өзгөн районуна жакын мал чарбачылык айылы", "Животноводческое село рядом с Узгенским районом", "A livestock village near Uzgen District"),
+    intro: L(
+      "Ынтымак айылында 757 адам жана 130 кожолук жашайт. Айыл Өзгөн району менен чектешип, Өзгөн шаарына салыштырмалуу жакын жайгашкан. Негизги тиричилик багыты - мал чарбачылыгы.",
+      "В селе Ынтымак проживают 757 человек в 130 хозяйствах. Оно граничит с Узгенским районом и расположено сравнительно близко к городу Узген. Основное занятие - животноводство.",
+      "Yntymak has 757 residents and 130 households. It borders Uzgen District and is comparatively close to the city of Uzgen. Livestock farming is the main livelihood."
+    ),
+    info: [
+      { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("757", "757", "757") }, { label: INFO_HOUSEHOLDS, value: L("130", "130", "130") },
+      { label: INFO_ABOVE_SEA, value: L("1 144 м", "1 144 м", "1,144 m") }, { label: INFO_FROM_KARA_KULJA, value: L("23 км", "23 км", "23 km") }, { label: INFO_TRAVEL_TIME, value: L("30 мүнөт", "30 минут", "30 minutes") },
+      { label: INFO_VILLAGE_COORDINATES, value: L("40.7109361, 73.4145444", "40.7109361, 73.4145444", "40.7109361, 73.4145444") }, { label: INFO_ECONOMY, value: L("Мал чарбачылыгы", "Животноводство", "Livestock farming") },
+    ],
+    history: L("", "", ""), tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
+    mapNote: L("Ынтымак айылы, Кара-Кулжа району", "Село Ынтымак, Кара-Кульджинский район", "Yntymak village, Kara-Kulja District"), related: [],
   },
   {
     slug: "oy-tal",

@@ -79,6 +79,43 @@ const labels: Record<
   },
 };
 
+const sectionTitles: Record<
+  Lang,
+  {
+    passport: string;
+    nature: string;
+    infrastructure: string;
+    economy: string;
+    history: string;
+    gallery: string;
+  }
+> = {
+  kg: {
+    passport: "Айыл аймагы жөнүндө",
+    nature: "Жаратылыш",
+    infrastructure: "Социалдык инфраструктура",
+    economy: "Экономика",
+    history: "Тарых",
+    gallery: "Галерея",
+  },
+  ru: {
+    passport: "Об айыл аймаке",
+    nature: "Природа",
+    infrastructure: "Социальная инфраструктура",
+    economy: "Экономика",
+    history: "История",
+    gallery: "Галерея",
+  },
+  en: {
+    passport: "About the aiyl aimak",
+    nature: "Nature",
+    infrastructure: "Social infrastructure",
+    economy: "Economy",
+    history: "History",
+    gallery: "Gallery",
+  },
+};
+
 function TerritoryNotFound() {
   const { lang } = useI18n();
   const l = labels[lang];
@@ -100,6 +137,7 @@ function TerritoryPage() {
   const territory = Route.useLoaderData() as Territory;
   const { lang, t } = useI18n();
   const l = labels[lang];
+  const sectionTitle = sectionTitles[lang];
   const territoryName = displayTerritoryName(territory, lang);
   const detail = territory.detail;
   const people = getPeopleForTerritory(territory.slug);
@@ -141,51 +179,68 @@ function TerritoryPage() {
         </div>
       </section>
 
-      {detail?.passport ? (
-        <SectionShell eyebrow={territoryName} title={pick(detail.passport.title, lang)} compact>
-          <PassportSection passport={detail.passport} lang={lang} />
-        </SectionShell>
-      ) : null}
+      <SectionShell
+        eyebrow={territoryName}
+        title={detail?.passport ? pick(detail.passport.title, lang) : sectionTitle.passport}
+        compact
+      >
+        {detail?.passport ? <PassportSection passport={detail.passport} lang={lang} /> : null}
+      </SectionShell>
 
       <VillageList territory={territory} territoryName={territoryName} lang={lang} labels={l} />
 
-      {detail?.nature ? (
-        <SectionShell eyebrow={territoryName} title={pick(detail.nature.title, lang)} intro={pick(detail.nature.intro, lang)}>
+      <SectionShell
+        eyebrow={territoryName}
+        title={detail?.nature ? pick(detail.nature.title, lang) : sectionTitle.nature}
+        intro={detail?.nature ? pick(detail.nature.intro, lang) : undefined}
+      >
+        {detail?.nature?.places.length ? (
           <NatureSection territory={territory} places={detail.nature.places} lang={lang} />
-        </SectionShell>
-      ) : null}
+        ) : null}
+      </SectionShell>
 
-      {detail?.infrastructure ? (
-        <SectionShell eyebrow={territoryName} title={pick(detail.infrastructure.title, lang)} compact>
+      <SectionShell
+        eyebrow={territoryName}
+        title={detail?.infrastructure ? pick(detail.infrastructure.title, lang) : sectionTitle.infrastructure}
+        compact
+      >
+        {detail?.infrastructure?.groups.length ? (
           <InfrastructureSection groups={detail.infrastructure.groups} lang={lang} />
-        </SectionShell>
-      ) : null}
+        ) : null}
+      </SectionShell>
 
-      {detail?.economy ? (
-        <SectionShell eyebrow={territoryName} title={pick(detail.economy.title, lang)}>
+      <SectionShell
+        eyebrow={territoryName}
+        title={detail?.economy ? pick(detail.economy.title, lang) : sectionTitle.economy}
+      >
+        {detail?.economy ? (
           <EconomySection body={detail.economy.body} profile={detail.economy.profile} lang={lang} />
-        </SectionShell>
-      ) : null}
+        ) : null}
+      </SectionShell>
 
-      {detail?.history ? (
-        <SectionShell eyebrow={territoryName} title={pick(detail.history.title, lang)}>
+      <SectionShell
+        eyebrow={territoryName}
+        title={detail?.history ? pick(detail.history.title, lang) : sectionTitle.history}
+      >
+        {detail?.history && pick(detail.history.body, lang) ? (
           <p className="max-w-4xl text-base leading-8 text-muted-foreground md:text-lg md:leading-9">
             {pick(detail.history.body, lang)}
           </p>
-        </SectionShell>
-      ) : null}
+        ) : null}
+      </SectionShell>
 
-      {people.length ? (
-        <SectionShell eyebrow={territoryName} title={t("nav.people")}>
-          <PeopleSection people={people} lang={lang} />
-        </SectionShell>
-      ) : null}
+      <SectionShell eyebrow={territoryName} title={t("nav.people")}>
+        {people.length ? <PeopleSection people={people} lang={lang} /> : null}
+      </SectionShell>
 
-      {detail?.gallery ? (
-        <SectionShell eyebrow={territoryName} title={pick(detail.gallery.title, lang)}>
+      <SectionShell
+        eyebrow={territoryName}
+        title={detail?.gallery ? pick(detail.gallery.title, lang) : sectionTitle.gallery}
+      >
+        {detail?.gallery?.images.length ? (
           <GallerySection territory={territory} images={detail.gallery.images} lang={lang} />
-        </SectionShell>
-      ) : null}
+        ) : null}
+      </SectionShell>
     </SiteLayout>
   );
 }
