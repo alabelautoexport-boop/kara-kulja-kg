@@ -2,6 +2,26 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 export type Lang = "kg" | "ru" | "en";
 
+const STRUCTURED_VALUE_STATUS: Record<Lang, string> = {
+  kg: "Такталууда",
+  ru: "Уточняется",
+  en: "To be confirmed",
+};
+
+const STRUCTURED_ABSENCE_STATUS: Record<Lang, string> = {
+  kg: "Жок",
+  ru: "Нет",
+  en: "None",
+};
+
+export function displayStructuredValue(value: string | null | undefined, lang: Lang) {
+  return value?.trim() ? value : STRUCTURED_VALUE_STATUS[lang];
+}
+
+export function displayStructuredAbsence(lang: Lang) {
+  return STRUCTURED_ABSENCE_STATUS[lang];
+}
+
 type Dict = Record<string, string>;
 
 const SLOGAN_KG = "Көркү, наркы өзгөлөрдөн башкараак\nКара-Кулжа ушул жерден башталат.";

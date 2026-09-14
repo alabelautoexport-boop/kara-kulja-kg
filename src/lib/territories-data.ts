@@ -113,6 +113,20 @@ const territoryCopy = (name: string, nameEn: string, tone: string): Localized<st
     `${nameEn} - villages unfold at the pace of the valley.`,
   );
 
+const KARA_GUZ_DETAIL: TerritoryDetail = {
+  heroStats: [
+    { value: L("10 267", "10 267", "10,267"), label: L("калк", "население", "population") },
+    { value: L("8", "8", "8"), label: L("айыл", "сёл", "villages") },
+    { value: L("1 860", "1 860", "1,860"), label: L("кожолук", "хозяйств", "households") },
+    { value: L("", "", ""), label: L("жалпы аянт", "общая площадь", "total area") },
+  ],
+  passport: {
+    title: L("Айыл аймагы жөнүндө", "Об айыл аймаке", "About the aiyl aimak"),
+    reference: L("Негизги маалымат - 2026-жыл", "Основная информация - 2026 год", "Key information - 2026"),
+    groups: [],
+  },
+};
+
 
 const KARA_KOCHKOR_DETAIL: TerritoryDetail = {
   villageCardVisual: "neutral",
@@ -364,6 +378,101 @@ const OI_TAL_DETAIL: TerritoryDetail = {
   },
 };
 
+const RYSPAI_ABDYKADYROV_DETAIL: TerritoryDetail = {
+  villageCardVisual: "neutral",
+  heroStats: [
+    { value: L("4 968", "4 968", "4,968"), label: L("калк", "население", "population") },
+    { value: L("7", "7", "7"), label: L("айыл", "сёл", "villages") },
+    { value: L("", "", ""), label: L("кожолук", "хозяйств", "households") },
+    { value: L("20 073 га", "20 073 га", "20,073 ha"), label: L("жалпы аянт", "общая площадь", "total area") },
+  ],
+  passport: {
+    title: L("Айыл аймагы жөнүндө", "Об айыл аймаке", "About the aiyl aimak"),
+    reference: L(
+      "Негизги маалымат - 2026-жылдын 1-январына карата",
+      "Основная информация - по состоянию на 1 января 2026 года",
+      "Key information - as of 1 January 2026",
+    ),
+    groups: [{
+      title: L("Негизги маалымат", "Основная информация", "Key information"),
+      items: [
+        { label: L("Облусу", "Область", "Region"), value: L("Ош облусу", "Ошская область", "Osh Region") },
+        { label: L("Району", "Район", "District"), value: L("Кара-Кулжа району", "Кара-Кульджинский район", "Kara-Kulja District") },
+        { label: L("Административдик борбору", "Административный центр", "Administrative centre"), value: L("Тогуз-Булак айылы", "село Тогуз-Булак", "Toguz-Bulak village") },
+        { label: L("Калкы", "Население", "Population"), value: L("4 968", "4 968", "4,968") },
+        { label: L("Айылдардын саны", "Количество сёл", "Number of villages"), value: L("7", "7", "7") },
+        { label: L("Жалпы аянты", "Общая площадь", "Total area"), value: L("20 073 га", "20 073 га", "20,073 ha") },
+      ],
+    }],
+  },
+  nature: {
+    title: L("Жаратылыш", "Природа", "Nature"),
+    intro: L(
+      "Аймактын болжол менен 98 пайызын тоолор түзөт. Климаты континенттик, кышы суук жана кар калың түшөт. Январдын орточо температурасы болжол менен -15 Cден -20 Cге чейин, июлда +25 Cге жакын. Жылдык орточо жаан-чачын болжол менен 350 мм. Тоолуу жаратылыш экотуризмди өнүктүрүүгө мүмкүнчүлүк берет.",
+      "Около 98 процентов территории занимают горы. Климат континентальный, зима холодная и снежная. Средняя температура января составляет примерно от -15 C до -20 C, июля - около +25 C. Среднегодовое количество осадков - примерно 350 мм. Горная природа создаёт потенциал для развития экотуризма.",
+      "Mountains cover approximately 98 percent of the territory. The climate is continental, with cold, snowy winters. Average temperatures are approximately -15 C to -20 C in January and around +25 C in July. Average annual precipitation is approximately 350 mm. The mountain environment offers potential for ecotourism development.",
+    ),
+    places: [],
+  },
+  infrastructure: {
+    title: L("Социалдык инфраструктура", "Социальная инфраструктура", "Social infrastructure"),
+    groups: [
+      {
+        title: L("Билим берүү", "Образование", "Education"),
+        primary: [
+          L("5 мектеп", "5 школ", "5 schools"),
+          L("911 окуучу", "911 учащихся", "911 students"),
+          L("4 бала бакча", "4 детских сада", "4 kindergartens"),
+        ],
+        secondary: [],
+      },
+      {
+        title: L("Саламаттык сактоо", "Здравоохранение", "Healthcare"),
+        primary: [
+          L("4 ФАП", "4 ФАП", "4 FAP clinics"),
+          L("2 ҮМТ", "2 ҮМТ", "2 ҮМТ facilities"),
+          L("1 тез жардам бөлүмү", "1 отделение скорой помощи", "1 ambulance department"),
+          L("2 тез жардам унаасы", "2 машины скорой помощи", "2 ambulances"),
+        ],
+        secondary: [],
+      },
+      {
+        title: L("Маданият", "Культура", "Culture"),
+        primary: [L("2 китепкана", "2 библиотеки", "2 libraries")],
+        secondary: [],
+      },
+      {
+        title: L("Спорт", "Спорт", "Sport"),
+        primary: [
+          L("4 жабык спорт зал", "4 крытых спортивных зала", "4 indoor sports halls"),
+          L("3 кичи футбол аянтчасы", "3 мини-футбольные площадки", "3 mini-football pitches"),
+        ],
+        secondary: [],
+      },
+    ],
+  },
+  economy: {
+    title: L("Экономика", "Экономика", "Economy"),
+    body: L(
+      "Аймактын негизги экономикалык багыты - айыл чарба. Мал чарбачылыгы маанилүү орунда турат; бодо мал, кой-эчки, жылкы жана үй канаттуулары багылат. Картошка, жашылча жана мөмө-жемиш өндүрүлөт.",
+      "Основное направление экономики территории - сельское хозяйство. Важное место занимает животноводство: разводят крупный рогатый скот, овец и коз, лошадей и домашнюю птицу. Выращивают картофель, овощи и фрукты.",
+      "Agriculture is the territory's main economic activity. Livestock farming is important, including cattle, sheep and goats, horses, and poultry. Potatoes, vegetables, and fruit are grown.",
+    ),
+    profile: [
+      { label: L("Негизги багыт", "Основное направление", "Main focus"), values: [L("Айыл чарба", "Сельское хозяйство", "Agriculture"), L("Мал чарбачылыгы", "Животноводство", "Livestock farming")] },
+      { label: L("Өстүрүлгөн азыктар", "Выращиваемая продукция", "Crops"), values: [L("Картошка", "Картофель", "Potatoes"), L("Жашылча", "Овощи", "Vegetables"), L("Мөмө-жемиш", "Фрукты", "Fruit")] },
+    ],
+  },
+  history: {
+    title: L("Тарых", "История", "History"),
+    body: L(
+      "Рыспай Абдыкадыров айыл аймагы 1996-жылдын 4-ноябрында түзүлгөн. Жергиликтүү булакта аймактын тарыхы мурдагы Сары-Булак айыл өкмөтү жана Калинин атындагы колхоз менен байланыштырылат.",
+      "Айыл аймак Рыспай Абдыкадыров был образован 4 ноября 1996 года. Местный источник связывает историю территории с бывшей Сары-Булакской сельской управой и колхозом имени Калинина.",
+      "Ryspai Abdykadyrov Aiyl Aimak was formed on 4 November 1996. A local source connects the territory's history with the former Sary-Bulak village administration and the Kalinin collective farm.",
+    ),
+  },
+};
+
 const YLAI_NATURE_CAPTION = L(
   "Ылай-Талаа айыл аймагынын жаратылышы",
   "Природа айыл аймака Ылай-Талаа",
@@ -590,9 +699,17 @@ export const TERRITORIES: Territory[] = [
     name: "Кара Гуз",
     nameRu: "Кара Гуз",
     nameEn: "Kara-Guz",
-    subtitle: L("Дыйкан жерлер жана жылуу өрөөн", "Земледельческие земли и тёплая долина", "Farmland and a warm valley"),
-    description: territoryCopy("Кара Гуз", "Kara-Guz", "айдоо талаалары менен эл эмгегинин аймагы"),
-    population: 10306,
+    subtitle: L(
+      "Дыйканчылык менен мал чарбачылык айкалышкан аймак",
+      "Территория, где сочетаются земледелие и животноводство",
+      "A territory where crop and livestock farming come together",
+    ),
+    description: L(
+      "Кара-Гуз - дыйканчылык менен мал чарбачылык айкалышкан берекелүү аймак. Бул жерде эл негизинен жер иштетип, мал багып, эмгек менен күн көрөт.",
+      "Кара-Гуз - плодородная территория, где сочетаются земледелие и животноводство. Здесь жители в основном обрабатывают землю, разводят скот и живут своим трудом.",
+      "Kara-Guz is a productive territory where crop and livestock farming come together. People here mainly cultivate the land, raise livestock, and make their living through their work.",
+    ),
+    population: 10267,
     image: territoryCardImg("kara-guz"),
     villages: [
       { name: "Жаңы-Талаа", nameRu: "Жаңы-Талаа", nameEn: "Jany-Talaa", slug: "zhany-talaa", population: 1192, order: 1 },
@@ -602,8 +719,9 @@ export const TERRITORIES: Territory[] = [
       { name: "Кара-Жыгач", nameRu: "Кара-Жыгач", nameEn: "Kara-Jygach", slug: "kara-zhygach", population: 1199, order: 5 },
       { name: "Насирдин", nameRu: "Насирдин", nameEn: "Nasirdin", slug: "nasirdin", population: 417, order: 6 },
       { name: "Кеңеш", nameRu: "Кеңеш", nameEn: "Kenesh", slug: "kenesh", population: 2930, order: 7 },
-      { name: "Пор", nameRu: "Пор", nameEn: "Por", slug: "por", population: 1795, order: 8 },
+      { name: "Пор", nameRu: "Пор", nameEn: "Por", slug: "por", population: 1756, order: 8 },
     ],
+    detail: KARA_GUZ_DETAIL,
   },
   {
     slug: "kara-kochkor",
@@ -666,19 +784,28 @@ export const TERRITORIES: Territory[] = [
     name: "Рыспай Абдыкадыров",
     nameRu: "Рыспай Абдыкадыров",
     nameEn: "Ryspai Abdykadyrov",
-    subtitle: L("Булактар жана жашыл ойдуңдар", "Родники и зелёные низины", "Springs and green hollows"),
-    description: territoryCopy("Рыспай Абдыкадыров", "Ryspai Abdykadyrov", "суунун үнү айылдарды бириктирген аймак"),
+    subtitle: L(
+      "Тоолуу аймак, айыл чарба жана маданий мурас",
+      "Горная территория, сельское хозяйство и культурное наследие",
+      "Mountain territory, agriculture, and cultural heritage",
+    ),
+    description: L(
+      "Рыспай Абдыкадыров айыл аймагы - жети айылды бириктирген тоолуу аймак. Жергиликтүү турмуштун негизин айыл чарба менен мал чарбачылыгы түзөт, ал эми Кызыл-Булак айылы Рыспай Абдыкадыровдун маданий мурасы менен белгилүү.",
+      "Айыл аймак Рыспай Абдыкадыров - горная территория, объединяющая семь сёл. Основу местной жизни составляют сельское хозяйство и животноводство, а село Кызыл-Булак известно культурным наследием Рыспая Абдыкадырова.",
+      "Ryspai Abdykadyrov Aiyl Aimak is a mountain territory uniting seven villages. Agriculture and livestock farming support local life, while Kyzyl-Bulak is known for the cultural legacy of Ryspai Abdykadyrov.",
+    ),
     population: 4968,
     image: territoryCardImg("ryspai-abdykadyrov"),
     villages: [
-      { name: "Сары-Булак", nameRu: "Сары-Булак", nameEn: "Sary-Bulak", slug: "sary-bulak", population: 676, order: 1 },
-      { name: "Кара-Булак", nameRu: "Кара-Булак", nameEn: "Kara-Bulak", slug: "kara-bulak", population: 696, order: 2 },
-      { name: "Конокбай-Талаа", nameRu: "Конокбай-Талаа", nameEn: "Konokbay-Talaa", slug: "konokbay-talaa", population: 714, order: 3 },
-      { name: "Кызыл-Булак", nameRu: "Кызыл-Булак", nameEn: "Kyzyl-Bulak", slug: "kyzyl-bulak", population: 398, order: 4 },
-      { name: "Сары-Күңгөй", nameRu: "Сары-Күңгөй", nameEn: "Sary-Kungoy", slug: "sary-kungoy", population: 950, order: 5 },
-      { name: "Тегерек-Саз", nameRu: "Тегерек-Саз", nameEn: "Tegerek-Saz", slug: "tegerek-saz", population: 780, order: 6 },
-      { name: "Тогуз-Булак", nameRu: "Тогуз-Булак", nameEn: "Toguz-Bulak", slug: "toguz-bulak", population: 754, order: 7 },
+      { name: "Сары-Күңгөй", nameRu: "Сары-Күңгөй", nameEn: "Sary-Kungoy", slug: "sary-kungoy", population: null, order: 1 },
+      { name: "Сары-Булак", nameRu: "Сары-Булак", nameEn: "Sary-Bulak", slug: "sary-bulak", population: null, order: 2 },
+      { name: "Тогуз-Булак", nameRu: "Тогуз-Булак", nameEn: "Toguz-Bulak", slug: "toguz-bulak", population: null, order: 3 },
+      { name: "Конокбай-Талаа", nameRu: "Конокбай-Талаа", nameEn: "Konokbay-Talaa", slug: "konokbay-talaa", population: null, order: 4 },
+      { name: "Тегерек-Саз", nameRu: "Тегерек-Саз", nameEn: "Tegerek-Saz", slug: "tegerek-saz", population: null, order: 5 },
+      { name: "Кара-Булак", nameRu: "Кара-Булак", nameEn: "Kara-Bulak", slug: "kara-bulak", population: null, order: 6 },
+      { name: "Кызыл-Булак", nameRu: "Кызыл-Булак", nameEn: "Kyzyl-Bulak", slug: "kyzyl-bulak", population: null, order: 7 },
     ],
+    detail: RYSPAI_ABDYKADYROV_DETAIL,
   },
   {
     slug: "ylai-talaa",

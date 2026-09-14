@@ -2,9 +2,16 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { SiteLayout } from "@/components/site/Layout";
 import { getVillageHeroUrl } from "@/lib/r2";
-import { displayVillageName, getVillage, VILLAGES, pick, type Village } from "@/lib/villages-data";
+import {
+  displayVillageName,
+  getVillage,
+  VILLAGES,
+  pick,
+  type Localized,
+  type Village,
+} from "@/lib/villages-data";
 import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
-import { useI18n } from "@/lib/i18n";
+import { displayStructuredValue, useI18n, type Lang } from "@/lib/i18n";
 import { getPeopleForVillage, type PersonProfile } from "@/lib/people-data";
 import {
   Users,
@@ -83,6 +90,80 @@ const ABOUT_LABEL = {
   ru: "О селе",
   en: "About the village",
 } as const;
+
+type VillageAboutKey = "population" | "households" | "elevation" | "districtDistance" | "travelTime" | "coordinates";
+
+const VILLAGE_ABOUT_LABELS: Record<Lang, Record<VillageAboutKey, string>> = {
+  kg: {
+    population: "Калкы",
+    households: "Кожолук саны",
+    elevation: "Деңиз деңгээлинен бийиктиги",
+    districtDistance: "Район борборунан аралык",
+    travelTime: "Жол жүрүү убактысы",
+    coordinates: "Айыл борборунун координаты",
+  },
+  ru: {
+    population: "Население",
+    households: "Количество хозяйств",
+    elevation: "Высота над уровнем моря",
+    districtDistance: "Расстояние до районного центра",
+    travelTime: "Время в пути",
+    coordinates: "Координаты центра села",
+  },
+  en: {
+    population: "Population",
+    households: "Households",
+    elevation: "Elevation above sea level",
+    districtDistance: "Distance to district center",
+    travelTime: "Travel time",
+    coordinates: "Village center coordinates",
+  },
+};
+
+const VILLAGE_ABOUT_ORDER: VillageAboutKey[] = [
+  "population",
+  "households",
+  "elevation",
+  "districtDistance",
+  "travelTime",
+  "coordinates",
+];
+
+const VILLAGE_INFO_KEYS: Record<string, VillageAboutKey> = {
+  "Калкы": "population",
+  "Кожолук": "households",
+  "Кожолук саны": "households",
+  "Бийиктиги": "elevation",
+  "Деңиз деңгээлинен": "elevation",
+  "Деңиз деңгээлинен бийиктиги": "elevation",
+  "Борборго чейин": "districtDistance",
+  "Кара-Кулжа айылынан": "districtDistance",
+  "Кара-Кулжа айылынан аралык": "districtDistance",
+  "Кара-Кулжадан түз сызык боюнча": "districtDistance",
+  "Район борборунан аралык": "districtDistance",
+  "Жол жүрүү убактысы": "travelTime",
+  "Айыл борборунун координаты": "coordinates",
+};
+
+function getVillageAboutItems(village: Village, lang: Lang) {
+  const values = new Map<VillageAboutKey, Localized<string>>();
+
+  village.info.forEach((item) => {
+    const key = VILLAGE_INFO_KEYS[item.label.kg];
+    if (key && !values.has(key)) values.set(key, item.value);
+  });
+
+  if (!values.has("population") && village.population != null) {
+    const value = new Intl.NumberFormat(lang === "en" ? "en-US" : "ru-RU").format(village.population);
+    values.set("population", { kg: value, ru: value, en: value });
+  }
+
+  return VILLAGE_ABOUT_ORDER.map((key) => ({
+    key,
+    label: VILLAGE_ABOUT_LABELS[lang][key],
+    value: values.get(key),
+  }));
+}
 
 const SECTIONS = [
   { id: "history", labelKey: "village.section.history", Icon: BookOpen },
@@ -202,6 +283,7 @@ function VillagePage() {
   const [mounted, setMounted] = useState(false);
   const territory = getTerritoryForVillage(v.slug);
   const villageName = displayVillageName(v, lang);
+  const aboutItems = getVillageAboutItems(v, lang);
   const territoryName = territory ? displayTerritoryName(territory, lang) : undefined;
   const centralPeople = getPeopleForVillage(v.slug);
   const relatedSlugs = getNeighborVillageSlugs(v.slug);
@@ -240,10 +322,7 @@ function VillagePage() {
           >
             {villageName}
           </h1>
-          <p className="mt-6 max-w-2xl font-display text-2xl font-light italic leading-[1.4] text-foreground/85 md:text-3xl">
-            «{pick(v.tagline, lang)}»
-          </p>
-          <p className="mt-8 max-w-xl text-base text-pretty text-muted-foreground md:text-lg">
+          <p className="mt-6 max-w-xl text-base text-pretty text-muted-foreground md:text-lg">
             {pick(v.intro, lang)}
           </p>
         </div>
@@ -260,20 +339,18 @@ function VillagePage() {
           <h2 className="mt-3 font-display text-4xl leading-tight md:text-[42px]">
             {ABOUT_LABEL[lang]}
           </h2>
-          {v.info.length ? (
-            <dl className="mt-10 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
-              {v.info.map((item) => (
-                <div key={pick(item.label, lang)} className="grid gap-1 border-t hairline py-4">
+          <dl className="mt-10 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+              {aboutItems.map((item) => (
+                <div key={item.key} className="grid min-w-0 gap-1 border-t hairline py-4">
                   <dt className="text-sm font-normal leading-6 text-[var(--beige)]/70">
-                    {pick(item.label, lang)}
+                    {item.label}
                   </dt>
-                  <dd className="text-base font-normal leading-6 text-foreground/85">
-                    {pick(item.value, lang)}
+                  <dd className="min-w-0 break-words text-base font-normal leading-6 text-foreground/85">
+                    {displayStructuredValue(item.value ? pick(item.value, lang) : undefined, lang)}
                   </dd>
                 </div>
               ))}
-            </dl>
-          ) : null}
+          </dl>
         </div>
       </section>
 
@@ -510,10 +587,7 @@ function VillagePage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8">
-                  <div>
-                    <p className="font-display text-3xl">{displayVillageName(r, lang)}</p>
-                    <p className="mt-2 font-display italic text-foreground/80">«{pick(r.tagline, lang)}»</p>
-                  </div>
+                  <p className="font-display text-3xl">{displayVillageName(r, lang)}</p>
                   <ArrowRight className="h-5 w-5 translate-y-[-2px] text-foreground/80 transition-transform group-hover:translate-x-1" />
                 </div>
               </Link>

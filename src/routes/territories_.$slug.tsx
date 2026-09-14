@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Activity, ArrowLeft, ArrowRight, BookOpen, GraduationCap, HeartPulse, Home, Map, MapPin, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, GraduationCap, HeartPulse, Home, Map as MapIcon, MapPin, Users } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import {
   Carousel,
@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useI18n, type Lang } from "@/lib/i18n";
+import { displayStructuredAbsence, displayStructuredValue, useI18n, type Lang } from "@/lib/i18n";
 import { getPeopleForTerritory, type PersonProfile } from "@/lib/people-data";
 import { getTerritoryHeroUrl, getTerritoryPhotoUrl } from "@/lib/r2";
 import {
@@ -18,6 +18,7 @@ import {
   formatPopulation,
   getTerritory,
   pick,
+  type Localized,
   type Territory,
   type TerritoryEconomyProfileItem,
   type TerritoryGalleryImage,
@@ -116,6 +117,138 @@ const sectionTitles: Record<
   },
 };
 
+const heroStatLabels: Record<Lang, readonly [string, string, string, string]> = {
+  kg: ["Калк", "Айыл", "Кожолук", "Жалпы аянт"],
+  ru: ["Население", "Сёла", "Хозяйства", "Общая площадь"],
+  en: ["Population", "Villages", "Households", "Total area"],
+};
+
+type TerritoryPassportKey =
+  | "region"
+  | "district"
+  | "administrativeCenter"
+  | "population"
+  | "villages"
+  | "households"
+  | "totalArea"
+  | "elevation"
+  | "districtDistance";
+
+const TERRITORY_PASSPORT_ORDER: TerritoryPassportKey[] = [
+  "region",
+  "district",
+  "administrativeCenter",
+  "population",
+  "villages",
+  "households",
+  "totalArea",
+  "elevation",
+  "districtDistance",
+];
+
+const TERRITORY_PASSPORT_LABELS: Record<Lang, Record<TerritoryPassportKey, string>> = {
+  kg: {
+    region: "Облусу",
+    district: "Району",
+    administrativeCenter: "Административдик борбору",
+    population: "Калкы",
+    villages: "Айылдардын саны",
+    households: "Кожолук саны",
+    totalArea: "Жалпы аянты",
+    elevation: "Деңиз деңгээлинен бийиктиги",
+    districtDistance: "Район борборунан аралык",
+  },
+  ru: {
+    region: "Область",
+    district: "Район",
+    administrativeCenter: "Административный центр",
+    population: "Население",
+    villages: "Количество сёл",
+    households: "Количество хозяйств",
+    totalArea: "Общая площадь",
+    elevation: "Высота над уровнем моря",
+    districtDistance: "Расстояние до районного центра",
+  },
+  en: {
+    region: "Region",
+    district: "District",
+    administrativeCenter: "Administrative center",
+    population: "Population",
+    villages: "Number of villages",
+    households: "Households",
+    totalArea: "Total area",
+    elevation: "Elevation above sea level",
+    districtDistance: "Distance to district center",
+  },
+};
+
+const TERRITORY_PASSPORT_KEYS: Record<string, TerritoryPassportKey> = {
+  "Облусу": "region",
+  "Району": "district",
+  "Административдик борбору": "administrativeCenter",
+  "Калкы": "population",
+  "Айылдары": "villages",
+  "Айылдардын саны": "villages",
+  "Кожолуктар": "households",
+  "Кожолук саны": "households",
+  "Жалпы аянт": "totalArea",
+  "Жалпы аянты": "totalArea",
+  "Деңиз деңгээлинен": "elevation",
+  "Деңиз деңгээлинен бийиктиги": "elevation",
+  "Район борборунан аралык": "districtDistance",
+};
+
+type InfrastructureMetricKey =
+  | "schools"
+  | "students"
+  | "kindergartens"
+  | "preschoolGroups"
+  | "fap"
+  | "familyMedicine"
+  | "ambulance"
+  | "cultureHouses"
+  | "libraries"
+  | "sportsFacilities";
+
+type InfrastructureGroupSchema = {
+  key: "education" | "healthcare" | "cultureSport";
+  title: Record<Lang, string>;
+  metrics: Array<{ key: InfrastructureMetricKey; label: Record<Lang, string> }>;
+};
+
+const INFRASTRUCTURE_SCHEMA: InfrastructureGroupSchema[] = [
+  {
+    key: "education",
+    title: { kg: "Билим берүү", ru: "Образование", en: "Education" },
+    metrics: [
+      { key: "schools", label: { kg: "Мектептер", ru: "Школы", en: "Schools" } },
+      { key: "students", label: { kg: "Окуучулар", ru: "Учащиеся", en: "Students" } },
+      { key: "kindergartens", label: { kg: "Бала бакчалар", ru: "Детские сады", en: "Kindergartens" } },
+      { key: "preschoolGroups", label: { kg: "Мектепке чейинки топтор", ru: "Дошкольные группы", en: "Preschool groups" } },
+    ],
+  },
+  {
+    key: "healthcare",
+    title: { kg: "Саламаттык сактоо", ru: "Здравоохранение", en: "Healthcare" },
+    metrics: [
+      { key: "fap", label: { kg: "ФАП", ru: "ФАП", en: "FAP clinics" } },
+      { key: "familyMedicine", label: { kg: "ҮДТ / ГСВ", ru: "ЦСМ / ГСВ", en: "Family medicine / GSV facilities" } },
+      { key: "ambulance", label: { kg: "Тез жардам", ru: "Скорая помощь", en: "Ambulance service" } },
+    ],
+  },
+  {
+    key: "cultureSport",
+    title: { kg: "Маданият жана спорт", ru: "Культура и спорт", en: "Culture and sport" },
+    metrics: [
+      { key: "cultureHouses", label: { kg: "Маданият үйлөрү / клубдар", ru: "Дома культуры / клубы", en: "Culture houses / clubs" } },
+      { key: "libraries", label: { kg: "Китепканалар", ru: "Библиотеки", en: "Libraries" } },
+      { key: "sportsFacilities", label: { kg: "Спорт объекттери", ru: "Спортивные объекты", en: "Sports facilities" } },
+    ],
+  },
+];
+
+const STRUCTURED_PRESENCE: Record<Lang, string> = { kg: "Бар", ru: "Есть", en: "Present" };
+
 function TerritoryNotFound() {
   const { lang } = useI18n();
   const l = labels[lang];
@@ -169,13 +302,10 @@ function TerritoryPage() {
           <h1 className="mt-6 font-display text-6xl leading-[0.98] text-balance text-foreground md:text-8xl">
             {territoryName}
           </h1>
-          <p className="mt-6 max-w-2xl font-display text-2xl font-light italic leading-[1.4] text-foreground/85 md:text-3xl">
-            {pick(territory.subtitle, lang)}
-          </p>
-          <p className="mt-8 max-w-2xl text-base text-pretty text-muted-foreground md:text-lg">
+          <p className="mt-6 max-w-2xl text-base text-pretty text-muted-foreground md:text-lg">
             {pick(territory.description, lang)}
           </p>
-          <HeroStats territory={territory} lang={lang} labels={l} />
+          <HeroStats territory={territory} lang={lang} />
         </div>
       </section>
 
@@ -184,7 +314,7 @@ function TerritoryPage() {
         title={detail?.passport ? pick(detail.passport.title, lang) : sectionTitle.passport}
         compact
       >
-        {detail?.passport ? <PassportSection passport={detail.passport} lang={lang} /> : null}
+        <PassportSection territory={territory} passport={detail?.passport} lang={lang} />
       </SectionShell>
 
       <VillageList territory={territory} territoryName={territoryName} lang={lang} labels={l} />
@@ -204,9 +334,7 @@ function TerritoryPage() {
         title={detail?.infrastructure ? pick(detail.infrastructure.title, lang) : sectionTitle.infrastructure}
         compact
       >
-        {detail?.infrastructure?.groups.length ? (
-          <InfrastructureSection groups={detail.infrastructure.groups} lang={lang} />
-        ) : null}
+        <InfrastructureSection groups={detail?.infrastructure?.groups ?? []} lang={lang} />
       </SectionShell>
 
       <SectionShell
@@ -248,44 +376,34 @@ function TerritoryPage() {
 function HeroStats({
   territory,
   lang,
-  labels: l,
 }: {
   territory: Territory;
   lang: Lang;
-  labels: (typeof labels)[Lang];
 }) {
   const detailStats = territory.detail?.heroStats;
-
-  if (detailStats?.length) {
-    const statIcons = [Users, MapPin, Home, Map] as const;
-
-    return (
-      <div className="mt-10 flex flex-wrap gap-3 text-xs text-muted-foreground">
-        {detailStats.map((stat, index) => {
-          const Icon = statIcons[index] ?? Users;
-
-          return (
-            <span key={`${pick(stat.label, lang)}-${pick(stat.value, lang)}`} className="inline-flex items-center gap-2 border hairline bg-background/35 px-3 py-2 font-normal backdrop-blur-md">
-              <Icon className="h-3.5 w-3.5 shrink-0 text-[var(--beige)]/70" strokeWidth={1.25} />
-              <span>{pick(stat.value, lang)}</span>
-              <span>{pick(stat.label, lang)}</span>
-            </span>
-          );
-        })}
-      </div>
-    );
-  }
+  const statIcons = [Users, MapPin, Home, MapIcon] as const;
+  const fallbackValues = [formatPopulation(territory.population), String(territory.villages.length), "", ""];
+  const stats = heroStatLabels[lang].map((label, index) => ({
+    label,
+    value: displayStructuredValue(
+      detailStats?.[index] ? pick(detailStats[index].value, lang) : fallbackValues[index],
+      lang,
+    ),
+    Icon: statIcons[index],
+  }));
 
   return (
     <div className="mt-10 flex flex-wrap gap-3 text-xs text-muted-foreground">
-      <span className="inline-flex items-center gap-2 border hairline bg-background/35 px-3 py-2 backdrop-blur-md">
-        <Users className="h-3.5 w-3.5 text-[var(--beige)]/80" strokeWidth={1.25} />
-        {formatPopulation(territory.population)} {l.population}
-      </span>
-      <span className="inline-flex items-center gap-2 border hairline bg-background/35 px-3 py-2 backdrop-blur-md">
-        <MapPin className="h-3.5 w-3.5 text-[var(--beige)]/80" strokeWidth={1.25} />
-        {territory.villages.length} {l.villages}
-      </span>
+      {stats.map(({ label, value, Icon }) => (
+        <span
+          key={label}
+          className="inline-flex items-center gap-2 border hairline bg-background/35 px-3 py-2 font-normal backdrop-blur-md"
+        >
+          <Icon className="h-3.5 w-3.5 shrink-0 text-[var(--beige)]/70" strokeWidth={1.25} />
+          <span>{value}</span>
+          <span>{label}</span>
+        </span>
+      ))}
     </div>
   );
 }
@@ -317,30 +435,68 @@ function SectionShell({
   );
 }
 
-function PassportSection({
-  passport,
-  lang,
-}: {
-  passport: {
-    reference: TerritoryTextValue["value"];
-    groups: TerritoryProfileGroup[];
+type TerritoryPassport = {
+  reference: TerritoryTextValue["value"];
+  groups: TerritoryProfileGroup[];
+};
+
+const localizedValue = (kg: string, ru = kg, en = kg): Localized<string> => ({ kg, ru, en });
+const hasLocalizedValue = (value?: Localized<string>) =>
+  Boolean(value && Object.values(value).some((part) => part.trim()));
+
+function getTerritoryPassportItems(territory: Territory) {
+  const sourceItems = territory.detail?.passport?.groups.flatMap((group) => group.items) ?? [];
+  const sourceByKey = new Map<TerritoryPassportKey, TerritoryTextValue>();
+
+  sourceItems.forEach((item) => {
+    const key = TERRITORY_PASSPORT_KEYS[item.label.kg];
+    if (key && !sourceByKey.has(key)) sourceByKey.set(key, item);
+  });
+
+  const heroStats = territory.detail?.heroStats;
+  const populationKgRu = new Intl.NumberFormat("ru-RU").format(territory.population);
+  const populationEn = new Intl.NumberFormat("en-US").format(territory.population);
+  const fallbacks: Partial<Record<TerritoryPassportKey, Localized<string>>> = {
+    population: heroStats?.[0]?.value ?? localizedValue(populationKgRu, populationKgRu, populationEn),
+    villages: heroStats?.[1]?.value ?? localizedValue(String(territory.villages.length)),
+    households: heroStats?.[2]?.value,
+    totalArea: heroStats?.[3]?.value,
   };
-  lang: Lang;
-}) {
-  const items = passport.groups.flatMap((group) => group.items);
+
+  return TERRITORY_PASSPORT_ORDER.map((key) => {
+    const source = sourceByKey.get(key);
+    const value = hasLocalizedValue(source?.value) ? source!.value : fallbacks[key] ?? localizedValue("");
+
+    return {
+      key,
+      item: {
+        label: {
+          kg: TERRITORY_PASSPORT_LABELS.kg[key],
+          ru: TERRITORY_PASSPORT_LABELS.ru[key],
+          en: TERRITORY_PASSPORT_LABELS.en[key],
+        },
+        value,
+        links: source?.links,
+      } satisfies TerritoryTextValue,
+    };
+  });
+}
+
+function PassportSection({ territory, passport, lang }: { territory: Territory; passport?: TerritoryPassport; lang: Lang }) {
+  const items = getTerritoryPassportItems(territory);
 
   return (
     <div className="space-y-6">
-      <p className="text-sm leading-6 text-muted-foreground">{pick(passport.reference, lang)}</p>
+      {passport ? <p className="text-sm leading-6 text-muted-foreground">{pick(passport.reference, lang)}</p> : null}
 
       <dl className="grid gap-x-8 sm:grid-cols-2 xl:grid-cols-3">
-        {items.map((item) => (
+        {items.map(({ key, item }) => (
           <div
-            key={pick(item.label, lang)}
+            key={key}
             className={`grid gap-1 border-t hairline py-4 sm:grid-cols-[minmax(128px,0.42fr)_1fr] sm:gap-4 ${item.links?.length ? "sm:col-span-2 xl:col-span-3" : ""}`}
           >
             <dt className="text-base font-normal leading-6 text-[var(--beige)]/70 md:text-[17px]">{pick(item.label, lang)}</dt>
-            <dd className="min-w-0 text-base font-normal leading-6 text-foreground/85 md:text-[17px]">
+            <dd className="min-w-0 break-words text-base font-normal leading-6 text-foreground/85 md:text-[17px]">
               <PassportValue item={item} lang={lang} />
             </dd>
           </div>
@@ -351,7 +507,7 @@ function PassportSection({
 }
 
 function PassportValue({ item, lang }: { item: TerritoryTextValue; lang: Lang }) {
-  if (!item.links?.length) return <>{pick(item.value, lang)}</>;
+  if (!item.links?.length) return <>{displayStructuredValue(pick(item.value, lang), lang)}</>;
 
   return (
     <span className="flex flex-wrap gap-x-3 gap-y-2">
@@ -494,25 +650,86 @@ function NatureSection({ territory, places, lang }: { territory: Territory; plac
   );
 }
 
+type InfrastructureSourceItem = {
+  group: string;
+  value: Localized<string>;
+};
+
+function matchesInfrastructureMetric(metric: InfrastructureMetricKey, item: InfrastructureSourceItem) {
+  const group = item.group.toLocaleLowerCase("ky-KG");
+  const value = item.value.kg.toLocaleLowerCase("ky-KG");
+  const education = group.includes("билим");
+  const healthcare = group.includes("саламаттык");
+  const culture = group.includes("маданият");
+  const sport = group.includes("спорт");
+
+  switch (metric) {
+    case "schools":
+      return education && value.includes("мектеп") && !value.includes("мектепке") && !value.includes("окуучу") && !value.includes("орун");
+    case "students":
+      return education && value.includes("окуучу");
+    case "kindergartens":
+      return education && (value.includes("бала бакча") || value.includes("мектепке чейинки мекеме"));
+    case "preschoolGroups":
+      return education && value.includes("мектепке чейинки топ");
+    case "fap":
+      return healthcare && value.includes("фап");
+    case "familyMedicine":
+      return healthcare && (value.includes("үдт") || value.includes("гсв") || value.includes("үй-бүлөлүк медицина") || value.includes("үй-бүлөлүк дарыгер"));
+    case "ambulance":
+      return healthcare && value.includes("тез жардам");
+    case "cultureHouses":
+      return culture && (value.includes("маданият үй") || value.includes("клуб"));
+    case "libraries":
+      return culture && value.includes("китепкана");
+    case "sportsFacilities":
+      return sport;
+  }
+}
+
+function getInfrastructureMetricValue(
+  metric: InfrastructureMetricKey,
+  sourceItems: InfrastructureSourceItem[],
+  lang: Lang,
+) {
+  const matches = sourceItems.filter((item) => matchesInfrastructureMetric(metric, item));
+  if (!matches.length) return undefined;
+
+  if (matches.every((item) => item.value.kg.toLocaleLowerCase("ky-KG").includes("жок"))) {
+    return displayStructuredAbsence(lang);
+  }
+
+  if (matches.length > 1) return matches.map((item) => pick(item.value, lang)).join("; ");
+
+  const value = pick(matches[0].value, lang);
+  const numericValue = value.match(/^([\d][\d\s.,-]*)\s+/)?.[1]?.trim();
+  return numericValue || STRUCTURED_PRESENCE[lang];
+}
+
 function InfrastructureSection({ groups, lang }: { groups: TerritoryInfrastructureGroup[]; lang: Lang }) {
-  const groupIcons = [GraduationCap, HeartPulse, BookOpen, Activity] as const;
+  const groupIcons = [GraduationCap, HeartPulse, BookOpen] as const;
+  const sourceItems = groups.flatMap((group) =>
+    [...group.primary, ...group.secondary].map((value) => ({ group: group.title.kg, value })),
+  );
 
   return (
     <div className="grid gap-x-8 gap-y-6 lg:grid-cols-2">
-      {groups.map((group, index) => {
-        const Icon = groupIcons[index] ?? BookOpen;
-        const visibleItems = [...group.primary, ...group.secondary];
+      {INFRASTRUCTURE_SCHEMA.map((group, index) => {
+        const Icon = groupIcons[index];
 
         return (
-          <article key={pick(group.title, lang)} className="border-t hairline pt-4">
+          <article key={group.key} className="border-t hairline pt-4">
             <h3 className="flex items-center gap-3 font-display text-xl font-normal leading-6 text-[var(--beige)]/75 md:text-[22px]">
               <Icon className="h-4 w-4 shrink-0 text-[var(--beige)]/70" strokeWidth={1.25} />
-              <span>{pick(group.title, lang)}</span>
+              <span>{group.title[lang]}</span>
             </h3>
-            <ul className="mt-4 grid gap-x-8 text-base font-normal leading-6 text-foreground/85 sm:grid-cols-2 md:text-[17px]">
-              {visibleItems.map((item) => (
-                <li key={pick(item, lang)} className="border-t hairline py-3.5">
-                  {pick(item, lang)}
+            <ul className="mt-4 text-base font-normal leading-6 text-foreground/85 md:text-[17px]">
+              {group.metrics.map((metric) => (
+                <li key={metric.key} className="grid min-w-0 gap-1 border-t hairline py-3.5 sm:grid-cols-[minmax(160px,0.48fr)_1fr] sm:gap-4">
+                  <span className="text-[var(--beige)]/70">{metric.label[lang]}</span>
+                  <span className="min-w-0 break-words">
+                    {displayStructuredValue(getInfrastructureMetricValue(metric.key, sourceItems, lang), lang)}
+                  </span>
                 </li>
               ))}
             </ul>

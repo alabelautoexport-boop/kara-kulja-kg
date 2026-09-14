@@ -120,6 +120,8 @@ export const PEOPLE: PersonProfile[] = [
       "Талантливый композитор, исполнитель и музыкант, ставший легендой кыргызской музыки. Его песни вошли в золотое наследие кыргызской культуры и до сих пор любимы народом.",
       "A talented composer, performer, and musician who became a legend of Kyrgyz music. His songs became part of the golden heritage of Kyrgyz culture and remain beloved by the people to this day.",
     ),
+    territorySlugs: ["ryspai-abdykadyrov"],
+    villageSlugs: ["kyzyl-bulak"],
   },
   {
     slug: "torobek-abakirov",
@@ -265,6 +267,42 @@ export const PEOPLE: PersonProfile[] = [
       "1946-жылы Терек айылында төрөлгөн обончу, аткаруучу жана коомдук ишмер. Көп жылдар бою Кара-Кулжа районунун маданият тармагында эмгектенип, аймактагы маданий турмуштун өнүгүшүнө олуттуу салым кошкон.",
       "Композитор, исполнитель и общественный деятель, родился в 1946 году в селе Терек. Много лет работал в сфере культуры Кара-Кулжинского района и внёс значительный вклад в развитие культурной жизни региона.",
       "A composer, performer and public figure born in 1946 in Terek. He worked for many years in the cultural sector of Kara-Kulja District and made a significant contribution to the region's cultural life.",
+    ),
+  },
+  {
+    slug: "anara-saipbekova",
+    name: L("Анара Саипбекова", "Анара Саипбекова", "Anara Saipbekova"),
+    role: L(
+      "Физик, математик, профессор жана изилдөөчү",
+      "Физик, математик, профессор и исследователь",
+      "Physicist, mathematician, professor, and researcher",
+    ),
+    territorySlugs: ["kara-guz"],
+    villageSlugs: ["zhetim-dobo"],
+    featuredOnHome: false,
+    featuredInPeople: false,
+    body: L(
+      "1955-жылдын 13-январында Жетим-Дөбө айылында төрөлгөн физик, математик, профессор жана изилдөөчү. Ош мамлекеттик университетинде жана Улуттук илимдер академиясынын тутумунда эмгектенип, сейсмология жана колдонмо илимий изилдөөлөргө салым кошкон.",
+      "Физик, математик, профессор и исследователь, родилась 13 января 1955 года в селе Жетим-Дөбө. Работала в Ошском государственном университете и системе Национальной академии наук, внесла вклад в сейсмологию и прикладные научные исследования.",
+      "A physicist, mathematician, professor, and researcher born in Zhetim-Dobo on 13 January 1955. She worked at Osh State University and within the National Academy of Sciences system, contributing to seismology and applied scientific research.",
+    ),
+  },
+  {
+    slug: "amanilla-saryev",
+    name: L("Аманилла Сарыев", "Аманилла Сарыев", "Amanilla Saryev"),
+    role: L(
+      "Орус тили жана адабияты мугалими, автор",
+      "Учитель русского языка и литературы, автор",
+      "Russian language and literature teacher and author",
+    ),
+    territorySlugs: ["kara-guz"],
+    villageSlugs: ["kenesh"],
+    featuredOnHome: false,
+    featuredInPeople: false,
+    body: L(
+      "1955-жылдын 19-мартында төрөлүп, 2026-жылы дүйнөдөн кайткан орус тили жана адабияты мугалими, усулдук эмгектердин жана жети китептин автору. Кеңеш айылынын билим берүү жана коомдук иштерине салым кошкон.",
+      "Учитель русского языка и литературы, автор методических работ и семи книг, родился 19 марта 1955 года и ушёл из жизни в 2026 году. Внёс вклад в образование и общественную жизнь села Кеңеш.",
+      "A Russian language and literature teacher and author of methodological works and seven books, born on 19 March 1955 and deceased in 2026. He contributed to education and community life in Kenesh.",
     ),
   },
   {

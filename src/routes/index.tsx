@@ -321,10 +321,7 @@ function Villages() {
                 </div>
               </div>
               <div className="flex items-end justify-between gap-3 p-6">
-                <div>
-                  <div className="font-display text-2xl">{displayTerritoryName(v, lang)}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{pick(v.subtitle, lang)}</div>
-                </div>
+                <div className="font-display text-2xl">{displayTerritoryName(v, lang)}</div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
               </div>
             </Link>

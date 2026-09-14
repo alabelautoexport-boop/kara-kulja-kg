@@ -3,7 +3,7 @@ import { ArrowRight, MapPin, Users } from "lucide-react";
 import { PageHero, SiteLayout } from "@/components/site/Layout";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { getPageHeroUrl } from "@/lib/r2";
-import { TERRITORIES, displayTerritoryName, formatPopulation, pick } from "@/lib/territories-data";
+import { TERRITORIES, displayTerritoryName, formatPopulation } from "@/lib/territories-data";
 
 const territoriesHeroImg = getPageHeroUrl("territories");
 
@@ -53,10 +53,7 @@ export function TerritoriesLanding() {
                   </div>
 
                   <div>
-                    <p className="max-w-lg font-display text-xl font-light italic leading-[1.45] text-foreground/85 md:text-2xl">
-                      {pick(territory.subtitle, lang)}
-                    </p>
-                    <h2 className="mt-5 font-display text-5xl leading-[0.98] text-foreground md:text-7xl">
+                    <h2 className="font-display text-5xl leading-[0.98] text-foreground md:text-7xl">
                       {displayTerritoryName(territory, lang)}
                     </h2>
                     <div className="mt-8 flex flex-wrap gap-3 text-xs text-muted-foreground">
