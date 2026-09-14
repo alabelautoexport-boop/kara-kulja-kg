@@ -165,6 +165,7 @@ const MANUAL_VERIFIED_VILLAGES: Record<
   oktyabr: { lat: 40.6827778, lng: 73.4397222, source: "Wikipedia", override: true },
   togotoy: { lat: 40.665, lng: 73.4325, source: "Wikipedia", override: true },
   yntymak: { lat: 40.7109361, lng: 73.4145444, source: "Kara-Kochkor local administration", override: true },
+  kalmatay: { lat: 40.6124083, lng: 73.4627611, source: "Kara-Guz local administration", override: true },
   sharkyratma: { lat: 40.54079, lng: 73.647869, source: "2GIS verified" },
   "kyzyl-bulak": { lat: 40.44267, lng: 73.59476, source: "2GIS verified" },
   "oy-tal": { lat: 40.42714, lng: 74.10085, source: "Oi-Tal local material", override: true },

@@ -92,9 +92,9 @@ export const PEOPLE: PersonProfile[] = [
     featuredOnHome: false,
     featuredInPeople: false,
     body: L(
-      "1940-жылы Ак-Кыя айылында төрөлгөн спортчу жана марафончу. 1971-жылы марафон боюнча СССР спортунун мастери наамына жетип, ошол жылы СССРдин мыкты он марафончусунун катарына кирген. 1977-жылы каза болгон.",
-      "Спортсмен и марафонец, родился в 1940 году в селе Ак-Кыя. В 1971 году получил звание мастера спорта СССР по марафону и в том же году вошёл в десятку лучших марафонцев СССР. Умер в 1977 году.",
-      "An athlete and marathon runner born in Ak-Kyya in 1940. In 1971 he became a USSR Master of Sport in the marathon and ranked among the ten leading Soviet marathon runners that year. He died in 1977."
+      "1940-жылы Ак-Кыя айылында төрөлгөн спортчу, марафончу жана машыктыруучу. Марафон боюнча СССРдин спорт чебери болуп, ири союздук кросс жана марафон мелдештерине катышкан; 1971-жылы СССРдин мыкты он марафончусунун катарына кирген. 1977-жылдын 12-апрелинде каза болгон.",
+      "Спортсмен, марафонец и тренер, родился в 1940 году в селе Ак-Кыя. Стал мастером спорта СССР по марафону, участвовал в крупных всесоюзных соревнованиях по кроссу и марафону; в 1971 году вошёл в десятку лучших марафонцев СССР. Умер 12 апреля 1977 года.",
+      "An athlete, marathon runner, and coach born in Ak-Kyya in 1940. He became a USSR Master of Sport in the marathon, competed in major Soviet cross-country and marathon events, and ranked among the ten leading Soviet marathon runners in 1971. He died on 12 April 1977."
     ),
   },
   {
@@ -105,9 +105,9 @@ export const PEOPLE: PersonProfile[] = [
     featuredOnHome: false,
     featuredInPeople: false,
     body: L(
-      "1951-жылы Ак-Кыя айылында төрөлгөн агартуучу, социалдык тармактын кызматкери жана автор. Билим берүү жана райондук мамлекеттик башкаруу тармактарында эмгектенип, ырларды жана адабий чыгармаларды жазган.",
-      "Педагог, работник социальной сферы и автор, родился в 1951 году в селе Ак-Кыя. Работал в сфере образования и районного государственного управления, писал стихи и литературные произведения.",
-      "An educator, social-sector worker, and author born in Ak-Kyya in 1951. He worked in education and district public administration and wrote poetry and literary works."
+      "1951-жылдын 25-мартында Ак-Кыя айылында төрөлгөн агартуучу, коомдук жана социалдык тармактын кызматкери, автор. 1975-жылы КМУнун филология факультетин бүтүрүп, мугалим, усулчу, мектеп директору жана райондук билим берүү жетекчиси болуп иштеген, ошондой эле райондук кеңеште жана мамлекеттик кызматта эмгектенген. Ыр жыйнактарынын жана адабий чыгармалардын автору.",
+      "Педагог, общественный деятель, работник социальной сферы и автор, родился 25 марта 1951 года в селе Ак-Кыя. В 1975 году окончил филологический факультет КГУ, работал учителем, методистом, директором школы и руководителем районного образования, а также в районном совете и на государственной службе. Автор поэтических сборников и литературных произведений.",
+      "An educator, public and social-service figure, and author born in Ak-Kyya on 25 March 1951. After graduating from the KSU Faculty of Philology in 1975, he worked as a teacher, methodologist, school director, and district education leader, as well as in the district council and public service. He authored poetry collections and literary works."
     ),
   },
   {

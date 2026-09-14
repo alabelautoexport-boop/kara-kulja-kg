@@ -291,9 +291,9 @@ const DETAILED_VILLAGES: Village[] = [
     ...createLegacyVillageSections("ak-kyya", "Ак-Кыя", "Ак-Кыя", "Ak-Kyya"),
     tagline: L("Дарыясы, кең жайыттары жана таза абасы бар айыл", "Село с рекой, пастбищами и чистым воздухом", "A village with a river, broad pastures, and clean air"),
     intro: L(
-      "Ак-Кыя айылында 2 952 адам жана 614 кожолук жашайт. Айыл район борборуна жакын, дарыянын боюнда жана кең жайыттарга жакын жайгашкан. Негизги тиричилик багыты - мал чарбачылыгы. Асфальт жолу, электр энергиясы жана интернети бар.",
-      "В селе Ак-Кыя проживают 2 952 человека в 614 хозяйствах. Оно расположено недалеко от районного центра, у реки и обширных пастбищ. Основное занятие - животноводство. Есть асфальтированная дорога, электричество и интернет.",
-      "Ak-Kyya has 2,952 residents and 614 households. It lies near the district centre, beside a river and broad pastures. Livestock farming is the main livelihood. It has an asphalt road, electricity, and internet."
+      "Ак-Кыя айылында 2 952 адам жана 614 кожолук жашайт. Айыл район борборуна жакын, дарыянын боюнда жана кең жайыттарга жакын жайгашкан. Негизги тиричилик багыты - мал чарбачылыгы. Негизги жол жакында асфальтталып, заманбап мектеп имараты курулуп бүттү; электр энергиясы жана интернет бар.",
+      "В селе Ак-Кыя проживают 2 952 человека в 614 хозяйствах. Оно расположено недалеко от районного центра, у реки и обширных пастбищ. Основное занятие - животноводство. Главную дорогу недавно заасфальтировали, строительство современного здания школы завершено; доступны электричество и интернет.",
+      "Ak-Kyya has 2,952 residents and 614 households. It lies near the district centre, beside a river and broad pastures. Livestock farming is the main livelihood. The main road was recently asphalted, and a modern school building has been completed; electricity and internet are available."
     ),
     info: [
       { label: INFO_AIMAK, value: L("Кара-Кочкор", "Кара-Кочкор", "Kara-Kochkor") }, { label: INFO_POP, value: L("2 952", "2 952", "2,952") }, { label: INFO_HOUSEHOLDS, value: L("614", "614", "614") },
@@ -303,9 +303,9 @@ const DETAILED_VILLAGES: Village[] = [
       { label: INFO_UTILITIES, value: L("Электр энергиясы жана интернет бар", "Есть электричество и интернет", "Electricity and internet are available") },
     ],
     history: L(
-      "Айылдын негизделген так датасы белгисиз. Жергиликтүү материалда айыл мурда Көк-Жаңгак деп аталганы айтылат: тескей тарабында калың жаңгак токою өскөн. Токойдун көбү жоголгондон кийин конуш чыгыш тарабындагы ак түстүү кыяга жана жолго байланыштуу Ак-Кыя деп атала баштаган. Бүгүн жаңгак токою токой чарбасы аркылуу кайра калыбына келтирилүүдө.",
-      "Точная дата основания неизвестна. Согласно местному материалу, раньше село называлось Көк-Жаңгак из-за густого орехового леса на теневой стороне. После исчезновения большей части леса его стали называть Ак-Кыя по светлому склону и дороге с восточной стороны. Сейчас ореховый лес восстанавливается лесным хозяйством.",
-      "The exact establishment date is unknown. Local material says the village was formerly called Kok-Jangak because of a dense walnut forest on its shaded side. After much of it disappeared, the settlement became Ak-Kyya after the light-coloured eastern slope and road. Forestry work is now restoring the walnut forest."
+      "Айылдын негизделген так датасы белгисиз. Жергиликтүү оозеки маалыматта алгачкы отурукташкандар Нарын тараптан келгени жана айыл мурда Көк-Жаңгак деп аталганы айтылат, анткени тескей бетинде калың жаңгак токою өскөн. Токой жоголгондон кийин конуш чыгыш тарабындагы ак топурактуу кыяга жана жолго байланыштуу Ак-Кыя деп атала баштаган. Бүгүн токой чарбасы жаңгак токоюн калыбына келтирүү иштерин жүргүзүүдө.",
+      "Точная дата основания села неизвестна. По местным устным сведениям, первые поселенцы пришли со стороны Нарына, а село раньше называлось Көк-Жаңгак из-за густого орехового леса на теневом склоне. После исчезновения леса поселение стали называть Ак-Кыя, связывая это название с белой почвой склона и дорогой на восточной стороне. Сейчас лесное хозяйство ведёт работы по восстановлению орехового леса.",
+      "The exact foundation date of the village is unknown. Local oral accounts say the first settlers came from the Naryn side and that the village was formerly called Kok-Jangak because dense walnut woodland grew on the shaded slope. After the woodland disappeared, the settlement became known as Ak-Kyya, a name locally linked to the white-soil slope and road on its eastern side. Forestry work is now restoring the walnut woodland."
     ),
     tourism: { lead: L("", "", ""), items: [] }, investment: { lead: L("", "", ""), items: [] }, people: [], gallery: [],
     mapNote: L("Ак-Кыя айылы, Кара-Кулжа району", "Село Ак-Кыя, Кара-Кульджинский район", "Ak-Kyya village, Kara-Kulja District"), related: [],
