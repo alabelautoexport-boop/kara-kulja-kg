@@ -3,13 +3,39 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  useLocation,
   useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { I18nProvider } from "@/lib/i18n";
+
+const GA_MEASUREMENT_ID = "G-ZTGG3WNB1J";
+
+function GoogleAnalyticsPageView() {
+  const href = useLocation({ select: (location) => location.href });
+
+  useEffect(() => {
+    const analyticsWindow = window as typeof window & {
+      gtag?: (...args: unknown[]) => void;
+      lastGoogleAnalyticsPage?: string;
+    };
+
+    if (!analyticsWindow.gtag || analyticsWindow.lastGoogleAnalyticsPage === href) return;
+
+    analyticsWindow.lastGoogleAnalyticsPage = href;
+    analyticsWindow.gtag("event", "page_view", {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: href,
+    });
+  }, [href]);
+
+  return null;
+}
 
 function NotFoundComponent() {
   return (
@@ -106,6 +132,15 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="kg">
       <head>
         <HeadContent />
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}',{send_page_view:false});`,
+          }}
+        />
       </head>
       <body>
         {children}
@@ -120,6 +155,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
+        <GoogleAnalyticsPageView />
         <Outlet />
       </I18nProvider>
     </QueryClientProvider>
