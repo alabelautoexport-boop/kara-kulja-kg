@@ -35,9 +35,9 @@ export function ScrollToTopButton() {
         bottom: "calc(var(--scroll-top-gap) + env(safe-area-inset-bottom, 0px))",
         right: "calc(var(--scroll-top-gap) + env(safe-area-inset-right, 0px))",
       }}
-      className="fixed z-40 flex h-11 w-11 items-center justify-center rounded-sm border hairline bg-background/90 text-muted-foreground [--scroll-top-gap:1.25rem] hover:border-[var(--beige)] hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--beige)] sm:[--scroll-top-gap:2rem]"
+      className="fixed z-40 hidden h-11 w-11 items-center justify-center rounded-full border-0 bg-background/60 text-ember/70 backdrop-blur-md transition-colors duration-200 [--scroll-top-gap:1.25rem] hover:bg-background/80 hover:text-ember focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--beige)] motion-reduce:transition-none sm:[--scroll-top-gap:2rem] lg:flex"
     >
-      <ArrowUp className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
+      <ArrowUp className="h-4 w-4" strokeWidth={1.25} aria-hidden="true" />
     </button>
   );
 }
