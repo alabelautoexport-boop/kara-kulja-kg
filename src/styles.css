@@ -560,3 +560,63 @@
     .ylai-talaa-hero-image { animation: none !important; }
   }
 }
+
+@layer components {
+  .news-editor-content p,
+  .news-article p {
+    margin-top: 1rem;
+  }
+
+  .news-editor-content h2,
+  .news-article h2 {
+    margin-top: 2.5rem;
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .news-editor-content h3,
+  .news-article h3 {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .news-editor-content ul,
+  .news-article ul {
+    margin: 1rem 0 0 1.25rem;
+    list-style: disc;
+  }
+
+  .news-editor-content ol,
+  .news-article ol {
+    margin: 1rem 0 0 1.25rem;
+    list-style: decimal;
+  }
+
+  .news-editor-content blockquote,
+  .news-article blockquote {
+    margin-top: 1.5rem;
+    border-left: 2px solid var(--beige);
+    padding-left: 1.25rem;
+    color: var(--muted-foreground);
+  }
+
+  .news-editor-content a,
+  .news-article a {
+    color: var(--beige);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .news-article {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--foreground);
+  }
+
+  @media (min-width: 768px) {
+    .news-article {
+      font-size: 1.0625rem;
+    }
+  }
+}

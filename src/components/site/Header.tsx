@@ -10,8 +10,8 @@ const NAV = [
   { to: "/invest", key: "nav.invest" },
   { to: "/people", key: "nav.people" },
   { to: "/history", key: "nav.history" },
-  { to: "/gallery", key: "nav.gallery" },
   { to: "/news", key: "nav.news" },
+  { to: "/gallery", key: "nav.gallery" },
   { to: "/contact", key: "nav.contact" },
 ] as const;
 
@@ -44,7 +44,7 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
-          {NAV.slice(0, 6).map((n) => (
+          {NAV.slice(0, 7).map((n) => (
             <Link
               key={n.to}
               to={n.to}

@@ -87,7 +87,14 @@ const villageRoutes = [
   "/villages/yntymak",
 ];
 
-const routes = [...new Set([...sitemapRoutes, ...territoryRoutes, ...villageRoutes])];
+const adminRoutes = [
+  "/admin/login",
+  "/admin",
+  "/admin/news",
+  "/admin/news/new",
+];
+
+const routes = [...new Set([...sitemapRoutes, ...territoryRoutes, ...villageRoutes, ...adminRoutes])];
 
 async function renderRoute(routePath) {
   const url = `${BASE_URL}${routePath}`;

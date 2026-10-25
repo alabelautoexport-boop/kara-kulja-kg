@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, ArrowDown, Mountain, Sprout, Compass, Users } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n } from "@/lib/i18n";
 import { PEOPLE, pick as pickPerson } from "@/lib/people-data";
 import { TERRITORIES, displayTerritoryName, pick } from "@/lib/territories-data";
 import { getPageHeroUrl } from "@/lib/r2";
+import { formatNewsDate, localizedNewsField } from "@/lib/news-content";
+import { getHomepageNews } from "@/lib/news-data";
 
 const homeHeroImg = getPageHeroUrl("home");
 const heroImg = "/images/nature/aerial-image-of-snow-covered-mountains-under-bright-sky.jpg";
@@ -459,12 +462,11 @@ function GalleryPreview() {
 
 /* ---------- News ---------- */
 function News() {
-  const { t } = useI18n();
-  const news = [
-    { date: "12 May 2026", title: t("news.item.1") },
-    { date: "04 May 2026", title: t("news.item.2") },
-    { date: "21 Apr 2026", title: t("news.item.3") },
-  ];
+  const { t, lang } = useI18n();
+  const { data: news = [] } = useQuery({
+    queryKey: ["news", "homepage"],
+    queryFn: () => getHomepageNews(3),
+  });
   return (
     <section className="border-t hairline py-24 lg:py-32">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
@@ -480,13 +482,13 @@ function News() {
 
         <ul className="mt-12 divide-y hairline border-y hairline">
           {news.map((n) => (
-            <li key={n.title}>
-              <Link to="/news" className="group grid grid-cols-12 items-center gap-6 py-6">
+            <li key={n.id}>
+              <Link to="/news/$slug" params={{ slug: n.slug }} className="group grid grid-cols-12 items-center gap-4 py-6 md:gap-6">
                 <span className="col-span-4 text-xs tracking-widest text-muted-foreground md:col-span-2">
-                  {n.date}
+                  {formatNewsDate(n.published_at, lang)}
                 </span>
-                <span className="col-span-7 font-display text-lg text-foreground transition-colors group-hover:text-[var(--beige)] md:col-span-9 md:text-2xl">
-                  {n.title}
+                <span className={`col-span-7 min-w-0 font-display text-lg text-foreground transition-colors group-hover:text-[var(--beige)] md:col-span-9 md:text-2xl ${n.is_featured ? "font-bold" : ""}`}>
+                  {localizedNewsField(n, "title", lang)}
                 </span>
                 <ArrowRight className="col-span-1 h-4 w-4 justify-self-end text-muted-foreground transition-transform group-hover:translate-x-1" />
               </Link>

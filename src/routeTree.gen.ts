@@ -20,10 +20,16 @@ import { Route as InvestRouteImport } from './routes/invest'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VillagesSlugRouteImport } from './routes/villages_.$slug'
 import { Route as TerritoriesSlugRouteImport } from './routes/territories_.$slug'
+import { Route as NewsSlugRouteImport } from './routes/news_.$slug'
+import { Route as AdminNewsRouteImport } from './routes/admin_.news'
+import { Route as AdminLoginRouteImport } from './routes/admin_.login'
+import { Route as AdminNewsNewRouteImport } from './routes/admin_.news_.new'
+import { Route as AdminNewsIdEditRouteImport } from './routes/admin_.news_.$id.edit'
 
 const VillagesRoute = VillagesRouteImport.update({
   id: '/villages',
@@ -80,6 +86,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -100,10 +111,36 @@ const TerritoriesSlugRoute = TerritoriesSlugRouteImport.update({
   path: '/territories/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news_/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/admin_/news',
+  path: '/admin/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin_/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsNewRoute = AdminNewsNewRouteImport.update({
+  id: '/admin_/news_/new',
+  path: '/admin/news/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsIdEditRoute = AdminNewsIdEditRouteImport.update({
+  id: '/admin_/news_/$id/edit',
+  path: '/admin/news/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
@@ -115,12 +152,18 @@ export interface FileRoutesByFullPath {
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/territories/$slug': typeof TerritoriesSlugRoute
   '/villages/$slug': typeof VillagesSlugRoute
+  '/admin/news/new': typeof AdminNewsNewRoute
+  '/admin/news/$id/edit': typeof AdminNewsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
@@ -132,13 +175,19 @@ export interface FileRoutesByTo {
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/territories/$slug': typeof TerritoriesSlugRoute
   '/villages/$slug': typeof VillagesSlugRoute
+  '/admin/news/new': typeof AdminNewsNewRoute
+  '/admin/news/$id/edit': typeof AdminNewsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
@@ -150,14 +199,20 @@ export interface FileRoutesById {
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/admin_/login': typeof AdminLoginRoute
+  '/admin_/news': typeof AdminNewsRoute
+  '/news_/$slug': typeof NewsSlugRoute
   '/territories_/$slug': typeof TerritoriesSlugRoute
   '/villages_/$slug': typeof VillagesSlugRoute
+  '/admin_/news_/new': typeof AdminNewsNewRoute
+  '/admin_/news_/$id/edit': typeof AdminNewsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/gallery'
     | '/history'
@@ -169,12 +224,18 @@ export interface FileRouteTypes {
     | '/territories'
     | '/tourism'
     | '/villages'
+    | '/admin/login'
+    | '/admin/news'
+    | '/news/$slug'
     | '/territories/$slug'
     | '/villages/$slug'
+    | '/admin/news/new'
+    | '/admin/news/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/gallery'
     | '/history'
@@ -186,12 +247,18 @@ export interface FileRouteTypes {
     | '/territories'
     | '/tourism'
     | '/villages'
+    | '/admin/login'
+    | '/admin/news'
+    | '/news/$slug'
     | '/territories/$slug'
     | '/villages/$slug'
+    | '/admin/news/new'
+    | '/admin/news/$id/edit'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/gallery'
     | '/history'
@@ -203,13 +270,19 @@ export interface FileRouteTypes {
     | '/territories'
     | '/tourism'
     | '/villages'
+    | '/admin_/login'
+    | '/admin_/news'
+    | '/news_/$slug'
     | '/territories_/$slug'
     | '/villages_/$slug'
+    | '/admin_/news_/new'
+    | '/admin_/news_/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
   HistoryRoute: typeof HistoryRoute
@@ -221,8 +294,13 @@ export interface RootRouteChildren {
   TerritoriesRoute: typeof TerritoriesRoute
   TourismRoute: typeof TourismRoute
   VillagesRoute: typeof VillagesRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminNewsRoute: typeof AdminNewsRoute
+  NewsSlugRoute: typeof NewsSlugRoute
   TerritoriesSlugRoute: typeof TerritoriesSlugRoute
   VillagesSlugRoute: typeof VillagesSlugRoute
+  AdminNewsNewRoute: typeof AdminNewsNewRoute
+  AdminNewsIdEditRoute: typeof AdminNewsIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -304,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -332,12 +417,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TerritoriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news_/$slug': {
+      id: '/news_/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/news': {
+      id: '/admin_/news'
+      path: '/admin/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/login': {
+      id: '/admin_/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/news_/new': {
+      id: '/admin_/news_/new'
+      path: '/admin/news/new'
+      fullPath: '/admin/news/new'
+      preLoaderRoute: typeof AdminNewsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/news_/$id/edit': {
+      id: '/admin_/news_/$id/edit'
+      path: '/admin/news/$id/edit'
+      fullPath: '/admin/news/$id/edit'
+      preLoaderRoute: typeof AdminNewsIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
   GalleryRoute: GalleryRoute,
   HistoryRoute: HistoryRoute,
@@ -349,8 +470,13 @@ const rootRouteChildren: RootRouteChildren = {
   TerritoriesRoute: TerritoriesRoute,
   TourismRoute: TourismRoute,
   VillagesRoute: VillagesRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminNewsRoute: AdminNewsRoute,
+  NewsSlugRoute: NewsSlugRoute,
   TerritoriesSlugRoute: TerritoriesSlugRoute,
   VillagesSlugRoute: VillagesSlugRoute,
+  AdminNewsNewRoute: AdminNewsNewRoute,
+  AdminNewsIdEditRoute: AdminNewsIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
