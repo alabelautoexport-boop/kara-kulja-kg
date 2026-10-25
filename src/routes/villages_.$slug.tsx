@@ -17,7 +17,6 @@ import {
   Users,
   ArrowRight,
   ArrowLeft,
-  ArrowUp,
   Archive,
   BookOpen,
   Compass,
@@ -175,32 +174,6 @@ const SECTIONS = [
   { id: "map", labelKey: "village.section.map", Icon: MapIcon },
   { id: "related", labelKey: "village.section.related", Icon: Network },
 ] as const;
-
-function BackToTop() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 600);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      aria-label="Back to top"
-      className={`fixed bottom-8 right-8 z-40 flex h-10 w-10 items-center justify-center rounded-full border hairline bg-background/60 backdrop-blur-md text-muted-foreground/60 transition-all duration-500 hover:bg-background/80 hover:text-foreground/80 ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0 pointer-events-none"
-      }`}
-    >
-      <ArrowUp className="h-4 w-4" strokeWidth={1.25} />
-    </button>
-  );
-}
 
 function SectionNav() {
   const { t, lang } = useI18n();
@@ -596,7 +569,6 @@ function VillagePage() {
           ) : null}
         </div>
       </section>
-      <BackToTop />
     </SiteLayout>
   );
 }

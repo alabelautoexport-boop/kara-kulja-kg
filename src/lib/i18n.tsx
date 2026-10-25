@@ -220,6 +220,7 @@ const KG: Dict = {
   "common.soon": "Жакында",
   "common.readMore": "Толугу менен",
   "common.explore": "Изилдөө",
+  "common.backToTop": "Жогору көтөрүлүү",
 
   // Village page (slug)
   "village.section.history": "Тарых",
@@ -441,6 +442,7 @@ const RU: Dict = {
   "common.soon": "Скоро",
   "common.readMore": "Подробнее",
   "common.explore": "Открыть",
+  "common.backToTop": "Наверх",
 
   "village.section.history": "История",
   "village.section.tourism": "Туризм",
@@ -661,6 +663,7 @@ const EN: Dict = {
   "common.soon": "Coming soon",
   "common.readMore": "Read more",
   "common.explore": "Explore",
+  "common.backToTop": "Back to top",
 
   "village.section.history": "History",
   "village.section.tourism": "Tourism",

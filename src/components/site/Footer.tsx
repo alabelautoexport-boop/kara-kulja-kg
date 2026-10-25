@@ -43,6 +43,7 @@ export function Footer() {
                 ["/history", "nav.history"],
                 ["/gallery", "nav.gallery"],
                 ["/contact", "nav.contact"],
+                ["/news", "nav.news"],
               ].map(([to, k]) => (
                 <li key={to}>
                   <Link

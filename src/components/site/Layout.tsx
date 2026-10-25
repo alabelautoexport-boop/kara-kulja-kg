@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { ScrollToTopButton } from "./ScrollToTopButton";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -8,6 +9,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <Header />
       <main>{children}</main>
       <Footer />
+      <ScrollToTopButton />
     </>
   );
 }

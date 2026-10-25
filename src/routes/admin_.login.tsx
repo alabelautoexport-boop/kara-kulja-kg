@@ -1,7 +1,7 @@
 import { AdminLanguageSwitcher } from "@/components/admin/AdminLanguageSwitcher";
 import { useAdminI18n } from "@/lib/admin-i18n";
 import { useEffect, useState, type FormEvent } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { LockKeyhole } from "lucide-react";
 import { isCurrentUserAdmin, loginAdmin } from "@/lib/admin-auth";
 
@@ -86,6 +86,14 @@ function AdminLoginPage() {
             {t(loading ? "Вход..." : "Войти")}
           </button>
         </form>
+        <div className="mt-5 text-center">
+          <Link
+            to="/"
+            className="inline-flex min-h-11 items-center px-3 py-2 text-sm text-muted-foreground hover:text-[var(--beige)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--beige)]"
+          >
+            {t("На главную")}
+          </Link>
+        </div>
       </div>
     </main>
   );
