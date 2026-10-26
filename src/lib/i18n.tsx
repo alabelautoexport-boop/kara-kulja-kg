@@ -44,7 +44,7 @@ const KG: Dict = {
   "hero.subtitle": SLOGAN_KG,
   "hero.cta1": "Районду таануу",
   "hero.cta2": "Туризм",
-  "hero.cta3": "Инвестициялар",
+  "hero.cta3": "Инвестиция",
   "hero.scroll": "Ылдый сыдырыңыз",
 
   "about.eyebrow": "РАЙОН ЖӨНҮНДӨ",
@@ -485,9 +485,9 @@ const EN: Dict = {
   "hero.eyebrow": "KYRGYZ REPUBLIC · OSH REGION",
   "hero.title": "KARA-KULJA",
   "hero.subtitle": SLOGAN_EN,
-  "hero.cta1": "Discover the district",
+  "hero.cta1": "About the district",
   "hero.cta2": "Tourism",
-  "hero.cta3": "Investment",
+  "hero.cta3": "Investments",
   "hero.scroll": "Scroll",
 
   "about.eyebrow": "ABOUT",

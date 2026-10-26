@@ -114,11 +114,12 @@ function Hero() {
         </div>
 
         <div
-          className="mt-12 flex flex-wrap gap-3 opacity-0 animate-fade-up"
+          className="mb-4 mt-12 grid auto-rows-fr grid-cols-2 gap-3 opacity-0 animate-fade-up sm:mb-0 sm:flex sm:flex-wrap"
           style={{ animationDelay: "0.8s" }}
         >
-          <HeroBtn to="/about" primary>{t("hero.cta1")}</HeroBtn>
+          <HeroBtn to="/news" primary>{t("nav.news")}</HeroBtn>
           <HeroBtn to="/tourism">{t("hero.cta2")}</HeroBtn>
+          <HeroBtn to="/about">{t("hero.cta1")}</HeroBtn>
           <HeroBtn to="/invest">{t("hero.cta3")}</HeroBtn>
         </div>
       </div>
@@ -135,14 +136,14 @@ function HeroBtn({ to, children, primary }: { to: string; children: React.ReactN
   return (
     <Link
       to={to}
-      className={`group inline-flex items-center gap-2 rounded-sm border px-6 py-3.5 text-sm font-medium tracking-wide transition-all ${
+      className={`group inline-flex items-center justify-center gap-1 rounded-sm border px-1.5 py-3.5 text-sm font-medium tracking-wide transition-all sm:gap-2 sm:px-6 ${
         primary
           ? "border-[var(--beige)] bg-[var(--beige)] text-primary-foreground hover:bg-foreground hover:text-background"
           : "border-foreground/30 bg-background/10 text-foreground backdrop-blur-md hover:border-foreground hover:bg-background/30"
       }`}
     >
       {children}
-      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      <ArrowRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
     </Link>
   );
 }

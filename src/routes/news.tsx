@@ -37,7 +37,10 @@ function NewsPage() {
         image={valleyImg}
       />
       <section className="py-20 lg:py-28">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-10">
+        <div
+          id="news-list"
+          className="mx-auto min-h-[calc(100svh-5rem)] max-w-[1200px] scroll-mt-20 px-6 lg:px-10"
+        >
           {query.isLoading ? (
             <p className="text-sm text-muted-foreground">...</p>
           ) : query.error || !query.data?.length ? (
