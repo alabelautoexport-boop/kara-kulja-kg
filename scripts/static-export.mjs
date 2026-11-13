@@ -19,6 +19,7 @@ const sitemapRoutes = [
   "/history",
   "/gallery",
   "/news",
+  "/schools",
   "/contact",
 ];
 
@@ -92,6 +93,10 @@ const adminRoutes = [
   "/admin",
   "/admin/news",
   "/admin/news/new",
+  "/admin/schools",
+  "/school-admin",
+  "/news-admin",
+  "/news-admin/new",
 ];
 
 const routes = [...new Set([...sitemapRoutes, ...territoryRoutes, ...villageRoutes, ...adminRoutes])];

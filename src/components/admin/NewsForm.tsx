@@ -155,7 +155,7 @@ function LanguageFields({
   );
 }
 
-export function NewsForm({ initial }: { initial?: NewsRecord }) {
+export function NewsForm({ initial, editor = false }: { initial?: NewsRecord; editor?: boolean }) {
   const { t } = useAdminI18n();
   const navigate = useNavigate();
   const [recordId, setRecordId] = useState(initial?.id ?? null);
@@ -394,7 +394,11 @@ export function NewsForm({ initial }: { initial?: NewsRecord }) {
       }
 
       if (!initial && !failedGalleryUploads.length) {
-        await navigate({ to: "/admin/news/$id/edit", params: { id: saved.id }, replace: true });
+        await navigate({
+          to: editor ? "/news-admin/$id/edit" : "/admin/news/$id/edit",
+          params: { id: saved.id },
+          replace: true,
+        });
       }
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Не удалось сохранить новость.");

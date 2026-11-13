@@ -1,7 +1,8 @@
 import { AdminLanguageSwitcher } from "@/components/admin/AdminLanguageSwitcher";
 import { useAdminI18n } from "@/lib/admin-i18n";
 import { useEffect, type ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { logoutAdmin } from "@/lib/admin-auth";
 import { ArrowLeft, LayoutDashboard } from "lucide-react";
 
 export function AdminShell({
@@ -10,14 +11,17 @@ export function AdminShell({
   actions,
   children,
   backTo,
+  area = "admin",
 }: {
   title: string;
   eyebrow?: string;
   actions?: ReactNode;
   children: ReactNode;
-  backTo?: "/admin" | "/admin/news";
+  backTo?: "/admin" | "/admin/news" | "/news-admin";
+  area?: "admin" | "news";
 }) {
   const { t } = useAdminI18n();
+  const navigate = useNavigate();
   useEffect(() => {
     document.title = `${title} - Kara-Kulja Admin`;
   }, [title]);
@@ -26,14 +30,29 @@ export function AdminShell({
       <header className="border-b hairline">
         <div className="mx-auto flex min-h-20 max-w-[1200px] flex-wrap items-center justify-between gap-4 px-5 py-4 lg:px-8">
           <Link
-            to="/admin"
+            to={area === "news" ? "/news-admin" : "/admin"}
             className="inline-flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground"
           >
             <LayoutDashboard className="h-4 w-4" />
-            Kara-Kulja Admin
+            {area === "news" ? t("Новости") : "Kara-Kulja Admin"}
           </Link>
           <div className="flex min-w-0 flex-wrap items-center justify-end gap-3">
             <AdminLanguageSwitcher />
+            {area === "news" && (
+              <button
+                className="min-h-11 px-3 text-sm text-muted-foreground"
+                onClick={async () => {
+                  try {
+                    await logoutAdmin();
+                    await navigate({ to: "/news-admin", replace: true });
+                  } catch {
+                    window.alert(t("Не удалось завершить сеанс."));
+                  }
+                }}
+              >
+                {t("Выйти")}
+              </button>
+            )}
             {actions}
           </div>
         </div>

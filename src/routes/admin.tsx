@@ -1,10 +1,11 @@
 import { useAdminI18n } from "@/lib/admin-i18n";
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, LogOut, Newspaper } from "lucide-react";
+import { ArrowRight, LogOut, Newspaper, GraduationCap } from "lucide-react";
 import { AdminGuard } from "@/components/admin/AdminGuard";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { logoutAdmin } from "@/lib/admin-auth";
+import { NewsEditorAccessManagement } from "@/components/admin/NewsEditorAccessManagement";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Администрация - Kara-Kulja" }] }),
@@ -46,6 +47,16 @@ function AdminDashboard() {
         )}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <Link
+            to="/admin/schools"
+            className="group border hairline p-6 transition-colors hover:border-[var(--beige)]"
+          >
+            <GraduationCap className="h-6 w-6 text-[var(--beige)]" />
+            <div className="mt-10 flex items-end justify-between gap-4">
+              <h2 className="font-display text-2xl">{t("Управление школами")}</h2>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </div>
+          </Link>
+          <Link
             to="/admin/news"
             className="group border hairline p-6 transition-colors hover:border-[var(--beige)]"
           >
@@ -59,6 +70,7 @@ function AdminDashboard() {
             </div>
           </Link>
         </div>
+        <NewsEditorAccessManagement />
       </AdminShell>
     </AdminGuard>
   );

@@ -13,7 +13,10 @@ import { Route as VillagesRouteImport } from './routes/villages'
 import { Route as TourismRouteImport } from './routes/tourism'
 import { Route as TerritoriesRouteImport } from './routes/territories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SchoolsRouteImport } from './routes/schools'
+import { Route as SchoolAdminRouteImport } from './routes/school-admin'
 import { Route as PeopleRouteImport } from './routes/people'
+import { Route as NewsAdminRouteImport } from './routes/news-admin'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as InvestRouteImport } from './routes/invest'
@@ -25,9 +28,13 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VillagesSlugRouteImport } from './routes/villages_.$slug'
 import { Route as TerritoriesSlugRouteImport } from './routes/territories_.$slug'
+import { Route as SchoolsSlugRouteImport } from './routes/schools_.$slug'
 import { Route as NewsSlugRouteImport } from './routes/news_.$slug'
+import { Route as NewsAdminNewRouteImport } from './routes/news-admin_.new'
+import { Route as AdminSchoolsRouteImport } from './routes/admin_.schools'
 import { Route as AdminNewsRouteImport } from './routes/admin_.news'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
+import { Route as NewsAdminIdEditRouteImport } from './routes/news-admin_.$id.edit'
 import { Route as AdminNewsNewRouteImport } from './routes/admin_.news_.new'
 import { Route as AdminNewsIdEditRouteImport } from './routes/admin_.news_.$id.edit'
 
@@ -51,9 +58,24 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SchoolsRoute = SchoolsRouteImport.update({
+  id: '/schools',
+  path: '/schools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SchoolAdminRoute = SchoolAdminRouteImport.update({
+  id: '/school-admin',
+  path: '/school-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PeopleRoute = PeopleRouteImport.update({
   id: '/people',
   path: '/people',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsAdminRoute = NewsAdminRouteImport.update({
+  id: '/news-admin',
+  path: '/news-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -111,9 +133,24 @@ const TerritoriesSlugRoute = TerritoriesSlugRouteImport.update({
   path: '/territories/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SchoolsSlugRoute = SchoolsSlugRouteImport.update({
+  id: '/schools_/$slug',
+  path: '/schools/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsSlugRoute = NewsSlugRouteImport.update({
   id: '/news_/$slug',
   path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsAdminNewRoute = NewsAdminNewRouteImport.update({
+  id: '/news-admin_/new',
+  path: '/news-admin/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSchoolsRoute = AdminSchoolsRouteImport.update({
+  id: '/admin_/schools',
+  path: '/admin/schools',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminNewsRoute = AdminNewsRouteImport.update({
@@ -124,6 +161,11 @@ const AdminNewsRoute = AdminNewsRouteImport.update({
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin_/login',
   path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsAdminIdEditRoute = NewsAdminIdEditRouteImport.update({
+  id: '/news-admin_/$id/edit',
+  path: '/news-admin/$id/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminNewsNewRoute = AdminNewsNewRouteImport.update({
@@ -147,17 +189,24 @@ export interface FileRoutesByFullPath {
   '/invest': typeof InvestRoute
   '/map': typeof MapRoute
   '/news': typeof NewsRoute
+  '/news-admin': typeof NewsAdminRoute
   '/people': typeof PeopleRoute
+  '/school-admin': typeof SchoolAdminRoute
+  '/schools': typeof SchoolsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
+  '/admin/schools': typeof AdminSchoolsRoute
+  '/news-admin/new': typeof NewsAdminNewRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/schools/$slug': typeof SchoolsSlugRoute
   '/territories/$slug': typeof TerritoriesSlugRoute
   '/villages/$slug': typeof VillagesSlugRoute
   '/admin/news/new': typeof AdminNewsNewRoute
+  '/news-admin/$id/edit': typeof NewsAdminIdEditRoute
   '/admin/news/$id/edit': typeof AdminNewsIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -170,17 +219,24 @@ export interface FileRoutesByTo {
   '/invest': typeof InvestRoute
   '/map': typeof MapRoute
   '/news': typeof NewsRoute
+  '/news-admin': typeof NewsAdminRoute
   '/people': typeof PeopleRoute
+  '/school-admin': typeof SchoolAdminRoute
+  '/schools': typeof SchoolsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
+  '/admin/schools': typeof AdminSchoolsRoute
+  '/news-admin/new': typeof NewsAdminNewRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/schools/$slug': typeof SchoolsSlugRoute
   '/territories/$slug': typeof TerritoriesSlugRoute
   '/villages/$slug': typeof VillagesSlugRoute
   '/admin/news/new': typeof AdminNewsNewRoute
+  '/news-admin/$id/edit': typeof NewsAdminIdEditRoute
   '/admin/news/$id/edit': typeof AdminNewsIdEditRoute
 }
 export interface FileRoutesById {
@@ -194,17 +250,24 @@ export interface FileRoutesById {
   '/invest': typeof InvestRoute
   '/map': typeof MapRoute
   '/news': typeof NewsRoute
+  '/news-admin': typeof NewsAdminRoute
   '/people': typeof PeopleRoute
+  '/school-admin': typeof SchoolAdminRoute
+  '/schools': typeof SchoolsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
   '/admin_/login': typeof AdminLoginRoute
   '/admin_/news': typeof AdminNewsRoute
+  '/admin_/schools': typeof AdminSchoolsRoute
+  '/news-admin_/new': typeof NewsAdminNewRoute
   '/news_/$slug': typeof NewsSlugRoute
+  '/schools_/$slug': typeof SchoolsSlugRoute
   '/territories_/$slug': typeof TerritoriesSlugRoute
   '/villages_/$slug': typeof VillagesSlugRoute
   '/admin_/news_/new': typeof AdminNewsNewRoute
+  '/news-admin_/$id/edit': typeof NewsAdminIdEditRoute
   '/admin_/news_/$id/edit': typeof AdminNewsIdEditRoute
 }
 export interface FileRouteTypes {
@@ -219,17 +282,24 @@ export interface FileRouteTypes {
     | '/invest'
     | '/map'
     | '/news'
+    | '/news-admin'
     | '/people'
+    | '/school-admin'
+    | '/schools'
     | '/sitemap.xml'
     | '/territories'
     | '/tourism'
     | '/villages'
     | '/admin/login'
     | '/admin/news'
+    | '/admin/schools'
+    | '/news-admin/new'
     | '/news/$slug'
+    | '/schools/$slug'
     | '/territories/$slug'
     | '/villages/$slug'
     | '/admin/news/new'
+    | '/news-admin/$id/edit'
     | '/admin/news/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -242,17 +312,24 @@ export interface FileRouteTypes {
     | '/invest'
     | '/map'
     | '/news'
+    | '/news-admin'
     | '/people'
+    | '/school-admin'
+    | '/schools'
     | '/sitemap.xml'
     | '/territories'
     | '/tourism'
     | '/villages'
     | '/admin/login'
     | '/admin/news'
+    | '/admin/schools'
+    | '/news-admin/new'
     | '/news/$slug'
+    | '/schools/$slug'
     | '/territories/$slug'
     | '/villages/$slug'
     | '/admin/news/new'
+    | '/news-admin/$id/edit'
     | '/admin/news/$id/edit'
   id:
     | '__root__'
@@ -265,17 +342,24 @@ export interface FileRouteTypes {
     | '/invest'
     | '/map'
     | '/news'
+    | '/news-admin'
     | '/people'
+    | '/school-admin'
+    | '/schools'
     | '/sitemap.xml'
     | '/territories'
     | '/tourism'
     | '/villages'
     | '/admin_/login'
     | '/admin_/news'
+    | '/admin_/schools'
+    | '/news-admin_/new'
     | '/news_/$slug'
+    | '/schools_/$slug'
     | '/territories_/$slug'
     | '/villages_/$slug'
     | '/admin_/news_/new'
+    | '/news-admin_/$id/edit'
     | '/admin_/news_/$id/edit'
   fileRoutesById: FileRoutesById
 }
@@ -289,17 +373,24 @@ export interface RootRouteChildren {
   InvestRoute: typeof InvestRoute
   MapRoute: typeof MapRoute
   NewsRoute: typeof NewsRoute
+  NewsAdminRoute: typeof NewsAdminRoute
   PeopleRoute: typeof PeopleRoute
+  SchoolAdminRoute: typeof SchoolAdminRoute
+  SchoolsRoute: typeof SchoolsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerritoriesRoute: typeof TerritoriesRoute
   TourismRoute: typeof TourismRoute
   VillagesRoute: typeof VillagesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
+  AdminSchoolsRoute: typeof AdminSchoolsRoute
+  NewsAdminNewRoute: typeof NewsAdminNewRoute
   NewsSlugRoute: typeof NewsSlugRoute
+  SchoolsSlugRoute: typeof SchoolsSlugRoute
   TerritoriesSlugRoute: typeof TerritoriesSlugRoute
   VillagesSlugRoute: typeof VillagesSlugRoute
   AdminNewsNewRoute: typeof AdminNewsNewRoute
+  NewsAdminIdEditRoute: typeof NewsAdminIdEditRoute
   AdminNewsIdEditRoute: typeof AdminNewsIdEditRoute
 }
 
@@ -333,11 +424,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/schools': {
+      id: '/schools'
+      path: '/schools'
+      fullPath: '/schools'
+      preLoaderRoute: typeof SchoolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/school-admin': {
+      id: '/school-admin'
+      path: '/school-admin'
+      fullPath: '/school-admin'
+      preLoaderRoute: typeof SchoolAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/people': {
       id: '/people'
       path: '/people'
       fullPath: '/people'
       preLoaderRoute: typeof PeopleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news-admin': {
+      id: '/news-admin'
+      path: '/news-admin'
+      fullPath: '/news-admin'
+      preLoaderRoute: typeof NewsAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -417,11 +529,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TerritoriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/schools_/$slug': {
+      id: '/schools_/$slug'
+      path: '/schools/$slug'
+      fullPath: '/schools/$slug'
+      preLoaderRoute: typeof SchoolsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/news_/$slug': {
       id: '/news_/$slug'
       path: '/news/$slug'
       fullPath: '/news/$slug'
       preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news-admin_/new': {
+      id: '/news-admin_/new'
+      path: '/news-admin/new'
+      fullPath: '/news-admin/new'
+      preLoaderRoute: typeof NewsAdminNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/schools': {
+      id: '/admin_/schools'
+      path: '/admin/schools'
+      fullPath: '/admin/schools'
+      preLoaderRoute: typeof AdminSchoolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin_/news': {
@@ -436,6 +569,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news-admin_/$id/edit': {
+      id: '/news-admin_/$id/edit'
+      path: '/news-admin/$id/edit'
+      fullPath: '/news-admin/$id/edit'
+      preLoaderRoute: typeof NewsAdminIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin_/news_/new': {
@@ -465,17 +605,24 @@ const rootRouteChildren: RootRouteChildren = {
   InvestRoute: InvestRoute,
   MapRoute: MapRoute,
   NewsRoute: NewsRoute,
+  NewsAdminRoute: NewsAdminRoute,
   PeopleRoute: PeopleRoute,
+  SchoolAdminRoute: SchoolAdminRoute,
+  SchoolsRoute: SchoolsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerritoriesRoute: TerritoriesRoute,
   TourismRoute: TourismRoute,
   VillagesRoute: VillagesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
+  AdminSchoolsRoute: AdminSchoolsRoute,
+  NewsAdminNewRoute: NewsAdminNewRoute,
   NewsSlugRoute: NewsSlugRoute,
+  SchoolsSlugRoute: SchoolsSlugRoute,
   TerritoriesSlugRoute: TerritoriesSlugRoute,
   VillagesSlugRoute: VillagesSlugRoute,
   AdminNewsNewRoute: AdminNewsNewRoute,
+  NewsAdminIdEditRoute: NewsAdminIdEditRoute,
   AdminNewsIdEditRoute: AdminNewsIdEditRoute,
 }
 export const routeTree = rootRouteImport

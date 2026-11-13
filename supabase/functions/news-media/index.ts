@@ -1,11 +1,11 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import {
   DeleteObjectCommand,
   DeleteObjectsCommand,
   ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
-} from "npm:@aws-sdk/client-s3@3";
+} from "npm:@aws-sdk/client-s3@3.1167.0";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -78,7 +78,7 @@ function publicUrl(baseUrl: string, key: string) {
   return `${baseUrl.replace(/\/+$/, "")}/${key.split("/").map(encodeURIComponent).join("/")}`;
 }
 
-async function requireAdmin(req: Request) {
+export async function requireNewsManager(req: Request) {
   const authHeader = req.headers.get("Authorization");
   if (!authHeader?.startsWith("Bearer ")) throw new RequestError("Требуется авторизация.", 401);
 
@@ -95,7 +95,7 @@ async function requireAdmin(req: Request) {
   const { data: userData, error: userError } = await supabase.auth.getUser(token);
   if (userError || !userData.user) throw new RequestError("Требуется авторизация.", 401);
 
-  const { data: isAdmin, error: adminError } = await supabase.rpc("is_admin");
+  const { data: isAdmin, error: adminError } = await supabase.rpc("can_manage_news");
   if (adminError || isAdmin !== true) throw new RequestError("Недостаточно прав.", 403);
 }
 
@@ -165,7 +165,7 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Метод не поддерживается." }, 405);
 
   try {
-    await requireAdmin(req);
+    await requireNewsManager(req);
     const request = await readRequest(req);
     const prefix = newsPrefix(request.mediaFolderId);
     const bucket = requiredEnv("R2_BUCKET_NAME");

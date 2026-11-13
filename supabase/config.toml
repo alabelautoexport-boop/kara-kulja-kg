@@ -1,0 +1,11 @@
+# Public password-exchange endpoint. Authentication is performed against Auth
+# inside the handler; assignment checks and server-side throttling are mandatory.
+[functions.news-editor-login]
+verify_jwt = false
+
+# Main Admin JWT is also verified with getUser + is_admin in the handler.
+[functions.manage-editor-access]
+verify_jwt = true
+
+[functions.news-media]
+verify_jwt = true
