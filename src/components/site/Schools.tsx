@@ -54,6 +54,7 @@ export function SchoolsList() {
   const c = SCHOOL_COPY[lang];
   const [territory, setTerritory] = useState("");
   const [village, setVillage] = useState("");
+  const [search, setSearch] = useState("");
   const query = useQuery({
     queryKey: ["schools", "published"],
     queryFn: getPublishedSchools,
@@ -63,7 +64,10 @@ export function SchoolsList() {
   const filtered = schools.filter(
     (s) =>
       (!territory || s.document.info.territory_slug === territory) &&
-      (!village || s.document.info.village_slug === village),
+      (!village || s.document.info.village_slug === village) &&
+      localizedSchoolField(s.document.info, "name", lang)
+        .toLocaleLowerCase()
+        .includes(search.trim().toLocaleLowerCase()),
   );
   const value = (n: number | string | null | undefined) =>
     displayStructuredValue(n == null ? null : String(n), lang);
@@ -71,10 +75,20 @@ export function SchoolsList() {
     <SiteLayout>
       <SchoolHeading>
         <h1 className="font-display text-5xl md:text-6xl">{c.title}</h1>
+        <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{c.subtitle}</p>
       </SchoolHeading>
       <section className="mx-auto max-w-[1200px] px-6 py-12 lg:px-10">
         {schools.length > 0 && (
-          <div className="mb-8 grid gap-3 sm:grid-cols-2">
+          <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <label className="min-w-0 text-xs text-muted-foreground">
+              {c.search}
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="mt-2 min-h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
+              />
+            </label>
             <select
               aria-label={c.territory}
               value={territory}
@@ -145,6 +159,21 @@ export function SchoolsList() {
                   <p className="mt-2 text-xs text-muted-foreground">
                     {c.academicYear}: {value(s.document.info.current_academic_year || null)}
                   </p>
+                  <dl className="mt-5 space-y-3 text-sm">
+                    {[
+                      [c.director, s.document.info.director_name],
+                      [c.directorPhone, s.document.info.director_phone],
+                      [c.officePhone, s.document.info.office_phone],
+                      [c.address, localizedSchoolField(s.document.info, "address", lang)],
+                    ]
+                      .filter(([, text]) => !!text)
+                      .map(([label, text]) => (
+                        <div key={label}>
+                          <dt className="text-xs text-muted-foreground">{label}</dt>
+                          <dd className="mt-1 break-words">{text}</dd>
+                        </div>
+                      ))}
+                  </dl>
                   <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
                     {[
                       [c.students, current?.total_students],
@@ -158,6 +187,10 @@ export function SchoolsList() {
                       </div>
                     ))}
                   </dl>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm text-[var(--beige)]">
+                    {c.more}
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                 </Link>
               );
             })}
@@ -278,6 +311,7 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                       [c.participants, r.summary.participants],
                       [c.average, r.summary.average],
                       [c.median, r.summary.median],
+                      [c.minimum, r.summary.minimum],
                       [c.maximum, r.summary.maximum],
                       [c.over200, r.summary.over200],
                     ].map(([label, n]) => (

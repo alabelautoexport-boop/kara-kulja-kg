@@ -1,4 +1,6 @@
 import { useState, type ReactNode } from "react";
+import { AdminSchoolForm } from "./AdminSchoolForm";
+import { schoolStatus } from "@/lib/school-admin";
 import { Plus, Trash2, Save, Send, Check, Undo2, EyeOff } from "lucide-react";
 import { useAdminI18n } from "@/lib/admin-i18n";
 import { TERRITORIES, displayTerritoryName, displayVillageName } from "@/lib/territories-data";
@@ -83,6 +85,18 @@ const blankResource: SchoolResource = {
 const extendedSchoolSectionsEnabled = false;
 
 export function SchoolForm({
+  admin,
+  ...props
+}: {
+  record: SchoolRecord;
+  initial: SchoolDraft;
+  admin: boolean;
+  onSaved: (message?: string) => Promise<void>;
+}) {
+  return admin ? <AdminSchoolForm {...props} /> : <SchoolEditorForm {...props} admin={false} />;
+}
+
+function SchoolEditorForm({
   record,
   initial,
   admin,
@@ -210,16 +224,7 @@ export function SchoolForm({
   return (
     <div className="min-w-0">
       <p className="mb-3 text-sm">
-        {t("Статус")}:{" "}
-        {t(
-          record.is_archived
-            ? "В архиве"
-            : record.status === "review"
-              ? "На проверке"
-              : record.status === "published"
-                ? "Опубликовано"
-                : "Черновик",
-        )}
+        {t("Статус")}: {t(schoolStatus(record))}
       </p>
       {record.review_note && (
         <p className="mb-4 whitespace-pre-line text-sm text-[var(--beige)]">{record.review_note}</p>

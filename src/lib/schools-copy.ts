@@ -4,6 +4,10 @@ import type { Lang } from "@/lib/i18n";
 export const SCHOOL_COPY = {
   kg: {
     title: "Мектептер",
+    subtitle: "Кара-Кулжа районунун мектептери жана жарыяланган маалыматтары.",
+    more: "Толук маалымат",
+    search: "Мектептин аталышы боюнча издөө",
+    minimum: "Эң төмөнкү балл",
     general: "Жалпы маалымат",
     indicators: "Негизги көрсөткүчтөр",
     ort: "ЖРТ жыйынтыктары",
@@ -41,6 +45,10 @@ export const SCHOOL_COPY = {
   },
   ru: {
     title: "Школы",
+    subtitle: "Школы Кара-Кульджинского района и опубликованные сведения о них.",
+    more: "Подробнее",
+    search: "Поиск по названию школы",
+    minimum: "Минимальный балл",
     general: "Общая информация",
     indicators: "Основные показатели",
     ort: "Результаты ОРТ",
@@ -78,6 +86,10 @@ export const SCHOOL_COPY = {
   },
   en: {
     title: "Schools",
+    subtitle: "Schools of Kara-Kulja district and their published information.",
+    more: "Learn more",
+    search: "Search schools by name",
+    minimum: "Minimum score",
     general: "General information",
     indicators: "Key indicators",
     ort: "ORT results",

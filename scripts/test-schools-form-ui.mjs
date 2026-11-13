@@ -36,7 +36,7 @@ const isolatePlugin = {
       contents:
         args.path === "schools-stub"
           ? stub
-          : "export const TERRITORIES=[]; export const displayTerritoryName=()=>''; export const displayVillageName=()=>'';",
+          : "export const TERRITORIES=[{slug:'ylai-talaa',villages:[{slug:'ylai-talaa'}]}]; export const displayTerritoryName=()=>''; export const displayVillageName=()=>'';",
       loader: "js",
     }));
   },
@@ -48,9 +48,23 @@ const ssr = await build({
     contents: `
     import React from 'react'; import { renderToStaticMarkup } from 'react-dom/server';
     import { SchoolForm } from './src/components/admin/SchoolForm';
+    import { SchoolIdentityFields } from './src/components/admin/SchoolIdentityFields';
+    import { schoolStatus, validSchoolIdentity } from './src/lib/school-admin';
+    import { SchoolAdminList, SchoolStatusBadge } from './src/components/admin/SchoolAdminList';
+    import { filterSchools } from './src/lib/school-admin';
     const info={slug:'fixture',name_kg:'Fixture',name_ru:'',name_en:'',territory_slug:'',village_slug:'',director_name:'',director_phone:'',office_phone:'',address_kg:'',address_ru:'',address_en:'',current_academic_year:''};
     export const editor=renderToStaticMarkup(<SchoolForm admin={false} record={{...info,id:'fixture',status:'draft',revision:0,review_note:null}} initial={{info,stats:[],ort:[],achievements:[],resources:[]}} onSaved={async()=>{}}/>);
-    export const admin=renderToStaticMarkup(<SchoolForm admin={true} record={{...info,id:'fixture',status:'draft',revision:0,review_note:null}} initial={{info,stats:[],ort:[],achievements:[],resources:[]}} onSaved={async()=>{}}/>);
+    export const admin=renderToStaticMarkup(<SchoolForm admin={true} record={{...info,id:'fixture',status:'review',revision:0,review_note:null}} initial={{info:{...info,director_name:'Preserved director'},stats:[],ort:[{year:2026,academic_year:'2025-2026',scores:[142,156,203]}],achievements:[],resources:[]}} onSaved={async()=>{}}/>);
+    export const creation=renderToStaticMarkup(<SchoolIdentityFields value={info} onChange={()=>{}}/>);
+    export const validIdentity=validSchoolIdentity({...info,territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:'2026-2027'});
+    export const invalidIdentity=[info,{...info,name_kg:'',current_academic_year:'2026-2027'},{...info,current_academic_year:'invalid'}].map(validSchoolIdentity);
+    export const statuses=['draft','review','published'].map(status=>schoolStatus({status,review_note:null}));
+    export const returned=schoolStatus({status:'draft',review_note:'Please correct'});
+    const schools=['draft','review','published','draft','draft'].map((status,index)=>({...info,id:'private-id-'+index,name_kg:'Школа '+index,status,review_note:index===3?'Correct':null,is_archived:index===4}));
+    export const list=renderToStaticMarkup(<SchoolAdminList schools={schools} onOpen={()=>{}}/>);
+    export const badges=schools.map(record=>renderToStaticMarkup(<SchoolStatusBadge record={record}/>));
+    export const filters=['all','draft','review','published','archived'].map(filter=>filterSchools(schools,filter,'').map(s=>s.id));
+    export const search=filterSchools(schools,'all',' ШКОЛА 2 ').map(s=>s.id);
   `,
   },
   bundle: true,
@@ -90,8 +104,48 @@ for (const label of [
   assert.ok(rendered.exports.editor.includes(label), label);
 assert.ok(rendered.exports.admin.includes("Slug"));
 assert.ok(rendered.exports.admin.includes("Проверка и публикация"));
+assert.ok(rendered.exports.admin.includes("Ожидает проверки"));
+assert.ok(rendered.exports.admin.includes("Preserved director"));
+assert.ok(rendered.exports.admin.includes("Посмотреть введённые баллы"));
+assert.ok(rendered.exports.admin.includes("142, 156, 203"));
+assert.ok(rendered.exports.admin.includes("167")); // Average of the actual scores.
+assert.ok(rendered.exports.admin.includes("Медиана"));
+assert.ok(rendered.exports.admin.includes("Распределение баллов"));
+assert.ok(!rendered.exports.admin.includes("Добавить результаты ОРТ"));
+assert.ok(!rendered.exports.admin.includes("Отправить на проверку"));
+assert.equal((rendered.exports.admin.match(/<textarea/g) ?? []).length, 1); // Admin note only.
+assert.match(rendered.exports.admin, /<details[^>]*>[\s\S]*Дополнительные данные[\s\S]*Slug/);
+assert.equal((rendered.exports.creation.match(/required=""/g) ?? []).length, 4);
+assert.ok(!rendered.exports.creation.includes("Slug"));
+assert.ok(!rendered.exports.creation.includes("Директор"));
+assert.equal(rendered.exports.validIdentity, true);
+assert.deepEqual(rendered.exports.invalidIdentity, [false, false, false]);
+assert.deepEqual(rendered.exports.statuses, ["Черновик", "Ожидает проверки", "Опубликовано"]);
+assert.equal(rendered.exports.returned, "На исправлении");
+assert.equal((rendered.exports.list.match(/<li /g) ?? []).length, 5);
+assert.equal((rendered.exports.list.match(/<h3 /g) ?? []).length, 5);
+assert.ok(!rendered.exports.list.includes("<form"));
+assert.ok(!rendered.exports.list.includes("private-id-"));
+for (const section of ["Основное", "Редактор школы", "Проверка и публикация", "Управление"])
+  assert.ok(!rendered.exports.list.includes(`>${section}<`));
+for (const [index, label] of [
+  "Черновик",
+  "Ожидает проверки",
+  "Опубликовано",
+  "На исправлении",
+  "В архиве",
+].entries())
+  assert.ok(rendered.exports.badges[index].includes(label));
+assert.deepEqual(rendered.exports.filters, [
+  ["private-id-0", "private-id-1", "private-id-2", "private-id-3", "private-id-4"],
+  ["private-id-0", "private-id-3"],
+  ["private-id-1"],
+  ["private-id-2"],
+  ["private-id-4"],
+]);
+assert.deepEqual(rendered.exports.search, ["private-id-2"]);
 console.log(
-  "School Editor/Admin SSR UI tests passed: frozen sections absent, teacher technical fields hidden, General/ORT/actions retained",
+  "School UI tests passed: one list entry per school, no edit forms or IDs in list, five status badges, filters/search, four required creation fields, read-only Admin ORT and unchanged editor inputs",
 );
 if (!process.argv.includes("--serve")) process.exit(0);
 const result = await build({
@@ -162,7 +216,7 @@ const result = await build({
           contents:
             args.path === "schools-stub"
               ? stub
-              : "export const TERRITORIES=[]; export const displayTerritoryName=()=>''; export const displayVillageName=()=>'';",
+              : "export const TERRITORIES=[{slug:'ylai-talaa',villages:[{slug:'ylai-talaa'}]}]; export const displayTerritoryName=()=>''; export const displayVillageName=()=>'';",
           loader: "js",
         }));
       },

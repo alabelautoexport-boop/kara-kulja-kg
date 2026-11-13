@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { parseEnv } from "node:util";
+import { publishedSchoolRoutes } from "./school-publication-routes.mjs";
 
 const server = (await import("../dist/server/index.js")).default;
 
@@ -99,7 +101,28 @@ const adminRoutes = [
   "/news-admin/new",
 ];
 
-const routes = [...new Set([...sitemapRoutes, ...territoryRoutes, ...villageRoutes, ...adminRoutes])];
+const localEnv = fs.existsSync(".env") ? parseEnv(fs.readFileSync(".env", "utf8")) : {};
+const buildEnv = { ...localEnv, ...process.env };
+let schoolRoutes = [];
+try {
+  schoolRoutes = await publishedSchoolRoutes({
+    url: buildEnv.VITE_SUPABASE_URL,
+    publicKey: buildEnv.VITE_SUPABASE_PUBLISHABLE_KEY,
+  });
+  console.log(`Published school routes: ${schoolRoutes.length}`);
+} catch {
+  // No stale or private fallback. Dynamic details still use the SPA rewrite.
+  console.warn("Published school routes could not be enumerated; sitemap includes /schools only.");
+}
+const routes = [
+  ...new Set([
+    ...sitemapRoutes,
+    ...territoryRoutes,
+    ...villageRoutes,
+    ...adminRoutes,
+    ...schoolRoutes,
+  ]),
+];
 
 async function renderRoute(routePath) {
   const url = `${BASE_URL}${routePath}`;
@@ -138,7 +161,7 @@ for (const route of routes) {
 // Generate static sitemap.xml
 let sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-for (const r of sitemapRoutes) {
+for (const r of [...sitemapRoutes, ...schoolRoutes]) {
   const priority = r === "/" ? "1.0" : "0.7";
   sitemapXml += `  <url><loc>${BASE_URL}${r}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>\n`;
 }

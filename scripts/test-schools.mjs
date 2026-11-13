@@ -777,6 +777,62 @@ try {
     "Basic save/submit, auto slug collisions, archive/restore, authorization, exact-name deletion and atomic rollback tests passed",
   );
   await testEditorAccess({ db, login, denied, admin, editor, school, payload, privateRows });
+  // Compact Main Admin creation uses the deployed RPCs, without schema changes.
+  await login("authenticated", admin);
+  const compactId = await createAuto("М. Алиев");
+  const compactRow = (await db.query("select * from public.schools where id=$1", [compactId]))
+    .rows[0];
+  const compactInfo = {
+    ...compactRow,
+    name_kg: "М. Алиев",
+    territory_slug: "ylai-talaa",
+    village_slug: "ylai-talaa",
+    current_academic_year: "2026-2027",
+  };
+  await db.query("select public.save_school_active_draft($1,$2,$3,false)", [
+    compactId,
+    compactRow.revision,
+    { info: compactInfo, ort: [] },
+  ]);
+  const compactSaved = (await db.query("select * from public.schools where id=$1", [compactId]))
+    .rows[0];
+  assert.equal(compactSaved.slug, "m-aliev");
+  for (const key of ["name_kg", "territory_slug", "village_slug", "current_academic_year"])
+    assert.equal(compactSaved[key], compactInfo[key]);
+  const preservedOrt = [{ year: 2026, academic_year: "2025-2026", scores: [142, 156, 203] }];
+  const withEditorData = {
+    ...compactInfo,
+    director_name: "Existing director",
+    director_phone: "Existing phone",
+    address_ru: "Existing address",
+    name_ru: "Existing translation",
+  };
+  await db.query("select public.save_school_active_draft($1,1,$2,false)", [
+    compactId,
+    { info: withEditorData, ort: preservedOrt },
+  ]);
+  const beforeAdminSave = await privateRows(compactId);
+  await db.query("select public.save_school_active_draft($1,2,$2,false)", [
+    compactId,
+    { info: { ...withEditorData, name_kg: "М. Алиев мектеби" }, ort: preservedOrt },
+  ]);
+  assert.deepEqual(await privateRows(compactId), beforeAdminSave);
+  const afterAdminSave = (await db.query("select * from public.schools where id=$1", [compactId]))
+    .rows[0];
+  for (const key of ["director_name", "director_phone", "address_ru", "name_ru"])
+    assert.equal(afterAdminSave[key], withEditorData[key]);
+  await db.query("select public.review_school($1,3,'publish',null)", [compactId]);
+  await db.query("select public.review_school($1,4,'return','Please correct')", [compactId]);
+  assert.equal(
+    (await db.query("select review_note from public.schools where id=$1", [compactId])).rows[0]
+      .review_note,
+    "Please correct",
+  );
+  await db.query("select public.set_school_archived($1,5,true)", [compactId]);
+  assert.deepEqual(await privateRows(compactId), beforeAdminSave);
+  console.log(
+    "Compact four-field creation, automatic slug, Admin identity save preservation, review/return and archive passed",
+  );
 } finally {
   await db.close();
 }

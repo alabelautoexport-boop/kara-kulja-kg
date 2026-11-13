@@ -20,12 +20,16 @@ export function Footer() {
               <span className="font-display text-2xl tracking-tight">Kara-Kulja</span>
             </div>
             <p className="mt-6 max-w-sm font-display text-xl font-light italic leading-[1.5] text-pretty text-muted-foreground/90">
-              «{t("footer.slogan").split("\n").map((line, i, arr) => (
-                <span key={i}>
-                  {line}
-                  {i < arr.length - 1 && <br />}
-                </span>
-              ))}»
+              «
+              {t("footer.slogan")
+                .split("\n")
+                .map((line, i, arr) => (
+                  <span key={i}>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
+              »
             </p>
             <p className="mt-8 kbd-eyebrow text-muted-foreground/70">{t("footer.tag")}</p>
           </div>
@@ -44,6 +48,7 @@ export function Footer() {
                 ["/gallery", "nav.gallery"],
                 ["/contact", "nav.contact"],
                 ["/news", "nav.news"],
+                ["/schools", "nav.schools"],
               ].map(([to, k]) => (
                 <li key={to}>
                   <Link

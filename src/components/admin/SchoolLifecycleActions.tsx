@@ -46,6 +46,7 @@ export function SchoolLifecycleActions({
   };
   return (
     <section className="my-8 border-t hairline pt-6">
+      <h2 className="mb-5 font-display text-xl">{t("Управление")}</h2>
       {record.is_archived && (
         <p className="mb-4 text-sm text-muted-foreground">
           {t("Школа в архиве. Сначала восстановите её.")}

@@ -37,6 +37,7 @@ const KG: Dict = {
   "nav.history": "Тарых",
   "nav.gallery": "Галерея",
   "nav.news": "Жаңылыктар",
+  "nav.schools": "Мектептер",
   "nav.contact": "Байланыш",
 
   "hero.eyebrow": "КЫРГЫЗ РЕСПУБЛИКАСЫ · ОШ ОБЛУСУ",
@@ -259,6 +260,7 @@ const RU: Dict = {
   "nav.history": "История",
   "nav.gallery": "Галерея",
   "nav.news": "Новости",
+  "nav.schools": "Школы",
   "nav.contact": "Контакты",
 
   "hero.eyebrow": "КЫРГЫЗСКАЯ РЕСПУБЛИКА · ОШСКАЯ ОБЛАСТЬ",
@@ -480,6 +482,7 @@ const EN: Dict = {
   "nav.history": "History",
   "nav.gallery": "Gallery",
   "nav.news": "News",
+  "nav.schools": "Schools",
   "nav.contact": "Contact",
 
   "hero.eyebrow": "KYRGYZ REPUBLIC · OSH REGION",
