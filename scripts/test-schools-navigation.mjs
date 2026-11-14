@@ -35,7 +35,7 @@ globalThis.getComputedStyle = dom.window.getComputedStyle.bind(dom.window);
 dom.window.confirm = () => true;
 dom.window.localStorage.setItem("kara-kulja-admin-language", "ru");
 const modelSource = `
-  const blank={slug:'school',name_kg:'',name_ru:'',name_en:'',territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:'2026-2027',director_name:'Director',director_phone:'',office_phone:'',address_kg:'',address_ru:'',address_en:''};
+  const blank={school_type:"general",slug:'school',name_kg:'',name_ru:'',name_en:'',territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:'2026-2027',director_name:'Director',director_phone:'',office_phone:'',address_kg:'',address_ru:'',address_en:''};
   const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
   export const records=ids.map((id,i)=>({...blank,id,name_kg:'School '+(i+1),slug:'school-'+(i+1),status:'draft',revision:0,review_note:null,is_archived:false}));
   export let holdNext=false; export const pending=[];
@@ -192,7 +192,7 @@ try {
   await click("Создать школу");
   assert.equal(count("Список школ"), 0);
   assert.equal(count("Основное"), 0);
-  assert.equal(document.querySelectorAll("input[required],select[required]").length, 3);
+  assert.equal(document.querySelectorAll("input[required],select[required]").length, 4);
   await click("Отмена");
   listOnly();
   await click("Создать школу");
@@ -212,6 +212,7 @@ try {
     [...document.querySelectorAll("label")]
       .find((label) => label.textContent.includes(text))
       ?.querySelector("input,select");
+  await change(inputFor("Тип школы"), "general");
   await change(inputFor("Название школы KG"), "Created school");
   await change(inputFor("Айыл аймак"), "ylai-talaa");
   await change(inputFor("Село"), "ylai-talaa");

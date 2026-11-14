@@ -68,11 +68,22 @@ assert.deepEqual(
 );
 console.log("ORT unit tests passed");
 const ortModuleUrl = `data:text/javascript;base64,${Buffer.from(ortCode).toString("base64")}`;
+const institutionCode = ts.transpileModule(
+  fs.readFileSync("src/lib/institution-types.ts", "utf8"),
+  { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } },
+).outputText;
+const institutionUrl = `data:text/javascript;base64,${Buffer.from(institutionCode).toString("base64")}`;
+const namesCode = ts.transpileModule(fs.readFileSync("src/lib/institution-names.ts", "utf8"), {
+  compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+}).outputText;
+const namesUrl = `data:text/javascript;base64,${Buffer.from(namesCode).toString("base64")}`;
 const validationCode = ts
   .transpileModule(fs.readFileSync("src/lib/school-form-validation.ts", "utf8"), {
     compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
   })
-  .outputText.replace('"./school-ort"', JSON.stringify(ortModuleUrl));
+  .outputText.replace('"./school-ort"', JSON.stringify(ortModuleUrl))
+  .replace('"./institution-types"', JSON.stringify(institutionUrl))
+  .replace('"./institution-names"', JSON.stringify(namesUrl));
 const { prepareSchoolDraft, prepareActiveSchoolDraft } = await import(
   `data:text/javascript;base64,${Buffer.from(validationCode).toString("base64")}`
 );

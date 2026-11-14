@@ -53,7 +53,7 @@ const ssr = await build({
     import { schoolStatus, validSchoolIdentity } from './src/lib/school-admin';
     import { SchoolAdminList, SchoolStatusBadge } from './src/components/admin/SchoolAdminList';
     import { filterSchools } from './src/lib/school-admin';
-    const info={slug:'fixture',name_kg:'Fixture',name_ru:'',name_en:'',territory_slug:'',village_slug:'',director_name:'',director_phone:'',office_phone:'',address_kg:'',address_ru:'',address_en:'',current_academic_year:''};
+    const info={school_type:'general',slug:'fixture',name_kg:'Fixture',name_ru:'',name_en:'',territory_slug:'',village_slug:'',director_name:'',director_phone:'',office_phone:'',address_kg:'',address_ru:'',address_en:'',current_academic_year:''};
     export const editor=renderToStaticMarkup(<SchoolForm admin={false} record={{...info,id:'fixture',status:'draft',revision:0,review_note:null}} initial={{info,stats:[],ort:[],achievements:[],resources:[]}} onSaved={async()=>{}}/>);
     export const admin=renderToStaticMarkup(<SchoolForm admin={true} record={{...info,id:'fixture',status:'review',revision:0,review_note:null}} initial={{info:{...info,director_name:'Preserved director'},stats:[],ort:[{year:2026,academic_year:'2025-2026',scores:[142,156,203]}],achievements:[],resources:[]}} onSaved={async()=>{}}/>);
     export const creation=renderToStaticMarkup(<SchoolIdentityFields value={info} onChange={()=>{}}/>);
@@ -117,11 +117,13 @@ assert.ok(!rendered.exports.admin.includes("Добавить результат�
 assert.ok(!rendered.exports.admin.includes("Отправить на проверку"));
 assert.equal((rendered.exports.admin.match(/<textarea/g) ?? []).length, 1); // Admin note only.
 assert.match(rendered.exports.admin, /<details[^>]*>[\s\S]*Дополнительные данные[\s\S]*Slug/);
-assert.equal((rendered.exports.creation.match(/required=""/g) ?? []).length, 3);
+assert.equal((rendered.exports.creation.match(/required=""/g) ?? []).length, 4);
 assert.match(rendered.exports.creation, /Необязательно/);
 assert.doesNotMatch(rendered.exports.creation, /placeholder="2026-2027"/);
 assert.ok(!rendered.exports.creation.includes("Slug"));
 assert.ok(!rendered.exports.creation.includes("Директор"));
+assert.ok(rendered.exports.admin.includes("Тип школы"));
+assert.ok(!rendered.exports.editor.includes("Тип школы"));
 assert.equal(rendered.exports.validIdentity, true);
 assert.equal(rendered.exports.validWithoutYear, true);
 for (const html of [rendered.exports.admin, rendered.exports.editor]) {
@@ -158,7 +160,7 @@ assert.deepEqual(rendered.exports.filters, [
 ]);
 assert.deepEqual(rendered.exports.search, ["private-id-2"]);
 console.log(
-  "School UI tests passed: compact sans-serif working headings, optional academic year with three required creation fields, list/status/filter isolation, read-only Admin ORT and unchanged editor scope",
+  "School UI tests passed: compact sans-serif working headings, optional academic year with four required creation fields including explicit school type, list/status/filter isolation, read-only Admin ORT and unchanged editor scope",
 );
 if (!process.argv.includes("--serve")) process.exit(0);
 const result = await build({

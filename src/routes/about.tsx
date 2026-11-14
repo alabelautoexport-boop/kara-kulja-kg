@@ -41,6 +41,7 @@ function AboutPage() {
     "administration",
     "hospital",
     "schools",
+    "kindergartens",
     "newspaper",
     "culture",
     "other",
@@ -107,9 +108,9 @@ function AboutPage() {
                     id={item === "schools" ? "education" : undefined}
                     className="min-w-0 border hairline"
                   >
-                    {item === "schools" ? (
+                    {item === "schools" || item === "kindergartens" ? (
                       <Link
-                        to="/schools"
+                        to={item === "schools" ? "/schools" : "/kindergartens"}
                         className="flex min-h-14 items-center justify-between gap-3 p-4 text-sm leading-relaxed transition-colors hover:text-[var(--ember)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ember)]"
                       >
                         {t(`about.infrastructure.${item}`)}

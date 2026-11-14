@@ -3,9 +3,9 @@ import type { Lang } from "@/lib/i18n";
 // Same locale + KG fallback approach as the existing News module.
 export const SCHOOL_COPY = {
   kg: {
-    title: "Орто мектептер",
+    title: "Мектептер",
     schoolLife: "Мектеп турмушу",
-    subtitle: "Кара-Кулжа районундагы орто мектептер жөнүндө маалымат.",
+    subtitle: "Кара-Кулжа районундагы мектептер жөнүндө маалымат.",
     more: "Толук маалымат",
     search: "Издөө",
     filterTerritory: "Аймак",
@@ -48,9 +48,9 @@ export const SCHOOL_COPY = {
     noAnnualData: "Маалымат азырынча киргизиле элек.",
   },
   ru: {
-    title: "Средние школы",
+    title: "Школы",
     schoolLife: "Школьная жизнь",
-    subtitle: "Информация о средних школах Кара-Кульджинского района.",
+    subtitle: "Информация о школах Кара-Кульджинского района.",
     more: "Подробнее",
     search: "Поиск",
     filterTerritory: "Аймак",
@@ -93,9 +93,9 @@ export const SCHOOL_COPY = {
     noAnnualData: "Данные пока не добавлены.",
   },
   en: {
-    title: "Secondary schools",
+    title: "Schools",
     schoolLife: "School life",
-    subtitle: "Information about secondary schools in Kara-Kulja district.",
+    subtitle: "Information about schools in Kara-Kulja district.",
     more: "Learn more",
     search: "Search",
     filterTerritory: "Territory",

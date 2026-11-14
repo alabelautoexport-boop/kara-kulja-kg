@@ -1,11 +1,21 @@
+import { validInstitutionShortNames } from "./institution-names";
+import { isSchoolType } from "./institution-types";
 import { TERRITORIES } from "./territories-data";
 import type { SchoolInfo, SchoolRecord } from "./schools-data";
 
 export type SchoolIdentity = Pick<
   SchoolInfo,
-  "name_kg" | "territory_slug" | "village_slug" | "current_academic_year"
+  | "short_name_kg"
+  | "short_name_ru"
+  | "short_name_en"
+  | "school_type"
+  | "name_kg"
+  | "territory_slug"
+  | "village_slug"
+  | "current_academic_year"
 >;
 export const emptySchoolIdentity: SchoolIdentity = {
+  school_type: null,
   name_kg: "",
   territory_slug: "",
   village_slug: "",
@@ -13,7 +23,9 @@ export const emptySchoolIdentity: SchoolIdentity = {
 };
 export function validSchoolIdentity(info: SchoolIdentity) {
   return (
+    validInstitutionShortNames(info) &&
     !!info.name_kg.trim() &&
+    isSchoolType(info.school_type) &&
     info.name_kg.length <= 300 &&
     (!info.current_academic_year || /^\d{4}-\d{4}$/.test(info.current_academic_year)) &&
     TERRITORIES.some(

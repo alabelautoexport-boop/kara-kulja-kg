@@ -1,3 +1,5 @@
+import type { InstitutionShortNames } from "./institution-names";
+import type { SchoolType } from "./institution-types";
 import { supabase } from "@/lib/supabase";
 import type { Lang } from "@/lib/i18n";
 import type { OrtSummary } from "@/lib/school-ort";
@@ -6,7 +8,8 @@ import type { ActiveSchoolDraft } from "@/lib/school-form-validation";
 import { schoolMediaFromRow, type SchoolMediaSelection } from "./school-media-model";
 import { publishSchoolMedia, cleanupSchoolMedia } from "./school-media";
 
-export type SchoolInfo = {
+export type SchoolInfo = InstitutionShortNames & {
+  school_type?: SchoolType | null;
   slug?: string;
   name_kg: string;
   name_ru: string;
@@ -148,7 +151,12 @@ export async function loadSchoolDraft(id: string) {
       };
   const info = {
     ...Object.fromEntries(
-      Object.keys(EMPTY_SCHOOL_INFO).map((key) => [key, record[key as keyof SchoolInfo] ?? ""]),
+      Object.keys(EMPTY_SCHOOL_INFO).map((key) => [
+        key,
+        key === "school_type"
+          ? (record.school_type ?? null)
+          : (record[key as keyof SchoolInfo] ?? ""),
+      ]),
     ),
     slug: record.slug,
   } as SchoolInfo;
@@ -221,6 +229,10 @@ export async function reviewSchool(
   if (error) throw new Error(schoolRpcError(error));
 }
 export const EMPTY_SCHOOL_INFO: SchoolInfo = {
+  short_name_kg: "",
+  short_name_ru: "",
+  short_name_en: "",
+  school_type: null,
   name_kg: "",
   name_ru: "",
   name_en: "",

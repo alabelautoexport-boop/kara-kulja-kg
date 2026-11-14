@@ -35,7 +35,7 @@ globalThis.getComputedStyle = dom.window.getComputedStyle.bind(dom.window);
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 const stub = `
   export const requests=[];
-  const doc={info:{name_kg:'Public KG',name_ru:'Public RU',name_en:'Public EN',territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:'2026-2027',director_name:'Public director',director_phone:'12345',office_phone:'',address_kg:'Address KG',address_ru:'Address RU',address_en:'Address EN',review_note:'PRIVATE_NOTE'},stats:[],ort:[{year:2026,academic_year:'2025-2026',scores:['RAW_SCORES_SENTINEL'],summary:{participants:3,average:167,median:156,minimum:142,maximum:203,over200:1,distribution:[0,0,1,1,0,0,1]}}],achievements:[],resources:[]};
+  const doc={info:{short_name_kg:'Б. Эшмамбетов',short_name_ru:'Б. Эшмамбетов',short_name_en:'B. Eshmambetov',school_type:'general',name_kg:'Public KG',name_ru:'Public RU',name_en:'Public EN',territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:'2026-2027',director_name:'Public director',director_phone:'12345',office_phone:'',address_kg:'Address KG',address_ru:'Address RU',address_en:'Address EN',review_note:'PRIVATE_NOTE'},stats:[],ort:[{year:2026,academic_year:'2025-2026',scores:['RAW_SCORES_SENTINEL'],summary:{participants:3,average:167,median:156,minimum:142,maximum:203,over200:1,distribution:[0,0,1,1,0,0,1]}}],achievements:[],resources:[]};
   doc.media={cover:{asset_id:'22222222-2222-4222-8222-222222222222',kind:'cover',main_key:'schools/11111111-1111-4111-8111-111111111111/cover/22222222-2222-4222-8222-222222222222/main.webp',thumb_key:'schools/11111111-1111-4111-8111-111111111111/cover/22222222-2222-4222-8222-222222222222/card.webp',width:1600,height:1200,thumb_width:960,thumb_height:720},gallery:[{asset_id:'33333333-3333-4333-8333-333333333333',kind:'gallery',main_key:'schools/11111111-1111-4111-8111-111111111111/gallery/33333333-3333-4333-8333-333333333333/image.webp',thumb_key:'schools/11111111-1111-4111-8111-111111111111/gallery/33333333-3333-4333-8333-333333333333/thumb.webp',width:1600,height:1200,thumb_width:480,thumb_height:360}]};
   export const rows=[{school_id:'PRIVATE_UUID',slug:'published-school',is_published:true,document:doc},{school_id:'hidden',slug:'draft-school',is_published:false,document:{...doc,info:{...doc.info,name_kg:'DRAFT_ONLY_NAME'}}}];
   export const supabase={from(table){if(table!=='school_publications')throw Error('Internal table queried publicly');const filters=[];const request={table,filters};requests.push(request);
@@ -146,11 +146,17 @@ try {
     ["en", "Public EN", "Learn more", "Schools"],
   ]) {
     await mount("list", lang);
-    assert.ok(document.body.textContent.includes(name));
+    assert.equal(
+      document.querySelector('a[href="/schools/published-school"] h2').textContent,
+      { kg: "Б. Эшмамбетов", ru: "Б. Эшмамбетов", en: "B. Eshmambetov" }[lang],
+    );
+    assert.ok(
+      !document.querySelector('a[href="/schools/published-school"]').textContent.includes(name),
+    );
     assert.ok(!document.body.textContent.includes("Public director"));
     assert.equal(
       document.querySelector("h1").textContent,
-      { kg: "Орто мектептер", ru: "Средние школы", en: "Secondary schools" }[lang],
+      { kg: "Мектептер", ru: "Школы", en: "Schools" }[lang],
     );
     assert.equal(
       document.querySelector('a[href="/about#social-infrastructure"]').textContent.trim(),
@@ -161,10 +167,22 @@ try {
       }[lang],
     );
     assert.ok(!document.body.textContent.includes("2026-2027"));
-    assert.equal(document.querySelectorAll("select").length, 2);
+    assert.equal(document.querySelectorAll("select").length, 3);
     assert.ok(document.body.textContent.includes(more));
     assert.equal(document.querySelectorAll('a[href="/schools/published-school"]').length, 1);
     assert.equal(document.querySelectorAll('img[src$="/card.webp"][loading="lazy"]').length, 1);
+    const typeSelect = document.querySelectorAll("select")[2];
+    assert.equal(typeSelect.options.length, 7);
+    await act(async () => {
+      typeSelect.value = "secondary";
+      typeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    assert.equal(document.querySelectorAll('a[href="/schools/published-school"]').length, 0);
+    await act(async () => {
+      typeSelect.value = "general";
+      typeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    assert.equal(document.querySelectorAll('a[href="/schools/published-school"]').length, 1);
     await mount("detail", lang);
     assert.ok(document.body.textContent.includes("Public director"));
     const indicators = document.querySelector(
@@ -240,11 +258,9 @@ try {
     assert.ok(
       document
         .querySelector("#education")
-        .textContent.includes(
-          { kg: "Орто мектептер", ru: "Средние школы", en: "Secondary schools" }[lang],
-        ),
+        .textContent.includes({ kg: "Мектептер", ru: "Школы", en: "Schools" }[lang]),
     );
-    assert.equal(document.querySelectorAll("#social-infrastructure li").length, 6);
+    assert.equal(document.querySelectorAll("#social-infrastructure li").length, 7);
   }
   const originalStats = api.rows[0].document.stats;
   api.rows[0].document.stats = [

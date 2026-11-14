@@ -1,3 +1,4 @@
+import { testInstitutionCatalog } from "./test-institution-catalog.mjs";
 // Empty, disposable PostgreSQL-compatible replay. No linked project or network.
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -21,6 +22,8 @@ const ordered = [
   "20261113003747_news_editor_access.sql",
   "20261113205931_school_media.sql",
   "20261113211506_school_editor_access.sql",
+  "20261114201024_institution_catalog_architecture.sql",
+  "20261114210052_institution_short_names.sql",
 ];
 const files = fs
   .readdirSync("supabase/migrations")
@@ -117,8 +120,9 @@ try {
       );
     }
   }
+  await testInstitutionCatalog(db, { admin, schoolUser, school });
   console.log(
-    "Clean replay passed: all 8 ordered migrations, unique timestamps, Auth/Storage infrastructure fixtures, nullable/no-default roles, automatic NULL profiles, isolated managed News/School access and media registration",
+    "Clean replay passed: all 10 ordered migrations, unique timestamps, Auth/Storage infrastructure fixtures, nullable/no-default roles, automatic NULL profiles, isolated managed News/School access and media registration",
   );
 } finally {
   await db.close();
@@ -127,7 +131,9 @@ try {
 // Exercise the real normalization block against drifted and already-normalized
 // tables independently of the broader Schools suite's historical fixtures.
 const normalization =
-  source(ordered.at(-1)).split("alter table public.school_editor_assignments")[0] + "commit;";
+  source("20261113211506_school_editor_access.sql").split(
+    "alter table public.school_editor_assignments",
+  )[0] + "commit;";
 assert.doesNotMatch(normalization, /\bupdate\s+public\.profiles\b/i);
 const roles = new PGlite();
 try {

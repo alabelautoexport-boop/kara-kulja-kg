@@ -19,6 +19,7 @@ import { Route as PeopleRouteImport } from './routes/people'
 import { Route as NewsAdminRouteImport } from './routes/news-admin'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as KindergartensRouteImport } from './routes/kindergartens'
 import { Route as InvestRouteImport } from './routes/invest'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -31,9 +32,11 @@ import { Route as TerritoriesSlugRouteImport } from './routes/territories_.$slug
 import { Route as SchoolsSlugRouteImport } from './routes/schools_.$slug'
 import { Route as NewsSlugRouteImport } from './routes/news_.$slug'
 import { Route as NewsAdminNewRouteImport } from './routes/news-admin_.new'
+import { Route as KindergartensSlugRouteImport } from './routes/kindergartens_.$slug'
 import { Route as AdminSchoolsRouteImport } from './routes/admin_.schools'
 import { Route as AdminNewsRouteImport } from './routes/admin_.news'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
+import { Route as AdminKindergartensRouteImport } from './routes/admin_.kindergartens'
 import { Route as NewsAdminIdEditRouteImport } from './routes/news-admin_.$id.edit'
 import { Route as AdminNewsNewRouteImport } from './routes/admin_.news_.new'
 import { Route as AdminNewsIdEditRouteImport } from './routes/admin_.news_.$id.edit'
@@ -86,6 +89,11 @@ const NewsRoute = NewsRouteImport.update({
 const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KindergartensRoute = KindergartensRouteImport.update({
+  id: '/kindergartens',
+  path: '/kindergartens',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestRoute = InvestRouteImport.update({
@@ -148,6 +156,11 @@ const NewsAdminNewRoute = NewsAdminNewRouteImport.update({
   path: '/news-admin/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KindergartensSlugRoute = KindergartensSlugRouteImport.update({
+  id: '/kindergartens_/$slug',
+  path: '/kindergartens/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSchoolsRoute = AdminSchoolsRouteImport.update({
   id: '/admin_/schools',
   path: '/admin/schools',
@@ -161,6 +174,11 @@ const AdminNewsRoute = AdminNewsRouteImport.update({
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin_/login',
   path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminKindergartensRoute = AdminKindergartensRouteImport.update({
+  id: '/admin_/kindergartens',
+  path: '/admin/kindergartens',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsAdminIdEditRoute = NewsAdminIdEditRouteImport.update({
@@ -187,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
   '/invest': typeof InvestRoute
+  '/kindergartens': typeof KindergartensRoute
   '/map': typeof MapRoute
   '/news': typeof NewsRoute
   '/news-admin': typeof NewsAdminRoute
@@ -197,9 +216,11 @@ export interface FileRoutesByFullPath {
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/admin/kindergartens': typeof AdminKindergartensRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/schools': typeof AdminSchoolsRoute
+  '/kindergartens/$slug': typeof KindergartensSlugRoute
   '/news-admin/new': typeof NewsAdminNewRoute
   '/news/$slug': typeof NewsSlugRoute
   '/schools/$slug': typeof SchoolsSlugRoute
@@ -217,6 +238,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
   '/invest': typeof InvestRoute
+  '/kindergartens': typeof KindergartensRoute
   '/map': typeof MapRoute
   '/news': typeof NewsRoute
   '/news-admin': typeof NewsAdminRoute
@@ -227,9 +249,11 @@ export interface FileRoutesByTo {
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/admin/kindergartens': typeof AdminKindergartensRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/news': typeof AdminNewsRoute
   '/admin/schools': typeof AdminSchoolsRoute
+  '/kindergartens/$slug': typeof KindergartensSlugRoute
   '/news-admin/new': typeof NewsAdminNewRoute
   '/news/$slug': typeof NewsSlugRoute
   '/schools/$slug': typeof SchoolsSlugRoute
@@ -248,6 +272,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/history': typeof HistoryRoute
   '/invest': typeof InvestRoute
+  '/kindergartens': typeof KindergartensRoute
   '/map': typeof MapRoute
   '/news': typeof NewsRoute
   '/news-admin': typeof NewsAdminRoute
@@ -258,9 +283,11 @@ export interface FileRoutesById {
   '/territories': typeof TerritoriesRoute
   '/tourism': typeof TourismRoute
   '/villages': typeof VillagesRoute
+  '/admin_/kindergartens': typeof AdminKindergartensRoute
   '/admin_/login': typeof AdminLoginRoute
   '/admin_/news': typeof AdminNewsRoute
   '/admin_/schools': typeof AdminSchoolsRoute
+  '/kindergartens_/$slug': typeof KindergartensSlugRoute
   '/news-admin_/new': typeof NewsAdminNewRoute
   '/news_/$slug': typeof NewsSlugRoute
   '/schools_/$slug': typeof SchoolsSlugRoute
@@ -280,6 +307,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/history'
     | '/invest'
+    | '/kindergartens'
     | '/map'
     | '/news'
     | '/news-admin'
@@ -290,9 +318,11 @@ export interface FileRouteTypes {
     | '/territories'
     | '/tourism'
     | '/villages'
+    | '/admin/kindergartens'
     | '/admin/login'
     | '/admin/news'
     | '/admin/schools'
+    | '/kindergartens/$slug'
     | '/news-admin/new'
     | '/news/$slug'
     | '/schools/$slug'
@@ -310,6 +340,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/history'
     | '/invest'
+    | '/kindergartens'
     | '/map'
     | '/news'
     | '/news-admin'
@@ -320,9 +351,11 @@ export interface FileRouteTypes {
     | '/territories'
     | '/tourism'
     | '/villages'
+    | '/admin/kindergartens'
     | '/admin/login'
     | '/admin/news'
     | '/admin/schools'
+    | '/kindergartens/$slug'
     | '/news-admin/new'
     | '/news/$slug'
     | '/schools/$slug'
@@ -340,6 +373,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/history'
     | '/invest'
+    | '/kindergartens'
     | '/map'
     | '/news'
     | '/news-admin'
@@ -350,9 +384,11 @@ export interface FileRouteTypes {
     | '/territories'
     | '/tourism'
     | '/villages'
+    | '/admin_/kindergartens'
     | '/admin_/login'
     | '/admin_/news'
     | '/admin_/schools'
+    | '/kindergartens_/$slug'
     | '/news-admin_/new'
     | '/news_/$slug'
     | '/schools_/$slug'
@@ -371,6 +407,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   HistoryRoute: typeof HistoryRoute
   InvestRoute: typeof InvestRoute
+  KindergartensRoute: typeof KindergartensRoute
   MapRoute: typeof MapRoute
   NewsRoute: typeof NewsRoute
   NewsAdminRoute: typeof NewsAdminRoute
@@ -381,9 +418,11 @@ export interface RootRouteChildren {
   TerritoriesRoute: typeof TerritoriesRoute
   TourismRoute: typeof TourismRoute
   VillagesRoute: typeof VillagesRoute
+  AdminKindergartensRoute: typeof AdminKindergartensRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNewsRoute: typeof AdminNewsRoute
   AdminSchoolsRoute: typeof AdminSchoolsRoute
+  KindergartensSlugRoute: typeof KindergartensSlugRoute
   NewsAdminNewRoute: typeof NewsAdminNewRoute
   NewsSlugRoute: typeof NewsSlugRoute
   SchoolsSlugRoute: typeof SchoolsSlugRoute
@@ -464,6 +503,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kindergartens': {
+      id: '/kindergartens'
+      path: '/kindergartens'
+      fullPath: '/kindergartens'
+      preLoaderRoute: typeof KindergartensRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/invest': {
@@ -550,6 +596,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsAdminNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kindergartens_/$slug': {
+      id: '/kindergartens_/$slug'
+      path: '/kindergartens/$slug'
+      fullPath: '/kindergartens/$slug'
+      preLoaderRoute: typeof KindergartensSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin_/schools': {
       id: '/admin_/schools'
       path: '/admin/schools'
@@ -569,6 +622,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin_/kindergartens': {
+      id: '/admin_/kindergartens'
+      path: '/admin/kindergartens'
+      fullPath: '/admin/kindergartens'
+      preLoaderRoute: typeof AdminKindergartensRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news-admin_/$id/edit': {
@@ -603,6 +663,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   HistoryRoute: HistoryRoute,
   InvestRoute: InvestRoute,
+  KindergartensRoute: KindergartensRoute,
   MapRoute: MapRoute,
   NewsRoute: NewsRoute,
   NewsAdminRoute: NewsAdminRoute,
@@ -613,9 +674,11 @@ const rootRouteChildren: RootRouteChildren = {
   TerritoriesRoute: TerritoriesRoute,
   TourismRoute: TourismRoute,
   VillagesRoute: VillagesRoute,
+  AdminKindergartensRoute: AdminKindergartensRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminNewsRoute: AdminNewsRoute,
   AdminSchoolsRoute: AdminSchoolsRoute,
+  KindergartensSlugRoute: KindergartensSlugRoute,
   NewsAdminNewRoute: NewsAdminNewRoute,
   NewsSlugRoute: NewsSlugRoute,
   SchoolsSlugRoute: SchoolsSlugRoute,

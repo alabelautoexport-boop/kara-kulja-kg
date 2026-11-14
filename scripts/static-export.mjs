@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parseEnv } from "node:util";
+import { publishedKindergartenRoutes } from "./school-publication-routes.mjs";
 import { publishedSchoolRoutes } from "./school-publication-routes.mjs";
 
 const server = (await import("../dist/server/index.js")).default;
@@ -22,6 +23,7 @@ const sitemapRoutes = [
   "/gallery",
   "/news",
   "/schools",
+  "/kindergartens",
   "/contact",
 ];
 
@@ -96,6 +98,7 @@ const adminRoutes = [
   "/admin/news",
   "/admin/news/new",
   "/admin/schools",
+  "/admin/kindergartens",
   "/school-admin",
   "/news-admin",
   "/news-admin/new",
@@ -104,6 +107,7 @@ const adminRoutes = [
 const localEnv = fs.existsSync(".env") ? parseEnv(fs.readFileSync(".env", "utf8")) : {};
 const buildEnv = { ...localEnv, ...process.env };
 let schoolRoutes = [];
+let kindergartenRoutes = [];
 try {
   schoolRoutes = await publishedSchoolRoutes({
     url: buildEnv.VITE_SUPABASE_URL,
@@ -114,6 +118,17 @@ try {
   // No stale or private fallback. Dynamic details still use the SPA rewrite.
   console.warn("Published school routes could not be enumerated; sitemap includes /schools only.");
 }
+try {
+  kindergartenRoutes = await publishedKindergartenRoutes({
+    url: buildEnv.VITE_SUPABASE_URL,
+    publicKey: buildEnv.VITE_SUPABASE_PUBLISHABLE_KEY,
+  });
+  console.log(`Published kindergarten routes: ${kindergartenRoutes.length}`);
+} catch {
+  console.warn(
+    "Published kindergarten routes could not be enumerated; sitemap includes /kindergartens only.",
+  );
+}
 const routes = [
   ...new Set([
     ...sitemapRoutes,
@@ -121,6 +136,7 @@ const routes = [
     ...villageRoutes,
     ...adminRoutes,
     ...schoolRoutes,
+    ...kindergartenRoutes,
   ]),
 ];
 
@@ -161,7 +177,7 @@ for (const route of routes) {
 // Generate static sitemap.xml
 let sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-for (const r of [...sitemapRoutes, ...schoolRoutes]) {
+for (const r of [...sitemapRoutes, ...schoolRoutes, ...kindergartenRoutes]) {
   const priority = r === "/" ? "1.0" : "0.7";
   sitemapXml += `  <url><loc>${BASE_URL}${r}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>\n`;
 }

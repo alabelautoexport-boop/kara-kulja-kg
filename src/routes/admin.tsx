@@ -57,6 +57,16 @@ function AdminDashboard() {
             </div>
           </Link>
           <Link
+            to="/admin/kindergartens"
+            className="group border hairline p-6 transition-colors hover:border-[var(--beige)]"
+          >
+            <GraduationCap className="h-6 w-6 text-[var(--beige)]" />
+            <div className="mt-10 flex items-end justify-between gap-4">
+              <h2 className="font-display text-2xl">{t("Управление детскими садами")}</h2>
+              <ArrowRight className="h-4 w-4" />
+            </div>
+          </Link>
+          <Link
             to="/admin/news"
             className="group border hairline p-6 transition-colors hover:border-[var(--beige)]"
           >

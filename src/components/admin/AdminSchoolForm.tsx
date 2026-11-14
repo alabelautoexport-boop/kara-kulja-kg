@@ -84,6 +84,9 @@ export function AdminSchoolForm({
               <div className="mt-3 grid min-w-0 gap-4 sm:grid-cols-2">
                 {(
                   [
+                    ["short_name_kg", "Короткое название KG"],
+                    ["short_name_ru", "Короткое название RU"],
+                    ["short_name_en", "Короткое название EN"],
                     ["name_ru", "Название школы RU"],
                     ["name_en", "Название школы EN"],
                     ["slug", "Slug"],
@@ -93,7 +96,7 @@ export function AdminSchoolForm({
                     {t(label)}
                     <input
                       className={input}
-                      maxLength={300}
+                      maxLength={key.startsWith("short_name") ? 120 : 300}
                       required={key === "slug"}
                       pattern={key === "slug" ? "[a-z0-9]+(-[a-z0-9]+)*" : undefined}
                       value={info[key] ?? ""}

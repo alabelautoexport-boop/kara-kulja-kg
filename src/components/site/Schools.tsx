@@ -1,3 +1,14 @@
+import { catalogInstitutionName } from "@/lib/institution-names";
+import { EMPTY_INSTITUTION_FILTERS } from "@/lib/institution-types";
+import { TERRITORIES } from "@/lib/territories-data";
+import { InstitutionFilters } from "./InstitutionFilters";
+import {
+  SCHOOL_TYPES,
+  SCHOOL_TYPE_FILTER_LABELS,
+  SCHOOL_TYPE_LABELS,
+  INSTITUTION_COPY,
+  isSchoolType,
+} from "@/lib/institution-types";
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +17,6 @@ import { SiteLayout } from "@/components/site/Layout";
 import { useI18n, displayStructuredValue } from "@/lib/i18n";
 import { SCHOOL_COPY } from "@/lib/schools-copy";
 import { getPublishedSchool, getPublishedSchools, localizedSchoolField } from "@/lib/schools-data";
-import { TERRITORIES, displayTerritoryName, displayVillageName } from "@/lib/territories-data";
 import { ORT_RANGES } from "@/lib/school-ort";
 import valleyImg from "@/assets/valley.jpg";
 import { SchoolCard, SchoolLocation } from "./SchoolCard";
@@ -14,7 +24,7 @@ import { SchoolGallery } from "./SchoolGallery";
 import { schoolPublicImageUrl, type SchoolMediaImage } from "@/lib/school-media-model";
 import { getPublishedSchoolAcademicYears } from "@/lib/school-academic-years";
 
-function SchoolHeading({
+export function SchoolHeading({
   children,
   cover,
   compact = false,
@@ -52,9 +62,8 @@ function SchoolHeading({
 export function SchoolsList() {
   const { lang, t } = useI18n();
   const c = SCHOOL_COPY[lang];
-  const [territory, setTerritory] = useState("");
-  const [village, setVillage] = useState("");
-  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState(EMPTY_INSTITUTION_FILTERS);
+  const { territory, village, search, type } = filters;
   const query = useQuery({
     queryKey: ["schools", "published"],
     queryFn: getPublishedSchools,
@@ -63,9 +72,14 @@ export function SchoolsList() {
   const schools = query.data ?? [];
   const filtered = schools.filter(
     (s) =>
+      (!type || s.document.info.school_type === type) &&
       (!territory || s.document.info.territory_slug === territory) &&
       (!village || s.document.info.village_slug === village) &&
-      localizedSchoolField(s.document.info, "name", lang)
+      (
+        localizedSchoolField(s.document.info, "name", lang) +
+        " " +
+        catalogInstitutionName(s.document.info, lang)
+      )
         .toLocaleLowerCase()
         .includes(search.trim().toLocaleLowerCase()),
   );
@@ -85,57 +99,16 @@ export function SchoolsList() {
       </SchoolHeading>
       <section className="mx-auto max-w-[1200px] px-6 py-8 lg:px-10">
         {schools.length > 0 && (
-          <div className="mb-6 grid grid-cols-2 items-end gap-3 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
-            <label className="col-span-2 min-w-0 text-xs text-muted-foreground md:col-span-1">
-              {c.search}
-              <input
-                type="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
-              />
-            </label>
-            <label className="min-w-0 text-xs text-muted-foreground">
-              {c.filterTerritory}
-              <select
-                aria-label={c.territory}
-                value={territory}
-                onChange={(e) => {
-                  setTerritory(e.target.value);
-                  setVillage("");
-                }}
-                className="mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
-              >
-                <option value="">{c.allTerritories}</option>
-                {TERRITORIES.filter((t) =>
-                  schools.some((s) => s.document.info.territory_slug === t.slug),
-                ).map((t) => (
-                  <option key={t.slug} value={t.slug}>
-                    {displayTerritoryName(t, lang)}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="min-w-0 text-xs text-muted-foreground">
-              {c.village}
-              <select
-                aria-label={c.village}
-                value={village}
-                onChange={(e) => setVillage(e.target.value)}
-                className="mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
-              >
-                <option value="">{c.allVillages}</option>
-                {TERRITORIES.filter((t) => !territory || t.slug === territory)
-                  .flatMap((t) => t.villages)
-                  .filter((v) => schools.some((s) => s.document.info.village_slug === v.slug))
-                  .map((v) => (
-                    <option key={v.slug} value={v.slug}>
-                      {displayVillageName(v, lang)}
-                    </option>
-                  ))}
-              </select>
-            </label>
-          </div>
+          <InstitutionFilters
+            school
+            values={filters}
+            onChange={setFilters}
+            locations={schools.map((s) => s.document.info)}
+            types={SCHOOL_TYPES.map((value, i) => ({
+              value,
+              label: SCHOOL_TYPE_FILTER_LABELS[lang][i],
+            }))}
+          />
         )}
         {query.isPending ? (
           <p role="status">{c.loading}</p>
@@ -211,6 +184,12 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                   </dd>
                 </div>
                 {[
+                  [
+                    INSTITUTION_COPY[lang].schoolType,
+                    isSchoolType(doc.info.school_type)
+                      ? SCHOOL_TYPE_LABELS[doc.info.school_type][lang]
+                      : "",
+                  ],
                   [c.director, doc.info.director_name],
                   [c.directorPhone, doc.info.director_phone],
                   [c.officePhone, doc.info.office_phone],

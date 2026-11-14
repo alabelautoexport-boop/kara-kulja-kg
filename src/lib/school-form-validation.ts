@@ -1,3 +1,5 @@
+import { validInstitutionShortNames } from "./institution-names";
+import { isSchoolType } from "./institution-types";
 import { parseOrtScores } from "./school-ort";
 import type { SchoolDraft } from "./schools-data";
 
@@ -49,11 +51,15 @@ export function prepareSchoolDraft(
   const issues: SchoolValidationIssue[] = [];
   const add = (section: string, message: string, row?: number, values?: string) =>
     issues.push({ section, message, row, values });
+  if (!validInstitutionShortNames(draft.info))
+    add("Общая информация", "Короткое название: не более 120 символов.");
   if (!draft.info.name_kg.trim()) add("Общая информация", "Укажите название школы KG.");
   if (draft.info.slug !== undefined && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(draft.info.slug))
     add("Общая информация", "Проверьте slug.");
   if (draft.info.current_academic_year && !academicYear.test(draft.info.current_academic_year))
     add("Общая информация", "Укажите учебный год в формате YYYY-YYYY.");
+  if (draft.info.school_type != null && !isSchoolType(draft.info.school_type))
+    add("Общая информация", "Выберите тип школы.");
   const stats = draft.stats.filter(
     (row) =>
       hasText(row.academic_year) ||
