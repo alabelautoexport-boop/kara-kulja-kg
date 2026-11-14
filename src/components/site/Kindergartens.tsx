@@ -1,4 +1,5 @@
 import { catalogInstitutionName } from "@/lib/institution-names";
+import { kindergartenDisplayName } from "./kindergarten-display-name";
 import { EMPTY_INSTITUTION_FILTERS } from "@/lib/institution-types";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
@@ -10,11 +11,7 @@ import { SchoolLocation } from "./SchoolCard";
 import { InstitutionFilters } from "./InstitutionFilters";
 import { useI18n, displayStructuredValue } from "@/lib/i18n";
 import { SCHOOL_COPY } from "@/lib/schools-copy";
-import {
-  INSTITUTION_COPY,
-  KINDERGARTEN_TYPES,
-  KINDERGARTEN_TYPE_LABELS,
-} from "@/lib/institution-types";
+import { INSTITUTION_COPY } from "@/lib/institution-types";
 import { localizedSchoolField } from "@/lib/schools-data";
 import { getPublishedKindergartens, getPublishedKindergarten } from "@/lib/kindergartens-data";
 
@@ -30,11 +27,10 @@ export function KindergartensList() {
   });
   const records = query.data ?? [];
   const filtered = records.filter(
-    ({ document: { info } }) =>
+    ({ slug, document: { info } }) =>
       (!filters.territory || info.territory_slug === filters.territory) &&
       (!filters.village || info.village_slug === filters.village) &&
-      (!filters.type || info.type === filters.type) &&
-      (localizedSchoolField(info, "name", lang) + " " + catalogInstitutionName(info, lang))
+      (kindergartenDisplayName(info, slug, lang) + " " + catalogInstitutionName(info, lang))
         .toLocaleLowerCase()
         .includes(filters.search.trim().toLocaleLowerCase()),
   );
@@ -58,10 +54,6 @@ export function KindergartensList() {
             values={filters}
             onChange={setFilters}
             locations={records.map((r) => r.document.info)}
-            types={KINDERGARTEN_TYPES.map((value) => ({
-              value,
-              label: KINDERGARTEN_TYPE_LABELS[value][lang],
-            }))}
           />
         )}
         {query.isPending ? (
@@ -82,16 +74,13 @@ export function KindergartensList() {
                 className="group w-full min-w-0 max-w-md border hairline p-4 transition-colors hover:border-[var(--beige)] sm:p-5"
               >
                 <h2 className="break-words font-display text-xl leading-snug">
-                  {catalogInstitutionName(r.document.info, lang)}
+                  {kindergartenDisplayName(r.document.info, r.slug, lang)}
                 </h2>
                 <p className="mt-2 text-sm text-muted-foreground">
                   <SchoolLocation info={r.document.info} />
                 </p>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {KINDERGARTEN_TYPE_LABELS[r.document.info.type][lang]}
-                </p>
                 <span className="mt-4 inline-flex items-center gap-2 text-sm text-[var(--beige)]">
-                  {common.more}
+                  {lang === "en" ? "More details" : common.more}
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
@@ -124,7 +113,7 @@ export function KindergartenPublicPage({ slug }: { slug: string }) {
           {c.title}
         </Link>
         <h1 className="break-words font-display text-4xl md:text-5xl">
-          {info ? localizedSchoolField(info, "name", lang) : c.title}
+          {info ? kindergartenDisplayName(info, slug, lang) : c.title}
         </h1>
         {info && (
           <p className="mt-3 text-sm text-muted-foreground">
@@ -143,10 +132,6 @@ export function KindergartenPublicPage({ slug }: { slug: string }) {
           <>
             <h2 className="font-display text-3xl">{common.general}</h2>
             <dl className="mt-5 divide-y hairline border-y hairline text-sm">
-              <div className="grid gap-2 py-4 sm:grid-cols-[12rem_1fr]">
-                <dt className="text-muted-foreground">{c.type}</dt>
-                <dd>{KINDERGARTEN_TYPE_LABELS[info.type][lang]}</dd>
-              </div>
               <div className="grid gap-2 py-4 sm:grid-cols-[12rem_1fr]">
                 <dt className="text-muted-foreground">{common.address}</dt>
                 <dd className="break-words">

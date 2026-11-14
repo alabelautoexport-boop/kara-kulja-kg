@@ -7,13 +7,13 @@ export function InstitutionFilters({
   values,
   onChange,
   locations,
-  types,
+  types = [],
   school = false,
 }: {
   values: InstitutionFilterValues;
   onChange: (values: InstitutionFilterValues) => void;
   locations: { territory_slug: string; village_slug: string }[];
-  types: { value: string; label: string }[];
+  types?: { value: string; label: string }[];
   school?: boolean;
 }) {
   const { lang } = useI18n(),
@@ -22,7 +22,9 @@ export function InstitutionFilters({
   const input =
     "mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground";
   return (
-    <div className="mb-6 grid grid-cols-2 items-end gap-3 md:grid-cols-4">
+    <div
+      className={`mb-6 grid grid-cols-2 items-end gap-3 ${types.length ? "md:grid-cols-4" : "md:grid-cols-3"}`}
+    >
       <label className="col-span-2 min-w-0 text-xs text-muted-foreground md:col-span-1">
         {c.search}
         <input
@@ -67,21 +69,23 @@ export function InstitutionFilters({
             ))}
         </select>
       </label>
-      <label className="col-span-2 min-w-0 text-xs text-muted-foreground md:col-span-1">
-        {school ? copy.schoolType : copy.type}
-        <select
-          className={input}
-          value={values.type}
-          onChange={(e) => onChange({ ...values, type: e.target.value })}
-        >
-          <option value="">{copy.allTypes}</option>
-          {types.map((t) => (
-            <option key={t.value} value={t.value}>
-              {t.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      {types.length > 0 && (
+        <label className="col-span-2 min-w-0 text-xs text-muted-foreground md:col-span-1">
+          {school ? copy.schoolType : copy.type}
+          <select
+            className={input}
+            value={values.type}
+            onChange={(e) => onChange({ ...values, type: e.target.value })}
+          >
+            <option value="">{copy.allTypes}</option>
+            {types.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
     </div>
   );
 }

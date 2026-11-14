@@ -2,13 +2,6 @@ import { catalogInstitutionName } from "@/lib/institution-names";
 import { EMPTY_INSTITUTION_FILTERS } from "@/lib/institution-types";
 import { TERRITORIES } from "@/lib/territories-data";
 import { InstitutionFilters } from "./InstitutionFilters";
-import {
-  SCHOOL_TYPES,
-  SCHOOL_TYPE_FILTER_LABELS,
-  SCHOOL_TYPE_LABELS,
-  INSTITUTION_COPY,
-  isSchoolType,
-} from "@/lib/institution-types";
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -63,7 +56,7 @@ export function SchoolsList() {
   const { lang, t } = useI18n();
   const c = SCHOOL_COPY[lang];
   const [filters, setFilters] = useState(EMPTY_INSTITUTION_FILTERS);
-  const { territory, village, search, type } = filters;
+  const { territory, village, search } = filters;
   const query = useQuery({
     queryKey: ["schools", "published"],
     queryFn: getPublishedSchools,
@@ -72,7 +65,6 @@ export function SchoolsList() {
   const schools = query.data ?? [];
   const filtered = schools.filter(
     (s) =>
-      (!type || s.document.info.school_type === type) &&
       (!territory || s.document.info.territory_slug === territory) &&
       (!village || s.document.info.village_slug === village) &&
       (
@@ -104,10 +96,6 @@ export function SchoolsList() {
             values={filters}
             onChange={setFilters}
             locations={schools.map((s) => s.document.info)}
-            types={SCHOOL_TYPES.map((value, i) => ({
-              value,
-              label: SCHOOL_TYPE_FILTER_LABELS[lang][i],
-            }))}
           />
         )}
         {query.isPending ? (
@@ -184,12 +172,6 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                   </dd>
                 </div>
                 {[
-                  [
-                    INSTITUTION_COPY[lang].schoolType,
-                    isSchoolType(doc.info.school_type)
-                      ? SCHOOL_TYPE_LABELS[doc.info.school_type][lang]
-                      : "",
-                  ],
                   [c.director, doc.info.director_name],
                   [c.directorPhone, doc.info.director_phone],
                   [c.officePhone, doc.info.office_phone],

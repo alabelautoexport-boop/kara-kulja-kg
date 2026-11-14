@@ -143,15 +143,19 @@ try {
   for (const [lang, name, more, nav] of [
     ["kg", "Public KG", "Толук маалымат", "Мектептер"],
     ["ru", "Public RU", "Подробнее", "Школы"],
-    ["en", "Public EN", "Learn more", "Schools"],
+    ["en", "Public EN", "More details", "Schools"],
   ]) {
     await mount("list", lang);
     assert.equal(
       document.querySelector('a[href="/schools/published-school"] h2').textContent,
-      { kg: "Б. Эшмамбетов", ru: "Б. Эшмамбетов", en: "B. Eshmambetov" }[lang],
+      name,
     );
     assert.ok(
-      !document.querySelector('a[href="/schools/published-school"]').textContent.includes(name),
+      !document
+        .querySelector('a[href="/schools/published-school"]')
+        .textContent.includes(
+          { kg: "Б. Эшмамбетов", ru: "Б. Эшмамбетов", en: "B. Eshmambetov" }[lang],
+        ),
     );
     assert.ok(!document.body.textContent.includes("Public director"));
     assert.equal(
@@ -167,23 +171,23 @@ try {
       }[lang],
     );
     assert.ok(!document.body.textContent.includes("2026-2027"));
-    assert.equal(document.querySelectorAll("select").length, 3);
+    assert.equal(document.querySelectorAll("select").length, 2);
+    assert.equal(document.querySelectorAll('input[type="search"]').length, 1);
+    assert.ok(
+      document
+        .querySelector('input[type="search"]')
+        .closest("div")
+        .classList.contains("md:grid-cols-3"),
+    );
+    assert.equal(document.querySelectorAll('a[href="/schools/published-school"] p').length, 1);
+    const schoolTypeLabel = { kg: "Мектептин түрү", ru: "Тип школы", en: "School type" }[lang];
+    assert.ok(!document.body.textContent.includes(schoolTypeLabel));
     assert.ok(document.body.textContent.includes(more));
     assert.equal(document.querySelectorAll('a[href="/schools/published-school"]').length, 1);
     assert.equal(document.querySelectorAll('img[src$="/card.webp"][loading="lazy"]').length, 1);
-    const typeSelect = document.querySelectorAll("select")[2];
-    assert.equal(typeSelect.options.length, 7);
-    await act(async () => {
-      typeSelect.value = "secondary";
-      typeSelect.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    assert.equal(document.querySelectorAll('a[href="/schools/published-school"]').length, 0);
-    await act(async () => {
-      typeSelect.value = "general";
-      typeSelect.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-    assert.equal(document.querySelectorAll('a[href="/schools/published-school"]').length, 1);
     await mount("detail", lang);
+    assert.equal(document.querySelector("h1").textContent, name);
+    assert.ok(!document.body.textContent.includes(schoolTypeLabel));
     assert.ok(document.body.textContent.includes("Public director"));
     const indicators = document.querySelector(
       'section[aria-labelledby="school-indicators-heading"]',
@@ -196,6 +200,12 @@ try {
         { kg: "Жалпы маалымат", ru: "Общая информация", en: "General information" }[lang],
     );
     assert.ok(!generalSection.textContent.includes("2026-2027"));
+    assert.equal(generalSection.querySelectorAll("dt").length, 5);
+    assert.ok(
+      generalSection.textContent.includes(
+        { kg: "Address KG", ru: "Address RU", en: "Address EN" }[lang],
+      ),
+    );
     assert.ok(
       ![...generalSection.querySelectorAll("dt")].some(
         (dt) =>

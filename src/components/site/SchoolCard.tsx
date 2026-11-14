@@ -1,5 +1,3 @@
-import { catalogInstitutionName } from "@/lib/institution-names";
-import { SCHOOL_TYPE_LABELS, isSchoolType } from "@/lib/institution-types";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useI18n, displayStructuredValue } from "@/lib/i18n";
@@ -60,18 +58,13 @@ export function SchoolCard({ school }: { school: SchoolPublication }) {
       )}
       <div className="p-4 sm:p-5">
         <h2 className="break-words font-display text-xl leading-snug">
-          {catalogInstitutionName(doc.info, lang)}
+          {localizedSchoolField(doc.info, "name", lang)}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           <SchoolLocation info={doc.info} />
         </p>
-        {isSchoolType(doc.info.school_type) && (
-          <p className="mt-2 text-xs text-muted-foreground">
-            {SCHOOL_TYPE_LABELS[doc.info.school_type][lang]}
-          </p>
-        )}
         <span className="mt-4 inline-flex items-center gap-2 text-sm text-[var(--beige)]">
-          {c.more}
+          {lang === "en" ? "More details" : c.more}
           <ArrowRight className="h-4 w-4" />
         </span>
       </div>
