@@ -9,6 +9,8 @@ import {
 } from "@/lib/schools-data";
 import { SchoolIdentityFields } from "./SchoolIdentityFields";
 import { validSchoolIdentity, schoolStatus } from "@/lib/school-admin";
+import { SchoolMediaReview } from "./SchoolMedia";
+import { SchoolEditorAccess } from "./SchoolEditorAccess";
 
 export function AdminSchoolForm({
   record,
@@ -30,17 +32,17 @@ export function AdminSchoolForm({
   const input =
     "mt-2 min-h-11 w-full min-w-0 border hairline bg-background px-3 py-2 text-sm text-foreground focus:border-[var(--beige)]";
   const section = (heading: string, content: ReactNode) => (
-    <section className={`border-t hairline ${heading === "Редактор школы" ? "py-4" : "py-7"}`}>
-      <h2 className="mb-4 font-display text-xl">{t(heading)}</h2>
+    <section className="border-t hairline py-7">
+      <h2 className="mb-4 font-sans text-lg font-semibold tracking-normal">{t(heading)}</h2>
       {content}
     </section>
   );
-  const run = async (action: () => Promise<void>, message: string) => {
+  const run = async (action: () => Promise<void | string>, message: string) => {
     setBusy(true);
     setError("");
     try {
-      await action();
-      await onSaved(message);
+      const notice = await action();
+      await onSaved(notice || message);
     } catch (e) {
       setError(t(e instanceof Error ? e.message : "Не удалось сохранить школу."));
     } finally {
@@ -48,7 +50,7 @@ export function AdminSchoolForm({
     }
   };
   return (
-    <div className="min-w-0">
+    <div className="min-w-0 font-sans text-sm">
       {error && (
         <p role="alert" className="mb-4 text-sm text-destructive">
           {error}
@@ -115,11 +117,7 @@ export function AdminSchoolForm({
       )}
       {section(
         "Редактор школы",
-        <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground">
-          {t(
-            "Управление доступом редактора школы пока недоступно в этой панели. Существующие назначения сохраняются.",
-          )}
-        </p>,
+        <SchoolEditorAccess key={record.id} schoolId={record.id} slug={record.slug ?? ""} />,
       )}
       {section(
         "Проверка и публикация",
@@ -127,7 +125,10 @@ export function AdminSchoolForm({
           <p className="mb-5 text-sm">
             {t("Статус")}: {t(schoolStatus(record))}
           </p>
-          <h3 className="mb-4 text-sm font-medium text-foreground">{t("Контактные данные")}</h3>
+          <h3 className="mb-4 font-sans text-lg font-semibold tracking-normal text-foreground">
+            {t("Контактные данные")}
+          </h3>
+          <SchoolMediaReview schoolId={record.id} value={initial.media} />
           <dl className="max-w-3xl divide-y divide-border text-sm">
             {(
               [
@@ -143,14 +144,16 @@ export function AdminSchoolForm({
                 key={key}
                 className="grid min-w-0 gap-1 py-3 sm:grid-cols-[12rem_minmax(0,1fr)] sm:gap-5"
               >
-                <dt className="text-xs leading-relaxed text-muted-foreground">{t(label)}</dt>
+                <dt className="text-sm leading-relaxed text-muted-foreground">{t(label)}</dt>
                 <dd className="whitespace-pre-line break-words text-foreground">
                   {initial.info[key] || t("Не заполнено")}
                 </dd>
               </div>
             ))}
           </dl>
-          <h3 className="mb-4 mt-7 text-sm font-medium">{t("Результаты ОРТ")}</h3>
+          <h3 className="mb-4 mt-7 font-sans text-lg font-semibold tracking-normal">
+            {t("Результаты ОРТ")}
+          </h3>
           {!initial.ort.length && (
             <p className="text-sm text-muted-foreground">
               {t("Результаты ОРТ ещё не представлены.")}
@@ -169,7 +172,7 @@ export function AdminSchoolForm({
             }
             return (
               <article key={row.year} className="min-w-0 border-b hairline py-5">
-                <h4 className="text-sm">
+                <h4 className="font-sans text-sm font-medium tracking-normal">
                   {t("Год ОРТ")}: {row.year} / {row.academic_year}
                 </h4>
                 <dl className="my-4 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
@@ -240,7 +243,14 @@ export function AdminSchoolForm({
                       disabled={busy || dirty}
                       onClick={() =>
                         void run(
-                          () => reviewSchool(record.id, record.revision, action, note),
+                          () =>
+                            reviewSchool(
+                              record.id,
+                              record.revision,
+                              action,
+                              note,
+                              !!initial.media?.cover || !!initial.media?.gallery.length,
+                            ),
                           "Сохранено.",
                         )
                       }

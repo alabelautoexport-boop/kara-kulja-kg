@@ -9,7 +9,9 @@ export type SchoolValidationIssue = {
   message: string;
   values?: string;
 };
-export type ActiveSchoolDraft = Pick<SchoolDraft, "info" | "ort">;
+export type ActiveSchoolDraft = Pick<SchoolDraft, "info" | "ort"> & {
+  media?: { cover: string | null; gallery: string[] };
+};
 
 export function prepareActiveSchoolDraft(
   draft: SchoolDraft,
@@ -23,7 +25,18 @@ export function prepareActiveSchoolDraft(
   );
   return {
     issues: prepared.issues,
-    payload: { info: prepared.payload.info, ort: prepared.payload.ort },
+    payload: {
+      info: prepared.payload.info,
+      ort: prepared.payload.ort,
+      ...(draft.media
+        ? {
+            media: {
+              cover: draft.media.cover?.asset_id ?? null,
+              gallery: draft.media.gallery.map((image) => image.asset_id),
+            },
+          }
+        : {}),
+    },
   };
 }
 

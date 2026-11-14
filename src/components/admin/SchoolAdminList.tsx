@@ -8,6 +8,7 @@ import {
   type SchoolFilter,
 } from "@/lib/school-admin";
 import type { SchoolRecord } from "@/lib/schools-data";
+import { SchoolLifecycleActions } from "./SchoolLifecycleActions";
 
 export function SchoolStatusBadge({ record }: { record: SchoolRecord }) {
   const { t } = useAdminI18n();
@@ -21,7 +22,7 @@ export function SchoolStatusBadge({ record }: { record: SchoolRecord }) {
   };
   return (
     <span
-      className={`inline-flex max-w-full rounded-sm border px-2.5 py-1 text-xs leading-relaxed ${styles[status]}`}
+      className={`inline-flex max-w-full rounded-sm border px-2.5 py-1 font-sans text-xs leading-relaxed ${styles[status]}`}
     >
       {t(schoolStatus(record))}
     </span>
@@ -40,9 +41,6 @@ export function SchoolMetadata({ record }: { record: SchoolRecord }) {
         {village ? displayVillageName(village, locale) : t("Село не указано")}
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="text-muted-foreground">
-          {record.current_academic_year || t("Учебный год не указан")}
-        </span>
         <SchoolStatusBadge record={record} />
       </div>
     </div>
@@ -52,17 +50,19 @@ export function SchoolMetadata({ record }: { record: SchoolRecord }) {
 export function SchoolAdminList({
   schools,
   onOpen,
+  onLifecycleChange,
 }: {
   schools: SchoolRecord[];
   onOpen: (id: string) => void;
+  onLifecycleChange: (deleted: boolean, message: string) => Promise<void>;
 }) {
   const { t } = useAdminI18n();
   const [filter, setFilter] = useState<SchoolFilter>("all");
   const [query, setQuery] = useState("");
   const filtered = filterSchools(schools, filter, query);
   return (
-    <section aria-labelledby="school-list-heading" className="min-w-0">
-      <h2 id="school-list-heading" className="mb-5 font-display text-2xl">
+    <section aria-labelledby="school-list-heading" className="min-w-0 font-sans text-sm">
+      <h2 id="school-list-heading" className="mb-4 font-sans text-lg font-semibold tracking-normal">
         {t("Список школ")}
       </h2>
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -87,7 +87,7 @@ export function SchoolAdminList({
             </button>
           ))}
         </div>
-        <label className="min-w-0 text-xs text-muted-foreground lg:w-64">
+        <label className="min-w-0 text-sm text-muted-foreground lg:w-64">
           {t("Поиск школы")}
           <input
             type="search"
@@ -105,19 +105,18 @@ export function SchoolAdminList({
               className="flex min-w-0 flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8"
             >
               <div className="min-w-0">
-                <h3 className="mb-2 break-words text-lg font-medium text-foreground">
+                <h3 className="mb-2 break-words font-display text-lg font-medium text-foreground">
                   {school.name_kg}
                 </h3>
                 <SchoolMetadata record={school} />
               </div>
-              <button
-                type="button"
-                onClick={() => onOpen(school.id)}
-                aria-label={`${t("Открыть")}: ${school.name_kg}`}
-                className="inline-flex min-h-11 shrink-0 items-center justify-center border hairline px-5 py-2 text-sm text-foreground hover:border-[var(--beige)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--beige)]"
-              >
-                {t("Открыть")}
-              </button>
+              <SchoolLifecycleActions
+                key={`${school.id}-${school.revision}`}
+                compact
+                record={school}
+                onOpen={() => onOpen(school.id)}
+                onChanged={onLifecycleChange}
+              />
             </li>
           ))}
         </ul>

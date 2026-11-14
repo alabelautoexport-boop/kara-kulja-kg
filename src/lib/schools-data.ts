@@ -3,6 +3,8 @@ import type { Lang } from "@/lib/i18n";
 import type { OrtSummary } from "@/lib/school-ort";
 import { schoolRpcError } from "@/lib/school-errors";
 import type { ActiveSchoolDraft } from "@/lib/school-form-validation";
+import { schoolMediaFromRow, type SchoolMediaSelection } from "./school-media-model";
+import { publishSchoolMedia, cleanupSchoolMedia } from "./school-media";
 
 export type SchoolInfo = {
   slug?: string;
@@ -43,6 +45,7 @@ export type SchoolResource = Omit<SchoolAchievement, "date" | "category"> & {
   source: string;
 };
 export type SchoolDraft = {
+  media?: SchoolMediaSelection;
   info: SchoolInfo;
   stats: SchoolYearStats[];
   ort: SchoolOrtYear[];
@@ -124,6 +127,25 @@ export async function loadSchoolDraft(id: string) {
   if ([schools, stats, ort, achievements, resources].some((r) => r.error))
     throw new Error("Не удалось загрузить школы.");
   const record = schools.data as SchoolRecord;
+  const mediaRows = await supabase
+    .from("school_media")
+    .select("*")
+    .eq("school_id", id)
+    .eq("in_draft", true)
+    .eq("state", "ready")
+    .order("sort_order");
+  if (mediaRows.error && !["42P01", "PGRST205"].includes(mediaRows.error.code))
+    throw new Error("Не удалось загрузить школы.");
+  const media = mediaRows.error
+    ? undefined
+    : {
+        cover: mediaRows.data?.find((row) => row.kind === "cover")
+          ? schoolMediaFromRow(mediaRows.data.find((row) => row.kind === "cover")!)
+          : null,
+        gallery: (mediaRows.data ?? [])
+          .filter((row) => row.kind === "gallery")
+          .map(schoolMediaFromRow),
+      };
   const info = {
     ...Object.fromEntries(
       Object.keys(EMPTY_SCHOOL_INFO).map((key) => [key, record[key as keyof SchoolInfo] ?? ""]),
@@ -133,6 +155,7 @@ export async function loadSchoolDraft(id: string) {
   return {
     record,
     draft: {
+      media,
       info,
       stats: stats.data,
       ort: ort.data,
@@ -175,13 +198,20 @@ export async function permanentlyDeleteSchool(id: string, revision: number, name
     p_confirm_name: name,
   });
   if (error) throw new Error(schoolRpcError(error));
+  // SQL deletion is final; queued storage cleanup is retryable and must not undo it.
+  void cleanupSchoolMedia(id).catch(() => undefined);
 }
 export async function reviewSchool(
   id: string,
   revision: number,
   action: "publish" | "return" | "unpublish",
   note: string,
+  hasMedia = false,
 ) {
+  if (action === "publish" && hasMedia) {
+    await publishSchoolMedia(id, revision, note);
+    return;
+  }
   const { error } = await supabase.rpc("review_school", {
     p_school_id: id,
     p_revision: revision,

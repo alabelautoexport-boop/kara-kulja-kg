@@ -231,7 +231,7 @@ export function SchoolWorkspace({
   const current =
     authenticated && selected && !creating && loaded?.record.id === selected ? loaded : null;
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background font-sans text-sm">
       <header className="border-b hairline">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 px-5 py-5">
           <Link
@@ -269,7 +269,9 @@ export function SchoolWorkspace({
             {t("К списку школ")}
           </button>
         )}
-        <h1 className="mb-6 break-words font-display text-3xl sm:text-4xl">
+        <h1
+          className={`mb-6 break-words ${current && !creating ? "font-display text-3xl sm:text-4xl" : "font-sans text-2xl font-semibold tracking-normal"}`}
+        >
           {admin
             ? creating
               ? t("Создать школу")
@@ -338,6 +340,21 @@ export function SchoolWorkspace({
                 </button>
                 <SchoolAdminList
                   schools={schools}
+                  onLifecycleChange={async (_deleted, message) => {
+                    const userId = sessionUserId.current;
+                    const version = ++loadVersion.current;
+                    await queryClient.invalidateQueries({ queryKey: ["schools", "published"] });
+                    const items = await getEditableSchools();
+                    if (
+                      !workspaceMounted.current ||
+                      version !== loadVersion.current ||
+                      selectedRef.current ||
+                      sessionUserId.current !== userId
+                    )
+                      return;
+                    setSchools(items);
+                    setNotice(message);
+                  }}
                   onOpen={(id) => {
                     setLoaded(null);
                     setSelected(id);

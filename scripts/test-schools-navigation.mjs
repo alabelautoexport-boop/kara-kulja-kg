@@ -23,9 +23,15 @@ for (const name of [
   "Event",
   "MouseEvent",
   "PopStateEvent",
+  "Node",
+  "NodeFilter",
+  "Element",
+  "DocumentFragment",
+  "CustomEvent",
 ])
   Object.defineProperty(globalThis, name, { configurable: true, value: dom.window[name] });
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+globalThis.getComputedStyle = dom.window.getComputedStyle.bind(dom.window);
 dom.window.confirm = () => true;
 dom.window.localStorage.setItem("kara-kulja-admin-language", "ru");
 const modelSource = `
@@ -44,7 +50,8 @@ const modelSource = `
   export async function saveSchoolDraft(id,revision,draft){const record=records.find(r=>r.id===id);Object.assign(record,draft.info,{revision:record.revision+1,status:'draft',review_note:null});}
   export async function reviewSchool(id,revision,action,note){const record=records.find(r=>r.id===id);Object.assign(record,{revision:record.revision+1,status:action==='publish'?'published':'draft',review_note:action==='return'?note:null});}
   export async function archiveSchool(id,revision,archived){const record=records.find(r=>r.id===id);Object.assign(record,{revision:record.revision+1,is_archived:archived,status:'draft',review_note:null});}
-  export async function permanentlyDeleteSchool(id){records.splice(records.findIndex(r=>r.id===id),1);}
+  export const deletionRequests=[];
+  export async function permanentlyDeleteSchool(id,revision,name){const r=records.find(r=>r.id===id);if(!r?.is_archived||name!==r.name_kg||revision!==r.revision)throw Error('Invalid deletion');deletionRequests.push({id,revision,name});records.splice(records.findIndex(r=>r.id===id),1);}
 `;
 const sources = {
   "@/lib/schools-data": modelSource,
@@ -185,7 +192,7 @@ try {
   await click("Создать школу");
   assert.equal(count("Список школ"), 0);
   assert.equal(count("Основное"), 0);
-  assert.equal(document.querySelectorAll("input[required],select[required]").length, 4);
+  assert.equal(document.querySelectorAll("input[required],select[required]").length, 3);
   await click("Отмена");
   listOnly();
   await click("Создать школу");
@@ -208,10 +215,15 @@ try {
   await change(inputFor("Название школы KG"), "Created school");
   await change(inputFor("Айыл аймак"), "ylai-talaa");
   await change(inputFor("Село"), "ylai-talaa");
-  await change(inputFor("Текущий учебный год"), "2026-2027");
+  assert.equal(inputFor("Текущий учебный год").required, false);
+  assert.equal(inputFor("Текущий учебный год").value, "");
   await click("Создать");
   editOnly();
   assert.equal(document.querySelector("h1").textContent, "Created school");
+  assert.equal(inputFor("Текущий учебный год").value, "");
+  await change(inputFor("Текущий учебный год"), "2026-2027");
+  await click("Сохранить");
+  assert.equal(inputFor("Текущий учебный год").value, "2026-2027");
   await change(inputFor("Название школы KG"), "Saved school");
   await click("Сохранить");
   editOnly();
@@ -219,6 +231,76 @@ try {
   await click("К списку школ");
   listOnly();
   assert.ok(document.body.textContent.includes("Saved school"));
+  assert.ok(!document.body.textContent.includes("2026-2027"));
+  assert.ok(!document.body.textContent.includes("Учебный год не указан"));
+  const row = (name) =>
+    [...document.querySelectorAll("li")].find((li) => li.querySelector("h3")?.textContent === name);
+  const rowClick = async (name, label) => {
+    const b = [...row(name).querySelectorAll("button")].find((b) => b.textContent.trim() === label);
+    assert.ok(b, label);
+    await act(async () => b.click());
+    await flush();
+  };
+  assert.ok(!row("Saved school").textContent.includes("Удалить навсегда"));
+  const otherBefore = structuredClone(models.records.find((r) => r.name_kg === "School 1"));
+  const targetBefore = structuredClone(models.records.find((r) => r.name_kg === "Saved school"));
+  await rowClick("Saved school", "В архив");
+  assert.ok(!row("Saved school"));
+  await click("Архив");
+  assert.ok(row("Saved school"));
+  assert.ok(row("Saved school").textContent.includes("В архиве"));
+  await click("Открыть: Saved school");
+  editOnly();
+  await click("К списку школ");
+  await click("Архив");
+  const search = document.querySelector('input[type="search"]');
+  await change(search, "not-found");
+  assert.equal(document.querySelectorAll("li").length, 0);
+  await change(search, "saved");
+  assert.ok(row("Saved school"));
+  await rowClick("Saved school", "Восстановить");
+  assert.ok(!row("Saved school"));
+  await change(search, "");
+  await click("Все");
+  assert.ok(row("Saved school"));
+  const restored = models.records.find((r) => r.id === targetBefore.id);
+  for (const key of [
+    "name_kg",
+    "director_name",
+    "territory_slug",
+    "village_slug",
+    "current_academic_year",
+  ])
+    assert.equal(restored[key], targetBefore[key]);
+  await rowClick("Saved school", "В архив");
+  await click("Архив");
+  await rowClick("Saved school", "Удалить навсегда");
+  assert.ok(document.querySelector('[role="alertdialog"]'));
+  const finalDelete = () =>
+    [...document.querySelectorAll('[role="alertdialog"] button')].find(
+      (b) => b.textContent.trim() === "Удалить навсегда",
+    );
+  assert.equal(finalDelete().disabled, true);
+  assert.equal(models.deletionRequests.length, 0);
+  await click("Отмена");
+  assert.equal(models.deletionRequests.length, 0);
+  await rowClick("Saved school", "Удалить навсегда");
+  await change(document.querySelector('[role="alertdialog"] input'), "wrong name");
+  assert.equal(finalDelete().disabled, true);
+  await change(document.querySelector('[role="alertdialog"] input'), "Saved school");
+  assert.equal(finalDelete().disabled, false);
+  await act(async () => finalDelete().click());
+  await flush();
+  assert.equal(models.deletionRequests.length, 1);
+  assert.equal(models.deletionRequests[0].name, "Saved school");
+  assert.ok(!models.records.some((r) => r.id === targetBefore.id));
+  assert.ok(!row("Saved school"));
+  assert.deepEqual(
+    models.records.find((r) => r.id === otherBefore.id),
+    otherBefore,
+  );
+  await click("Все");
+  listOnly();
   console.log(
     "React workspace navigation tests passed: list/edit isolation, query clearing, Back, canonical publish/unpublish/return/archive/restore status, delayed-load and mutation races, creation/cancel",
   );

@@ -336,16 +336,7 @@ assert.match(media, /rpc\("can_manage_news"\)/);
 const oldMedia = execFileSync("git", ["show", "HEAD:supabase/functions/news-media/index.ts"], {
   encoding: "utf8",
 });
-assert.equal(
-  media
-    .replaceAll("requireNewsManager", "requireAdmin")
-    .replace("export async function requireAdmin", "async function requireAdmin")
-    .replace("npm:@supabase/supabase-js@2.118.0", "npm:@supabase/supabase-js@2")
-    .replace("npm:@aws-sdk/client-s3@3.1167.0", "npm:@aws-sdk/client-s3@3")
-    .replace('rpc("can_manage_news")', 'rpc("is_admin")')
-    .replaceAll("\r\n", "\n"),
-  oldMedia.replaceAll("\r\n", "\n"),
-);
+assert.equal(media.replaceAll("\r\n", "\n"), oldMedia.replaceAll("\r\n", "\n"));
 for (const file of [
   "src/lib/editor-auth.ts",
   "src/components/admin/NewsEditorLogin.tsx",

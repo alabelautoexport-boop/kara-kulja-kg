@@ -15,7 +15,7 @@ export function validSchoolIdentity(info: SchoolIdentity) {
   return (
     !!info.name_kg.trim() &&
     info.name_kg.length <= 300 &&
-    /^\d{4}-\d{4}$/.test(info.current_academic_year) &&
+    (!info.current_academic_year || /^\d{4}-\d{4}$/.test(info.current_academic_year)) &&
     TERRITORIES.some(
       (territory) =>
         territory.slug === info.territory_slug &&
@@ -45,7 +45,7 @@ export function filterSchools(schools: SchoolRecord[], filter: SchoolFilter, que
   const name = query.trim().toLocaleLowerCase();
   return schools.filter((school) => {
     const matches =
-      filter === "all" ||
+      (filter === "all" && !school.is_archived) ||
       (filter === "archived"
         ? school.is_archived
         : !school.is_archived && school.status === filter);

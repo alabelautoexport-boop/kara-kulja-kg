@@ -22,7 +22,7 @@ export async function testEditorAccess({
     await db.query("select * from pg_policies where policyname='published_news_public_read'")
   ).rows;
   await db.exec(
-    fs.readFileSync("supabase/migrations/20261112222229_schools_active_editor.sql", "utf8"),
+    fs.readFileSync("supabase/migrations/20261112235534_schools_active_editor.sql", "utf8"),
   );
   const dormant = async () => {
     const rows = await privateRows(school);
@@ -95,7 +95,7 @@ export async function testEditorAccess({
     create function auth.jwt() returns jsonb language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb $$;
     grant execute on function auth.jwt() to authenticated,service_role;`);
   await db.exec(
-    fs.readFileSync("supabase/migrations/20261112222231_news_editor_access.sql", "utf8"),
+    fs.readFileSync("supabase/migrations/20261113003747_news_editor_access.sql", "utf8"),
   );
   const newsEditor = "00000000-0000-4000-8000-000000000040";
   await db.query("insert into auth.users values($1)", [newsEditor]);
@@ -352,7 +352,7 @@ export async function testEditorAccess({
     assert.match(fs.readFileSync(file, "utf8"), /<AdminGuard>/);
   assert.match(
     fs.readFileSync("src/routes/school-admin.tsx", "utf8"),
-    /EditorAreaGuard area="school"/,
+    /component: SchoolEditorWorkspace/,
   );
   for (const file of [
     "src/routes/news-admin.tsx",

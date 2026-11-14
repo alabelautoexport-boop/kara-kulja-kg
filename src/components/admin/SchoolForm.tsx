@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { AdminSchoolForm } from "./AdminSchoolForm";
 import { schoolStatus } from "@/lib/school-admin";
+import { SchoolMediaEditor } from "./SchoolMedia";
 import { Plus, Trash2, Save, Send, Check, Undo2, EyeOff } from "lucide-react";
 import { useAdminI18n } from "@/lib/admin-i18n";
 import { TERRITORIES, displayTerritoryName, displayVillageName } from "@/lib/territories-data";
@@ -113,6 +114,7 @@ function SchoolEditorForm({
   const [ortTouched, setOrtTouched] = useState(initial.ort.map(() => true));
   const [issues, setIssues] = useState<SchoolValidationIssue[]>([]);
   const [busy, setBusy] = useState(false);
+  const [mediaBusy, setMediaBusy] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [message, setMessage] = useState("");
   const [note, setNote] = useState("");
@@ -126,7 +128,7 @@ function SchoolEditorForm({
   };
   const info = (key: keyof SchoolDraft["info"], value: string) =>
     update({ ...draft, info: { ...draft.info, [key]: value } });
-  const action = async (run: () => Promise<void>, success = "Сохранено.") => {
+  const action = async (run: () => Promise<void | string>, success = "Сохранено.") => {
     setBusy(true);
     setMessage("");
     try {
@@ -139,6 +141,7 @@ function SchoolEditorForm({
     }
   };
   const save = async (submit: boolean) => {
+    if (mediaBusy) return;
     const prepared = prepareActiveSchoolDraft(draft, scoreTexts, ortTouched);
     setIssues(prepared.issues);
     setMessage("");
@@ -151,8 +154,8 @@ function SchoolEditorForm({
     );
   };
   const section = (heading: string, children: ReactNode) => (
-    <section className="border-t hairline py-8">
-      <h2 className="mb-6 font-display text-2xl">{t(heading)}</h2>
+    <section className="border-t hairline py-7">
+      <h2 className="mb-4 font-sans text-lg font-semibold tracking-normal">{t(heading)}</h2>
       {children}
     </section>
   );
@@ -163,7 +166,7 @@ function SchoolEditorForm({
     type = "text",
     required = false,
   ) => (
-    <label className="block min-w-0 text-sm text-muted-foreground">
+    <label className="block min-w-0 font-sans text-sm font-normal text-foreground">
       {t(label)}
       <input
         type={type}
@@ -222,7 +225,7 @@ function SchoolEditorForm({
   );
 
   return (
-    <div className="min-w-0">
+    <div className="min-w-0 font-sans text-sm">
       <p className="mb-3 text-sm">
         {t("Статус")}: {t(schoolStatus(record))}
       </p>
@@ -244,7 +247,7 @@ function SchoolEditorForm({
           void save(false);
         }}
       >
-        <fieldset disabled={busy || locked} className="min-w-0">
+        <fieldset disabled={busy || locked || mediaBusy} className="min-w-0">
           {section(
             "Общая информация",
             <div className="grid min-w-0 gap-4 sm:grid-cols-2">
@@ -321,18 +324,26 @@ function SchoolEditorForm({
               {(admin || locale === "ru") &&
                 field("Адрес RU", draft.info.address_ru, (v) => info("address_ru", v))}
               {admin && field("Адрес EN", draft.info.address_en, (v) => info("address_en", v))}
-              <label className="text-sm text-muted-foreground">
+              <label className="font-sans text-sm font-normal text-foreground">
                 {t("Текущий учебный год")}
+                <span className="ml-2 text-xs text-muted-foreground">{t("Необязательно")}</span>
                 <input
                   className={inputClass}
                   value={draft.info.current_academic_year}
                   pattern="[0-9]{4}-[0-9]{4}"
-                  placeholder="2026-2027"
+                  placeholder="YYYY-YYYY"
                   onChange={(e) => info("current_academic_year", e.target.value)}
                 />
               </label>
             </div>,
           )}
+          <SchoolMediaEditor
+            schoolId={record.id}
+            value={draft.media}
+            onChange={(media) => update({ ...draft, media })}
+            onBusy={setMediaBusy}
+            disabled={locked || busy}
+          />
           {extendedSchoolSectionsEnabled &&
             section(
               "Основные показатели",
@@ -779,7 +790,9 @@ function SchoolEditorForm({
       </form>
       {admin && !record.is_archived && (
         <section className="border-t hairline py-6">
-          <h2 className="mb-4 text-lg">{t("Проверка и публикация")}</h2>
+          <h2 className="mb-4 font-sans text-lg font-semibold tracking-normal">
+            {t("Проверка и публикация")}
+          </h2>
           <label className="text-sm text-muted-foreground">
             {t("Замечание редактору")}
             <textarea

@@ -6,6 +6,8 @@ import { pathToFileURL } from "node:url";
 import ts from "typescript";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { testSchoolMedia } from "./test-school-media-db.mjs";
+import { testSchoolEditorAccess } from "./test-school-editor-db.mjs";
 import { testEditorAccess } from "./test-editor-access.mjs";
 
 const ortCode = ts.transpileModule(fs.readFileSync("src/lib/school-ort.ts", "utf8"), {
@@ -187,9 +189,9 @@ try {
   const oldAdminFunctionGrants = await adminFunctionGrants();
   // Simulate broad inherited defaults: the Schools migration must revoke PUBLIC too.
   await db.exec("alter default privileges in schema public grant all on tables to public");
-  await db.exec(fs.readFileSync("supabase/migrations/20261112000000_schools.sql", "utf8"));
+  await db.exec(fs.readFileSync("supabase/migrations/20261112211346_schools.sql", "utf8"));
   await db.exec(
-    fs.readFileSync("supabase/migrations/20261112213822_schools_admin_refinement.sql", "utf8"),
+    fs.readFileSync("supabase/migrations/20261112235516_schools_admin_refinement.sql", "utf8"),
   );
   assert.deepEqual(await existingPolicies(), oldPolicies);
   assert.equal(await adminFunction(), oldAdminFunction);
@@ -606,7 +608,7 @@ try {
   );
   assert.equal(await count("schools"), 2);
   await assert.rejects(() =>
-    db.exec(fs.readFileSync("supabase/migrations/20261112000000_schools.sql", "utf8")),
+    db.exec(fs.readFileSync("supabase/migrations/20261112211346_schools.sql", "utf8")),
   );
   await db.exec("rollback");
   assert.equal(await count("schools"), 2);
@@ -832,6 +834,78 @@ try {
   assert.deepEqual(await privateRows(compactId), beforeAdminSave);
   console.log(
     "Compact four-field creation, automatic slug, Admin identity save preservation, review/return and archive passed",
+  );
+  await testSchoolMedia({ db, login, denied, admin, editor });
+  await testSchoolEditorAccess({ db, login, denied, admin, editor });
+  // Real DB path: a school exists independently of any annual records.
+  await login("authenticated", admin);
+  const withoutYear = await createAuto("School without academic year");
+  const withoutYearInfo = {
+    ...(await db.query("select * from public.schools where id=$1", [withoutYear])).rows[0],
+    territory_slug: "ylai-talaa",
+    village_slug: "ylai-talaa",
+    current_academic_year: "",
+    director_name: "Permanent contact",
+    address_kg: "Permanent address",
+  };
+  await db.query("select public.save_school_active_draft($1,0,$2,false)", [
+    withoutYear,
+    { info: withoutYearInfo, ort: [] },
+  ]);
+  assert.equal(
+    (await db.query("select current_academic_year from public.schools where id=$1", [withoutYear]))
+      .rows[0].current_academic_year,
+    null,
+  );
+  for (const table of ["school_year_stats", "school_ort_years"])
+    assert.equal(
+      (
+        await db.query(`select count(*)::int n from public.${table} where school_id=$1`, [
+          withoutYear,
+        ])
+      ).rows[0].n,
+      0,
+    );
+  await db.query("select public.review_school($1,1,'publish',null)", [withoutYear]);
+  const noYearSnapshot = (
+    await db.query("select document from public.school_publications where school_id=$1", [
+      withoutYear,
+    ])
+  ).rows[0].document;
+  assert.deepEqual(noYearSnapshot.stats, []);
+  assert.deepEqual(noYearSnapshot.ort, []);
+  assert.equal(noYearSnapshot.info.director_name, "Permanent contact");
+  const laterYearInfo = { ...withoutYearInfo, current_academic_year: "2026-2027" };
+  await db.query("select public.save_school_active_draft($1,2,$2,false)", [
+    withoutYear,
+    { info: laterYearInfo, ort: [] },
+  ]);
+  for (const table of ["school_year_stats", "school_ort_years"])
+    assert.equal(
+      (
+        await db.query(`select count(*)::int n from public.${table} where school_id=$1`, [
+          withoutYear,
+        ])
+      ).rows[0].n,
+      0,
+    );
+  await db.query("select public.save_school_active_draft($1,3,$2,false)", [
+    withoutYear,
+    { info: laterYearInfo, ort: [{ year: 2027, academic_year: "2026-2027", scores: [140, 180] }] },
+  ]);
+  await db.query("select public.review_school($1,4,'publish',null)", [withoutYear]);
+  const laterYearSnapshot = (
+    await db.query("select document from public.school_publications where school_id=$1", [
+      withoutYear,
+    ])
+  ).rows[0].document;
+  assert.equal(laterYearSnapshot.ort.length, 1);
+  assert.equal(laterYearSnapshot.ort[0].academic_year, "2026-2027");
+  assert.equal(laterYearSnapshot.info.director_name, "Permanent contact");
+  assert.equal(laterYearSnapshot.info.address_kg, "Permanent address");
+  assert.deepEqual(laterYearSnapshot.stats, []);
+  console.log(
+    "Optional academic year DB scenario passed: school/contact save and publication without a year, no empty annual rows, subsequent actual year data linked to the same school",
   );
 } finally {
   await db.close();

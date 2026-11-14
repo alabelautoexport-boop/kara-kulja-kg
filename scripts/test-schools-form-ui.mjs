@@ -10,6 +10,7 @@ import { createRequire } from "node:module";
 
 const root = process.cwd();
 const stub = `
+  export const supabase={functions:{invoke:async()=>({data:null,error:new Error("Fixture")})}};
   export const calls = [];
   export let fail = false;
   export function setFailure(value) { fail = value; }
@@ -24,7 +25,7 @@ const stub = `
 const isolatePlugin = {
   name: "isolate-schools-rpc",
   setup(plugin) {
-    plugin.onResolve({ filter: /^@\/lib\/schools-data$/ }, () => ({
+    plugin.onResolve({ filter: /^@\/lib\/(schools-data|supabase)$/ }, () => ({
       path: "schools-stub",
       namespace: "fixture",
     }));
@@ -57,11 +58,12 @@ const ssr = await build({
     export const admin=renderToStaticMarkup(<SchoolForm admin={true} record={{...info,id:'fixture',status:'review',revision:0,review_note:null}} initial={{info:{...info,director_name:'Preserved director'},stats:[],ort:[{year:2026,academic_year:'2025-2026',scores:[142,156,203]}],achievements:[],resources:[]}} onSaved={async()=>{}}/>);
     export const creation=renderToStaticMarkup(<SchoolIdentityFields value={info} onChange={()=>{}}/>);
     export const validIdentity=validSchoolIdentity({...info,territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:'2026-2027'});
+    export const validWithoutYear=validSchoolIdentity({...info,territory_slug:'ylai-talaa',village_slug:'ylai-talaa',current_academic_year:''});
     export const invalidIdentity=[info,{...info,name_kg:'',current_academic_year:'2026-2027'},{...info,current_academic_year:'invalid'}].map(validSchoolIdentity);
     export const statuses=['draft','review','published'].map(status=>schoolStatus({status,review_note:null}));
     export const returned=schoolStatus({status:'draft',review_note:'Please correct'});
     const schools=['draft','review','published','draft','draft'].map((status,index)=>({...info,id:'private-id-'+index,name_kg:'Школа '+index,status,review_note:index===3?'Correct':null,is_archived:index===4}));
-    export const list=renderToStaticMarkup(<SchoolAdminList schools={schools} onOpen={()=>{}}/>);
+    export const list=renderToStaticMarkup(<SchoolAdminList schools={schools} onOpen={()=>{}} onLifecycleChange={async()=>{}}/>);
     export const badges=schools.map(record=>renderToStaticMarkup(<SchoolStatusBadge record={record}/>));
     export const filters=['all','draft','review','published','archived'].map(filter=>filterSchools(schools,filter,'').map(s=>s.id));
     export const search=filterSchools(schools,'all',' ШКОЛА 2 ').map(s=>s.id);
@@ -115,15 +117,26 @@ assert.ok(!rendered.exports.admin.includes("Добавить результат�
 assert.ok(!rendered.exports.admin.includes("Отправить на проверку"));
 assert.equal((rendered.exports.admin.match(/<textarea/g) ?? []).length, 1); // Admin note only.
 assert.match(rendered.exports.admin, /<details[^>]*>[\s\S]*Дополнительные данные[\s\S]*Slug/);
-assert.equal((rendered.exports.creation.match(/required=""/g) ?? []).length, 4);
+assert.equal((rendered.exports.creation.match(/required=""/g) ?? []).length, 3);
+assert.match(rendered.exports.creation, /Необязательно/);
+assert.doesNotMatch(rendered.exports.creation, /placeholder="2026-2027"/);
 assert.ok(!rendered.exports.creation.includes("Slug"));
 assert.ok(!rendered.exports.creation.includes("Директор"));
 assert.equal(rendered.exports.validIdentity, true);
+assert.equal(rendered.exports.validWithoutYear, true);
+for (const html of [rendered.exports.admin, rendered.exports.editor]) {
+  for (const heading of html.matchAll(/<h[234][^>]*class="([^"]*)"/g)) {
+    assert.ok(heading[1].includes("font-sans"), heading[0]);
+    assert.ok(!heading[1].includes("font-display"), heading[0]);
+  }
+}
 assert.deepEqual(rendered.exports.invalidIdentity, [false, false, false]);
 assert.deepEqual(rendered.exports.statuses, ["Черновик", "Ожидает проверки", "Опубликовано"]);
 assert.equal(rendered.exports.returned, "На исправлении");
-assert.equal((rendered.exports.list.match(/<li /g) ?? []).length, 5);
-assert.equal((rendered.exports.list.match(/<h3 /g) ?? []).length, 5);
+assert.equal((rendered.exports.list.match(/<li /g) ?? []).length, 4);
+assert.equal((rendered.exports.list.match(/<h3 /g) ?? []).length, 4);
+assert.ok(!rendered.exports.list.includes("Учебный год не указан"));
+assert.ok(!rendered.exports.list.includes("Удалить навсегда"));
 assert.ok(!rendered.exports.list.includes("<form"));
 assert.ok(!rendered.exports.list.includes("private-id-"));
 for (const section of ["Основное", "Редактор школы", "Проверка и публикация", "Управление"])
@@ -137,7 +150,7 @@ for (const [index, label] of [
 ].entries())
   assert.ok(rendered.exports.badges[index].includes(label));
 assert.deepEqual(rendered.exports.filters, [
-  ["private-id-0", "private-id-1", "private-id-2", "private-id-3", "private-id-4"],
+  ["private-id-0", "private-id-1", "private-id-2", "private-id-3"],
   ["private-id-0", "private-id-3"],
   ["private-id-1"],
   ["private-id-2"],
@@ -145,7 +158,7 @@ assert.deepEqual(rendered.exports.filters, [
 ]);
 assert.deepEqual(rendered.exports.search, ["private-id-2"]);
 console.log(
-  "School UI tests passed: one list entry per school, no edit forms or IDs in list, five status badges, filters/search, four required creation fields, read-only Admin ORT and unchanged editor inputs",
+  "School UI tests passed: compact sans-serif working headings, optional academic year with three required creation fields, list/status/filter isolation, read-only Admin ORT and unchanged editor scope",
 );
 if (!process.argv.includes("--serve")) process.exit(0);
 const result = await build({
@@ -204,7 +217,7 @@ const result = await build({
     {
       name: "isolate-schools-rpc",
       setup(plugin) {
-        plugin.onResolve({ filter: /^@\/lib\/schools-data$/ }, () => ({
+        plugin.onResolve({ filter: /^@\/lib\/(schools-data|supabase)$/ }, () => ({
           path: "schools-stub",
           namespace: "fixture",
         }));

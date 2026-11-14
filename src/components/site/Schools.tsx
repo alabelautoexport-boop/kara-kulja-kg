@@ -1,56 +1,56 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowLeft } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { useI18n, displayStructuredValue } from "@/lib/i18n";
 import { SCHOOL_COPY } from "@/lib/schools-copy";
-import {
-  getPublishedSchool,
-  getPublishedSchools,
-  localizedSchoolField,
-  type PublicSchoolDocument,
-} from "@/lib/schools-data";
-import {
-  TERRITORIES,
-  getOfficialVillage,
-  displayTerritoryName,
-  displayVillageName,
-} from "@/lib/territories-data";
+import { getPublishedSchool, getPublishedSchools, localizedSchoolField } from "@/lib/schools-data";
+import { TERRITORIES, displayTerritoryName, displayVillageName } from "@/lib/territories-data";
 import { ORT_RANGES } from "@/lib/school-ort";
 import valleyImg from "@/assets/valley.jpg";
+import { SchoolCard, SchoolLocation } from "./SchoolCard";
+import { SchoolGallery } from "./SchoolGallery";
+import { schoolPublicImageUrl, type SchoolMediaImage } from "@/lib/school-media-model";
+import { getPublishedSchoolAcademicYears } from "@/lib/school-academic-years";
 
-function SchoolHeading({ children }: { children: ReactNode }) {
+function SchoolHeading({
+  children,
+  cover,
+  compact = false,
+}: {
+  children: ReactNode;
+  cover?: SchoolMediaImage | null;
+  compact?: boolean;
+}) {
   return (
-    <div className="relative overflow-hidden border-b hairline px-6 pb-12 pt-32 lg:px-10">
+    <div
+      className={`relative overflow-hidden border-b hairline px-6 lg:px-10 ${compact ? "pb-8 pt-24 lg:pt-28" : "pb-12 pt-32"}`}
+    >
       <img
         src={valleyImg}
         alt=""
         className="absolute inset-0 h-full w-full object-cover opacity-15"
       />
-      <div className="relative mx-auto max-w-[1200px]">{children}</div>
+      <div className="relative mx-auto max-w-[1200px]">
+        {cover && schoolPublicImageUrl(cover, "main") && (
+          <img
+            src={schoolPublicImageUrl(cover, "main")}
+            alt=""
+            width={cover.width}
+            height={cover.height}
+            className="mb-7 max-h-[60vh] w-full object-contain"
+            fetchPriority="high"
+          />
+        )}
+        {children}
+      </div>
     </div>
   );
 }
 
-export function SchoolLocation({ info }: { info: PublicSchoolDocument["info"] }) {
-  const { lang } = useI18n();
-  const territory = TERRITORIES.find((t) => t.slug === info.territory_slug);
-  const village = getOfficialVillage(info.village_slug);
-  return (
-    <>
-      {[
-        village && displayVillageName(village, lang),
-        territory && displayTerritoryName(territory, lang),
-      ]
-        .filter(Boolean)
-        .join(" / ") || displayStructuredValue(null, lang)}
-    </>
-  );
-}
-
 export function SchoolsList() {
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
   const c = SCHOOL_COPY[lang];
   const [territory, setTerritory] = useState("");
   const [village, setVillage] = useState("");
@@ -69,60 +69,72 @@ export function SchoolsList() {
         .toLocaleLowerCase()
         .includes(search.trim().toLocaleLowerCase()),
   );
-  const value = (n: number | string | null | undefined) =>
-    displayStructuredValue(n == null ? null : String(n), lang);
   return (
     <SiteLayout>
-      <SchoolHeading>
+      <SchoolHeading compact>
+        <Link
+          to="/about"
+          hash="social-infrastructure"
+          className="mb-4 inline-flex max-w-full items-start gap-2 py-2 text-xs leading-relaxed text-muted-foreground transition-colors hover:text-[var(--beige)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ember)]"
+        >
+          <ArrowLeft aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          {t("about.section.infrastructure")}
+        </Link>
         <h1 className="font-display text-5xl md:text-6xl">{c.title}</h1>
-        <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{c.subtitle}</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{c.subtitle}</p>
       </SchoolHeading>
-      <section className="mx-auto max-w-[1200px] px-6 py-12 lg:px-10">
+      <section className="mx-auto max-w-[1200px] px-6 py-8 lg:px-10">
         {schools.length > 0 && (
-          <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <label className="min-w-0 text-xs text-muted-foreground">
+          <div className="mb-6 grid grid-cols-2 items-end gap-3 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+            <label className="col-span-2 min-w-0 text-xs text-muted-foreground md:col-span-1">
               {c.search}
               <input
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="mt-2 min-h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
+                className="mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
               />
             </label>
-            <select
-              aria-label={c.territory}
-              value={territory}
-              onChange={(e) => {
-                setTerritory(e.target.value);
-                setVillage("");
-              }}
-              className="min-h-11 w-full border hairline bg-background px-3"
-            >
-              <option value="">{c.allTerritories}</option>
-              {TERRITORIES.filter((t) =>
-                schools.some((s) => s.document.info.territory_slug === t.slug),
-              ).map((t) => (
-                <option key={t.slug} value={t.slug}>
-                  {displayTerritoryName(t, lang)}
-                </option>
-              ))}
-            </select>
-            <select
-              aria-label={c.village}
-              value={village}
-              onChange={(e) => setVillage(e.target.value)}
-              className="min-h-11 w-full border hairline bg-background px-3"
-            >
-              <option value="">{c.allVillages}</option>
-              {TERRITORIES.filter((t) => !territory || t.slug === territory)
-                .flatMap((t) => t.villages)
-                .filter((v) => schools.some((s) => s.document.info.village_slug === v.slug))
-                .map((v) => (
-                  <option key={v.slug} value={v.slug}>
-                    {displayVillageName(v, lang)}
+            <label className="min-w-0 text-xs text-muted-foreground">
+              {c.filterTerritory}
+              <select
+                aria-label={c.territory}
+                value={territory}
+                onChange={(e) => {
+                  setTerritory(e.target.value);
+                  setVillage("");
+                }}
+                className="mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
+              >
+                <option value="">{c.allTerritories}</option>
+                {TERRITORIES.filter((t) =>
+                  schools.some((s) => s.document.info.territory_slug === t.slug),
+                ).map((t) => (
+                  <option key={t.slug} value={t.slug}>
+                    {displayTerritoryName(t, lang)}
                   </option>
                 ))}
-            </select>
+              </select>
+            </label>
+            <label className="min-w-0 text-xs text-muted-foreground">
+              {c.village}
+              <select
+                aria-label={c.village}
+                value={village}
+                onChange={(e) => setVillage(e.target.value)}
+                className="mt-1.5 h-11 w-full min-w-0 border hairline bg-background px-3 text-sm text-foreground"
+              >
+                <option value="">{c.allVillages}</option>
+                {TERRITORIES.filter((t) => !territory || t.slug === territory)
+                  .flatMap((t) => t.villages)
+                  .filter((v) => schools.some((s) => s.document.info.village_slug === v.slug))
+                  .map((v) => (
+                    <option key={v.slug} value={v.slug}>
+                      {displayVillageName(v, lang)}
+                    </option>
+                  ))}
+              </select>
+            </label>
           </div>
         )}
         {query.isPending ? (
@@ -134,66 +146,10 @@ export function SchoolsList() {
         ) : !filtered.length ? (
           <p>{c.noMatches}</p>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
-            {filtered.map((s) => {
-              const current = s.document.stats.find(
-                (y) => y.academic_year === s.document.info.current_academic_year,
-              );
-              const latest = s.document.ort[0];
-              return (
-                <Link
-                  key={s.school_id}
-                  to="/schools/$slug"
-                  params={{ slug: s.slug }}
-                  className="group min-w-0 border hairline p-5 transition-colors hover:border-[var(--beige)]"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <h2 className="break-words font-display text-2xl">
-                      {localizedSchoolField(s.document.info, "name", lang)}
-                    </h2>
-                    <ArrowRight className="mt-1 h-4 w-4 shrink-0" />
-                  </div>
-                  <p className="mt-3 text-sm text-muted-foreground">
-                    <SchoolLocation info={s.document.info} />
-                  </p>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {c.academicYear}: {value(s.document.info.current_academic_year || null)}
-                  </p>
-                  <dl className="mt-5 space-y-3 text-sm">
-                    {[
-                      [c.director, s.document.info.director_name],
-                      [c.directorPhone, s.document.info.director_phone],
-                      [c.officePhone, s.document.info.office_phone],
-                      [c.address, localizedSchoolField(s.document.info, "address", lang)],
-                    ]
-                      .filter(([, text]) => !!text)
-                      .map(([label, text]) => (
-                        <div key={label}>
-                          <dt className="text-xs text-muted-foreground">{label}</dt>
-                          <dd className="mt-1 break-words">{text}</dd>
-                        </div>
-                      ))}
-                  </dl>
-                  <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
-                    {[
-                      [c.students, current?.total_students],
-                      [c.teachers, current?.total_teachers],
-                      [c.graduates, current?.grade11_graduates],
-                      [`${c.average}${latest ? ` (${latest.year})` : ""}`, latest?.summary.average],
-                    ].map(([label, n]) => (
-                      <div key={label}>
-                        <dt className="text-muted-foreground">{label}</dt>
-                        <dd className="mt-1">{value(n as number | null | undefined)}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm text-[var(--beige)]">
-                    {c.more}
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </Link>
-              );
-            })}
+          <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((s) => (
+              <SchoolCard key={s.school_id} school={s} />
+            ))}
           </div>
         )}
       </section>
@@ -212,19 +168,29 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
   const doc = query.data?.document;
   const value = (n: number | string | null | undefined) =>
     displayStructuredValue(n == null ? null : String(n), lang);
-  const stats = doc?.stats.find((s) => s.academic_year === doc.info.current_academic_year);
-  const ort = doc?.ort.find((s) => s.academic_year === doc.info.current_academic_year);
+  const academicYears = query.data ? getPublishedSchoolAcademicYears(query.data) : [];
+  const latestYear = academicYears[0];
+  const stats = latestYear?.stats;
+  const reportingYear = latestYear?.academic_year;
+  const ortYears = academicYears.flatMap((period) => period.ort);
   const band = "border-b hairline py-10";
   const title = "mb-6 font-display text-3xl";
   return (
     <SiteLayout>
-      <SchoolHeading>
+      <SchoolHeading cover={doc?.media?.cover}>
         <Link to="/schools" className="text-sm text-muted-foreground hover:text-foreground">
           {c.all}
         </Link>
         <h1 className="mt-5 break-words font-display text-4xl md:text-5xl">
           {doc ? localizedSchoolField(doc.info, "name", lang) : c.title}
         </h1>
+        {doc && (
+          <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+            <p>
+              <SchoolLocation info={doc.info} />
+            </p>
+          </div>
+        )}
       </SchoolHeading>
       <div className="mx-auto max-w-[1200px] px-6 pb-12 lg:px-10">
         {!doc ? (
@@ -249,7 +215,6 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                   [c.directorPhone, doc.info.director_phone],
                   [c.officePhone, doc.info.office_phone],
                   [c.address, localizedSchoolField(doc.info, "address", lang)],
-                  [c.academicYear, doc.info.current_academic_year],
                 ].map(([label, text]) => (
                   <div key={label}>
                     <dt className="text-muted-foreground">{label}</dt>
@@ -258,32 +223,61 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                 ))}
               </dl>
             </section>
-            <section className={band}>
-              <h2 className={title}>{c.indicators}</h2>
-              <p className="mb-5 text-sm text-muted-foreground">
-                {value(doc.info.current_academic_year)}
-              </p>
-              <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-                {[
-                  [c.students, stats?.total_students],
-                  [c.teachers, stats?.total_teachers],
-                  [c.graduates, stats?.grade11_graduates],
-                  [c.participants, ort?.summary.participants],
-                ].map(([label, n]) => (
-                  <div key={label}>
-                    <dt className="text-sm text-muted-foreground">{label}</dt>
-                    <dd className="mt-3 font-display text-3xl">{value(n)}</dd>
+            <section className={band} aria-labelledby="school-indicators-heading">
+              <h2 id="school-indicators-heading" className={title}>
+                {c.indicators}
+              </h2>
+              {reportingYear ? (
+                <>
+                  <p className="-mt-3 mb-5 text-xs text-muted-foreground">
+                    {c.academicYear}: {reportingYear}
+                  </p>
+                  <div className="grid max-w-3xl gap-6 sm:grid-cols-2">
+                    <div className="min-w-0">
+                      <h3 className="mb-3 font-sans text-base font-semibold tracking-normal text-foreground">
+                        {c.students}
+                      </h3>
+                      <dl className="space-y-2 text-sm">
+                        {[
+                          [c.total, stats?.total_students],
+                          [c.graduates, stats?.grade11_graduates],
+                        ].map(([label, n]) => (
+                          <div key={label} className="flex items-baseline justify-between gap-4">
+                            <dt className="text-muted-foreground">{label}</dt>
+                            <dd className="text-right tabular-nums">{value(n)}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="mb-3 font-sans text-base font-semibold tracking-normal text-foreground">
+                        {c.teachers}
+                      </h3>
+                      <dl className="text-sm">
+                        <div className="flex items-baseline justify-between gap-4">
+                          <dt className="text-muted-foreground">{c.total}</dt>
+                          <dd className="text-right tabular-nums">
+                            {value(stats?.total_teachers)}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
                   </div>
-                ))}
-              </dl>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground">{c.noAnnualData}</p>
+              )}
             </section>
             <section className={band}>
               <h2 className={title}>{c.ort}</h2>
-              {doc.ort.length > 1 && (
+              {!ortYears.length && (
+                <p className="text-sm text-muted-foreground">{c.noAnnualData}</p>
+              )}
+              {ortYears.length > 1 && (
                 <div className="mb-8">
                   <h3 className="mb-4 text-sm font-medium">{c.dynamics}</h3>
                   <ul className="space-y-2 text-sm">
-                    {[...doc.ort].reverse().map((r) => (
+                    {[...ortYears].reverse().map((r) => (
                       <li
                         key={r.year}
                         className="flex flex-wrap justify-between gap-3 border-b hairline py-2"
@@ -300,7 +294,7 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                   </ul>
                 </div>
               )}
-              {doc.ort.map((r) => (
+              {ortYears.map((r) => (
                 <div key={r.year} className="mb-8">
                   <h3 className="mb-5 text-xl">
                     {r.year}{" "}
@@ -332,56 +326,80 @@ export function SchoolPublicPage({ slug }: { slug: string }) {
                   </dl>
                 </div>
               ))}
-              {doc.ort.length > 0 && (
+              {ortYears.length > 0 && (
                 <p className="text-xs text-muted-foreground">{c.rangesNote}</p>
               )}
             </section>
-            <section className={band}>
-              <h2 className={title}>{c.achievements}</h2>
-              <div className="space-y-6">
-                {doc.achievements.map((a, i) => (
-                  <article key={i}>
-                    <p className="text-xs text-muted-foreground">{a.date}</p>
-                    <h3 className="mt-2 break-words font-display text-2xl">
-                      {localizedSchoolField(a, "title", lang)}
-                    </h3>
-                    <p className="mt-3 whitespace-pre-line break-words text-sm leading-7 text-muted-foreground">
-                      {localizedSchoolField(a, "description", lang)}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </section>
-            <section className="py-10">
-              <h2 className={title}>{c.resources}</h2>
-              <ul className="divide-y divide-border">
-                {doc.resources.map((r, i) => (
-                  <li key={i} className="py-5">
-                    <h3 className="break-words text-base">
-                      {r.url && /^https?:\/\//i.test(r.url) ? (
-                        <a
-                          href={r.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-start gap-2 hover:text-[var(--beige)]"
-                        >
-                          {localizedSchoolField(r, "title", lang)}
-                          <ExternalLink className="mt-1 h-4 w-4 shrink-0" />
-                        </a>
-                      ) : (
-                        localizedSchoolField(r, "title", lang)
-                      )}
-                    </h3>
-                    <p className="mt-2 break-words text-sm leading-7 text-muted-foreground">
-                      {localizedSchoolField(r, "description", lang)}
-                    </p>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      {[r.year, r.source].filter(Boolean).join(" / ")}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {!!doc.media?.gallery.length && (
+              <section className={band}>
+                <h2 className={title}>{c.schoolLife}</h2>
+                <SchoolGallery images={doc.media.gallery} />
+              </section>
+            )}
+            {!!doc.achievements.length && (
+              <section className={band}>
+                <h2 className={title}>{c.achievements}</h2>
+                <div className="space-y-6">
+                  {doc.achievements.map((a, i) => (
+                    <article key={i}>
+                      <p className="text-xs text-muted-foreground">{a.date}</p>
+                      <h3 className="mt-2 break-words font-display text-2xl">
+                        {localizedSchoolField(a, "title", lang)}
+                      </h3>
+                      <p className="mt-3 whitespace-pre-line break-words text-sm leading-7 text-muted-foreground">
+                        {localizedSchoolField(a, "description", lang)}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
+            {!!doc.resources.length && (
+              <section className="py-10">
+                <h2 className={title}>{c.resources}</h2>
+                <ul className="divide-y divide-border">
+                  {doc.resources.map((r, i) => (
+                    <li key={i} className="py-5">
+                      <h3 className="break-words text-base">
+                        {r.url && /^https?:\/\//i.test(r.url) ? (
+                          <a
+                            href={r.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-start gap-2 hover:text-[var(--beige)]"
+                          >
+                            {localizedSchoolField(r, "title", lang)}
+                            <ExternalLink className="mt-1 h-4 w-4 shrink-0" />
+                          </a>
+                        ) : (
+                          localizedSchoolField(r, "title", lang)
+                        )}
+                      </h3>
+                      <p className="mt-2 break-words text-sm leading-7 text-muted-foreground">
+                        {localizedSchoolField(r, "description", lang)}
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {[r.year, r.source].filter(Boolean).join(" / ")}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            <nav className="flex flex-wrap gap-5 border-t hairline py-8 text-sm">
+              {TERRITORIES.some((territory) =>
+                territory.villages.some((village) => village.slug === doc.info.village_slug),
+              ) && (
+                <Link to="/villages/$slug" params={{ slug: doc.info.village_slug }}>
+                  {c.village}: <SchoolLocation info={doc.info} />
+                </Link>
+              )}
+              {TERRITORIES.some((territory) => territory.slug === doc.info.territory_slug) && (
+                <Link to="/territories/$slug" params={{ slug: doc.info.territory_slug }}>
+                  {c.territory}
+                </Link>
+              )}
+            </nav>
           </>
         )}
       </div>

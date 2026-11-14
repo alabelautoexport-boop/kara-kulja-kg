@@ -11,7 +11,6 @@ const NAV = [
   { to: "/people", key: "nav.people" },
   { to: "/history", key: "nav.history" },
   { to: "/news", key: "nav.news" },
-  { to: "/schools", key: "nav.schools" },
   { to: "/gallery", key: "nav.gallery" },
   { to: "/contact", key: "nav.contact" },
 ] as const;
@@ -44,8 +43,8 @@ export function Header() {
           <span className="font-display text-xl tracking-tight text-foreground">Kara-Kulja</span>
         </Link>
 
-        <nav className="hidden items-center gap-4 lg:flex xl:gap-7">
-          {NAV.slice(0, 8).map((n) => (
+        <nav className="hidden items-center gap-7 lg:flex">
+          {NAV.slice(0, 7).map((n) => (
             <Link
               key={n.to}
               to={n.to}

@@ -9,3 +9,13 @@ verify_jwt = true
 
 [functions.news-media]
 verify_jwt = true
+
+# Local source only. Deployment is a separate, explicit operation.
+[functions.school-media]
+verify_jwt = true
+
+[functions.manage-school-editor-access]
+verify_jwt = true
+
+[functions.school-editor-login]
+verify_jwt = false

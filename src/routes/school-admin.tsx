@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SchoolWorkspace } from "@/components/admin/SchoolWorkspace";
-import { EditorAreaGuard } from "@/components/admin/EditorAreaGuard";
+import { SchoolEditorWorkspace } from "@/components/admin/SchoolEditorWorkspace";
 export const Route = createFileRoute("/school-admin")({
   head: () => ({
     meta: [
@@ -8,9 +7,5 @@ export const Route = createFileRoute("/school-admin")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
-  component: () => (
-    <EditorAreaGuard area="school">
-      <SchoolWorkspace />
-    </EditorAreaGuard>
-  ),
+  component: SchoolEditorWorkspace,
 });

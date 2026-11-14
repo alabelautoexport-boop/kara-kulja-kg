@@ -12,17 +12,23 @@ import {
 export function SchoolLifecycleActions({
   record,
   onChanged,
+  compact = false,
+  onOpen,
 }: {
   record: SchoolRecord;
   onChanged: (deleted: boolean, message: string) => Promise<void>;
+  compact?: boolean;
+  onOpen?: () => void;
 }) {
   const { t } = useAdminI18n();
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const button =
-    "min-h-11 border hairline px-4 py-2 text-sm disabled:opacity-50 hover:border-[var(--beige)]";
+  const button = compact
+    ? "min-h-11 px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-50"
+    : "min-h-11 border hairline px-4 py-2 text-sm disabled:opacity-50 hover:border-[var(--beige)]";
+  const Container = compact ? "div" : "section";
   const run = async (deleting: boolean) => {
     setBusy(true);
     setError("");
@@ -45,14 +51,31 @@ export function SchoolLifecycleActions({
     }
   };
   return (
-    <section className="my-8 border-t hairline pt-6">
-      <h2 className="mb-5 font-display text-xl">{t("Управление")}</h2>
-      {record.is_archived && (
+    <Container
+      className={
+        compact ? "min-w-0 shrink-0 font-sans text-sm" : "border-t hairline py-7 font-sans text-sm"
+      }
+    >
+      {!compact && (
+        <h2 className="mb-4 font-sans text-lg font-semibold tracking-normal">{t("Управление")}</h2>
+      )}
+      {!compact && record.is_archived && (
         <p className="mb-4 text-sm text-muted-foreground">
           {t("Школа в архиве. Сначала восстановите её.")}
         </p>
       )}
-      <div className="flex flex-wrap gap-3">
+      <div className={`flex flex-wrap items-center ${compact ? "gap-1 sm:justify-end" : "gap-3"}`}>
+        {onOpen && (
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onOpen}
+            aria-label={`${t("Открыть")}: ${record.name_kg}`}
+            className="inline-flex min-h-11 items-center justify-center border hairline px-4 py-2 text-sm text-foreground hover:border-[var(--beige)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--beige)] disabled:opacity-50"
+          >
+            {t("Открыть")}
+          </button>
+        )}
         <button
           className={button}
           disabled={busy}
@@ -62,7 +85,9 @@ export function SchoolLifecycleActions({
                 t(
                   record.is_archived
                     ? "Восстановить школу без публикации?"
-                    : "Переместить школу в архив? Несохранённые изменения не сохранятся.",
+                    : compact
+                      ? "Переместить школу в архив?"
+                      : "Переместить школу в архив? Несохранённые изменения не сохранятся.",
                 ),
               )
             )
@@ -73,7 +98,11 @@ export function SchoolLifecycleActions({
         </button>
         {record.is_archived && (
           <button
-            className={`${button} text-destructive`}
+            className={
+              compact
+                ? "min-h-11 px-3 py-2 text-sm text-destructive hover:opacity-80 disabled:opacity-50"
+                : `${button} text-destructive`
+            }
             disabled={busy}
             onClick={() => {
               setName("");
@@ -96,9 +125,14 @@ export function SchoolLifecycleActions({
           if (!busy) setOpen(value);
         }}
       >
-        <AlertDialogContent className="max-w-[calc(100%-2rem)] sm:max-w-lg">
-          <AlertDialogTitle>{t("Удалить навсегда")}</AlertDialogTitle>
+        <AlertDialogContent className="max-w-[calc(100%-2rem)] font-sans text-sm sm:max-w-lg">
+          <AlertDialogTitle className="font-sans text-lg font-semibold tracking-normal">
+            {t("Удалить школу навсегда?")}
+          </AlertDialogTitle>
           <AlertDialogDescription>
+            <span className="mb-2 block break-words font-medium text-foreground">
+              {record.name_kg}
+            </span>
             {t("Школа и все связанные с ней данные будут удалены без возможности восстановления.")}
           </AlertDialogDescription>
           <label className="min-w-0 text-sm">
@@ -120,7 +154,7 @@ export function SchoolLifecycleActions({
           <div className="flex flex-wrap justify-end gap-3">
             <AlertDialogCancel disabled={busy}>{t("Отмена")}</AlertDialogCancel>
             <button
-              className={`${button} text-destructive`}
+              className="min-h-11 border border-destructive bg-destructive px-4 py-2 font-sans text-sm font-medium text-destructive-foreground hover:opacity-90 disabled:opacity-50"
               disabled={busy || name !== record.name_kg}
               onClick={() => void run(true)}
             >
@@ -129,6 +163,6 @@ export function SchoolLifecycleActions({
           </div>
         </AlertDialogContent>
       </AlertDialog>
-    </section>
+    </Container>
   );
 }
