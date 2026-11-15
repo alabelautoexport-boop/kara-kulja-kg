@@ -16,6 +16,9 @@ import { SchoolCard, SchoolLocation } from "./SchoolCard";
 import { SchoolGallery } from "./SchoolGallery";
 import { schoolPublicImageUrl, type SchoolMediaImage } from "@/lib/school-media-model";
 import { getPublishedSchoolAcademicYears } from "@/lib/school-academic-years";
+import type { SchoolPublication } from "@/lib/schools-data";
+import { institutionDescription } from "@/lib/seo";
+import { usePageMetadata } from "@/lib/use-page-metadata";
 
 export function SchoolHeading({
   children,
@@ -52,14 +55,16 @@ export function SchoolHeading({
   );
 }
 
-export function SchoolsList() {
+export function SchoolsList({ initialData }: { initialData?: SchoolPublication[] } = {}) {
   const { lang, t } = useI18n();
   const c = SCHOOL_COPY[lang];
+  usePageMetadata(c.title, c.subtitle);
   const [filters, setFilters] = useState(EMPTY_INSTITUTION_FILTERS);
   const { territory, village, search } = filters;
   const query = useQuery({
     queryKey: ["schools", "published"],
     queryFn: getPublishedSchools,
+    initialData,
     retry: false,
   });
   const schools = query.data ?? [];
@@ -118,15 +123,27 @@ export function SchoolsList() {
   );
 }
 
-export function SchoolPublicPage({ slug }: { slug: string }) {
+export function SchoolPublicPage({
+  slug,
+  initialData,
+}: {
+  slug: string;
+  initialData?: SchoolPublication;
+}) {
   const { lang } = useI18n();
   const c = SCHOOL_COPY[lang];
   const query = useQuery({
     queryKey: ["schools", "published", slug],
     queryFn: () => getPublishedSchool(slug),
+    initialData,
     retry: false,
   });
   const doc = query.data?.document;
+  const seoName = doc ? localizedSchoolField(doc.info, "name", lang) : undefined;
+  usePageMetadata(
+    seoName,
+    doc && seoName ? institutionDescription(doc.info, seoName, lang) : undefined,
+  );
   const value = (n: number | string | null | undefined) =>
     displayStructuredValue(n == null ? null : String(n), lang);
   const academicYears = query.data ? getPublishedSchoolAcademicYears(query.data) : [];

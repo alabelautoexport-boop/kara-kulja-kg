@@ -19,7 +19,7 @@ export const Route = createFileRoute("/tourism")({
       { name: "description", content: "Mountain tourism, horse routes, ecotourism in Kara-Kulja." },
       { property: "og:title", content: "Tourism in Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/tourism" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/tourism/" }],
   }),
   component: TourismPage,
 });
@@ -27,12 +27,37 @@ export const Route = createFileRoute("/tourism")({
 function TourismPage() {
   const { t } = useI18n();
   const cards = [
-    { icon: Mountain, titleKey: "tourism.item.mountains", descKey: "tourism.item.mountains.desc", img: mountainsImg },
-    { icon: Droplet, titleKey: "tourism.item.rivers", descKey: "tourism.item.rivers.desc", img: riversImg },
-    { icon: Compass, titleKey: "tourism.item.horse", descKey: "tourism.item.horse.desc", img: horseRoutesImg },
-    { icon: Footprints, titleKey: "tourism.item.hiking", descKey: "tourism.item.hiking.desc", img: hikingImg },
+    {
+      icon: Mountain,
+      titleKey: "tourism.item.mountains",
+      descKey: "tourism.item.mountains.desc",
+      img: mountainsImg,
+    },
+    {
+      icon: Droplet,
+      titleKey: "tourism.item.rivers",
+      descKey: "tourism.item.rivers.desc",
+      img: riversImg,
+    },
+    {
+      icon: Compass,
+      titleKey: "tourism.item.horse",
+      descKey: "tourism.item.horse.desc",
+      img: horseRoutesImg,
+    },
+    {
+      icon: Footprints,
+      titleKey: "tourism.item.hiking",
+      descKey: "tourism.item.hiking.desc",
+      img: hikingImg,
+    },
     { icon: Trees, titleKey: "tourism.item.eco", descKey: "tourism.item.eco.desc", img: ecoImg },
-    { icon: MapPin, titleKey: "tourism.item.places", descKey: "tourism.item.places.desc", img: placesImg },
+    {
+      icon: MapPin,
+      titleKey: "tourism.item.places",
+      descKey: "tourism.item.places.desc",
+      img: placesImg,
+    },
   ];
   return (
     <SiteLayout>
@@ -48,7 +73,12 @@ function TourismPage() {
             {cards.map(({ icon: Icon, titleKey, descKey, img }) => (
               <article key={titleKey} className="group border hairline">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img src={img} alt={t(titleKey)} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img
+                    src={img}
+                    alt={t(titleKey)}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                   <Icon className="absolute bottom-4 left-4 h-6 w-6 text-[var(--beige)]" />
                 </div>

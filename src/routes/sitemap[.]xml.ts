@@ -1,40 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
-
-const BASE_URL = "https://kara-kulja.kg";
+import { publicRoutes, sitemapXml } from "@/lib/public-routes";
+import { getPublishedSchools } from "@/lib/schools-data";
+import { getPublishedKindergartens } from "@/lib/kindergartens-data";
+import { getPublishedNews } from "@/lib/news-data";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const paths = [
-          "/",
-          "/about",
-          "/villages",
-          "/villages/kara-kulja",
-          "/villages/zhiyde",
-          "/villages/oy-tal",
-          "/tourism",
-          "/invest",
-          "/people",
-          "/map",
-          "/history",
-          "/gallery",
-          "/news",
-          "/contact",
-        ];
-        const urls = paths.map(
-          (p) =>
-            `  <url><loc>${BASE_URL}${p}</loc><changefreq>weekly</changefreq><priority>${p === "/" ? "1.0" : "0.7"}</priority></url>`
-        );
-        const xml = [
-          `<?xml version="1.0" encoding="UTF-8"?>`,
-          `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
-          ...urls,
-          `</urlset>`,
-        ].join("\n");
-        return new Response(xml, {
-          headers: { "Content-Type": "application/xml", "Cache-Control": "public, max-age=3600" },
+        const [schools, kindergartens, news] = await Promise.all([
+          getPublishedSchools(),
+          getPublishedKindergartens(),
+          getPublishedNews(),
+        ]);
+        return new Response(sitemapXml(publicRoutes({ schools, kindergartens, news })), {
+          headers: {
+            "Content-Type": "application/xml; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
+          },
         });
       },
     },

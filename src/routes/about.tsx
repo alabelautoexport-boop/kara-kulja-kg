@@ -17,7 +17,7 @@ export const Route = createFileRoute("/about")({
       },
       { property: "og:title", content: "About Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/about" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/about/" }],
   }),
   component: AboutPage,
 });

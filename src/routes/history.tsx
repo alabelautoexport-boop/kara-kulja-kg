@@ -18,7 +18,7 @@ export const Route = createFileRoute("/history")({
       { name: "description", content: "Historical archive: old photos, Soviet era, oral history." },
       { property: "og:title", content: "History of Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/history" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/history/" }],
   }),
   component: HistoryPage,
 });
@@ -45,13 +45,23 @@ function HistoryPage() {
         <div className="mx-auto max-w-[1100px] px-6 lg:px-10">
           <div className="space-y-12">
             {items.map((it) => (
-              <div key={it.titleKey} className="grid items-center gap-8 border-b hairline pb-12 md:grid-cols-12">
+              <div
+                key={it.titleKey}
+                className="grid items-center gap-8 border-b hairline pb-12 md:grid-cols-12"
+              >
                 <div className="md:col-span-2">
                   <div className="kbd-eyebrow text-[var(--ember)]">{t(it.yearKey)}</div>
                 </div>
-                <h3 className="font-display text-2xl md:col-span-5 md:text-3xl">{t(it.titleKey)}</h3>
+                <h3 className="font-display text-2xl md:col-span-5 md:text-3xl">
+                  {t(it.titleKey)}
+                </h3>
                 <div className="relative aspect-[4/3] overflow-hidden border hairline md:col-span-5">
-                  <img src={it.img} alt={t(it.titleKey)} loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale" />
+                  <img
+                    src={it.img}
+                    alt={t(it.titleKey)}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover grayscale"
+                  />
                 </div>
               </div>
             ))}

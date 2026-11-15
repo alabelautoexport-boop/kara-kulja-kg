@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Get in touch with Kara-Kulja district." },
       { property: "og:title", content: "Contact — Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/contact" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/contact/" }],
   }),
   component: ContactPage,
 });
@@ -26,21 +26,33 @@ function ContactPage() {
         <div className="mx-auto grid max-w-[1300px] gap-16 px-6 lg:grid-cols-12 lg:gap-24 lg:px-10">
           <div className="lg:col-span-5">
             <p className="kbd-eyebrow text-[var(--ember)]">{t("contact.eyebrow")}</p>
-            <h1 className="mt-5 font-display text-5xl text-balance md:text-6xl">{t("contact.title")}</h1>
+            <h1 className="mt-5 font-display text-5xl text-balance md:text-6xl">
+              {t("contact.title")}
+            </h1>
             <p className="mt-6 max-w-md text-muted-foreground">{t("contact.desc")}</p>
 
             <div className="mt-12 space-y-6">
-              <a href="mailto:info@kara-kulja.kg" className="flex items-start gap-4 text-foreground hover:text-[var(--beige)]">
+              <a
+                href="mailto:info@kara-kulja.kg"
+                className="flex items-start gap-4 text-foreground hover:text-[var(--beige)]"
+              >
                 <Mail className="mt-1 h-4 w-4 text-muted-foreground" />
                 <div>
-                  <div className="kbd-eyebrow text-muted-foreground">{t("contact.label.email")}</div>
+                  <div className="kbd-eyebrow text-muted-foreground">
+                    {t("contact.label.email")}
+                  </div>
                   <div className="mt-1">info@kara-kulja.kg</div>
                 </div>
               </a>
-              <a href="tel:+996554888484" className="flex items-start gap-4 text-foreground hover:text-[var(--beige)]">
+              <a
+                href="tel:+996554888484"
+                className="flex items-start gap-4 text-foreground hover:text-[var(--beige)]"
+              >
                 <MessageCircle className="mt-1 h-4 w-4 text-muted-foreground" />
                 <div>
-                  <div className="kbd-eyebrow text-muted-foreground">{t("contact.label.phone")}</div>
+                  <div className="kbd-eyebrow text-muted-foreground">
+                    {t("contact.label.phone")}
+                  </div>
                   <div className="mt-1">+996 554 888484</div>
                   <div className="mt-1">+1 343 500 6677</div>
                 </div>
@@ -48,7 +60,9 @@ function ContactPage() {
               <div className="flex items-start gap-4 text-foreground">
                 <MapPin className="mt-1 h-4 w-4 text-muted-foreground" />
                 <div>
-                  <div className="kbd-eyebrow text-muted-foreground">{t("contact.label.address")}</div>
+                  <div className="kbd-eyebrow text-muted-foreground">
+                    {t("contact.label.address")}
+                  </div>
                   <div className="mt-1">{t("contact.address.value")}</div>
                 </div>
               </div>
@@ -56,7 +70,10 @@ function ContactPage() {
           </div>
 
           <form
-            onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSent(true);
+            }}
             className="space-y-6 lg:col-span-7"
           >
             <Field label={t("contact.name")} type="text" required />
@@ -83,7 +100,10 @@ function ContactPage() {
   );
 }
 
-function Field({ label, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+function Field({
+  label,
+  ...rest
+}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
       <label className="kbd-eyebrow text-muted-foreground">{label}</label>

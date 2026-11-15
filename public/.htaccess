@@ -1,4 +1,17 @@
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [L]
+
+# Exported public pages remain real directories with index.html.
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+# Existing static files/directories (including assets and every exported public route).
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# These are the only dynamic HTML paths that intentionally use the SPA shell.
+# Authentication/authorization stays in the existing Admin guards.
+RewriteRule ^(?:admin/news|news-admin)/[^/]+/edit/?$ admin/index.html [L]
+
+# Unknown public slugs and paths are genuine 404, never the homepage with status 200.
+RewriteRule ^ - [R=404,L]

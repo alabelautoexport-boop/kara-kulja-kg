@@ -10,7 +10,11 @@ import {
   type Localized,
   type Village,
 } from "@/lib/villages-data";
-import { displayTerritoryName, getNeighborVillageSlugs, getTerritoryForVillage } from "@/lib/territories-data";
+import {
+  displayTerritoryName,
+  getNeighborVillageSlugs,
+  getTerritoryForVillage,
+} from "@/lib/territories-data";
 import { displayStructuredValue, useI18n, type Lang } from "@/lib/i18n";
 import { getPeopleForVillage, type PersonProfile } from "@/lib/people-data";
 import {
@@ -36,8 +40,13 @@ const VillageMapBlock = lazy(() =>
 export const Route = createFileRoute("/villages_/$slug")({
   head: ({ params }) => {
     const v = getVillage(params.slug);
-    const title = v ? `${v.name} — Kara-Kulja` : "Village — Kara-Kulja";
-    const desc = v ? v.intro.en : "A village of Kara-Kulja district.";
+    const territory = getTerritoryForVillage(params.slug);
+    const namesake = v && VILLAGES.some((other) => other.slug !== v.slug && other.name === v.name);
+    const name = v
+      ? `${v.name}${namesake && territory ? ` (${displayTerritoryName(territory, "kg")})` : ""}`
+      : "Village";
+    const title = `${name} айылы | Kara-Kulja`;
+    const desc = v ? v.intro.kg : "Кара-Кулжа районунун айылы.";
     return {
       meta: [
         { title },
@@ -45,7 +54,7 @@ export const Route = createFileRoute("/villages_/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
       ],
-      links: [{ rel: "canonical", href: `https://kara-kulja.kg/villages/${params.slug}` }],
+      links: [{ rel: "canonical", href: `https://kara-kulja.kg/villages/${params.slug}/` }],
     };
   },
   loader: ({ params }) => {
@@ -65,7 +74,10 @@ function NotFoundView() {
       <div className="mx-auto max-w-3xl px-6 py-40 text-center">
         <p className="kbd-eyebrow text-muted-foreground">404</p>
         <h1 className="mt-4 font-display text-4xl">{t("village.notFound")}</h1>
-        <Link to="/villages" className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          to="/villages"
+          className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeft className="h-4 w-4" /> {t("village.backToVillages")}
         </Link>
       </div>
@@ -90,7 +102,13 @@ const ABOUT_LABEL = {
   en: "About the village",
 } as const;
 
-type VillageAboutKey = "population" | "households" | "elevation" | "districtDistance" | "travelTime" | "coordinates";
+type VillageAboutKey =
+  | "population"
+  | "households"
+  | "elevation"
+  | "districtDistance"
+  | "travelTime"
+  | "coordinates";
 
 const VILLAGE_ABOUT_LABELS: Record<Lang, Record<VillageAboutKey, string>> = {
   kg: {
@@ -129,10 +147,10 @@ const VILLAGE_ABOUT_ORDER: VillageAboutKey[] = [
 ];
 
 const VILLAGE_INFO_KEYS: Record<string, VillageAboutKey> = {
-  "Калкы": "population",
-  "Кожолук": "households",
+  Калкы: "population",
+  Кожолук: "households",
   "Кожолук саны": "households",
-  "Бийиктиги": "elevation",
+  Бийиктиги: "elevation",
   "Деңиз деңгээлинен": "elevation",
   "Деңиз деңгээлинен бийиктиги": "elevation",
   "Борборго чейин": "districtDistance",
@@ -153,7 +171,9 @@ function getVillageAboutItems(village: Village, lang: Lang) {
   });
 
   if (!values.has("population") && village.population != null) {
-    const value = new Intl.NumberFormat(lang === "en" ? "en-US" : "ru-RU").format(village.population);
+    const value = new Intl.NumberFormat(lang === "en" ? "en-US" : "ru-RU").format(
+      village.population,
+    );
     values.set("population", { kg: value, ru: value, en: value });
   }
 
@@ -190,7 +210,7 @@ function SectionNav() {
 
   useEffect(() => {
     setActive((current) =>
-      sections.some((section) => section.id === current) ? current : sections[0]?.id ?? "",
+      sections.some((section) => section.id === current) ? current : (sections[0]?.id ?? ""),
     );
 
     const elements = sections
@@ -227,7 +247,9 @@ function SectionNav() {
                   href={"#" + id}
                   className={
                     "group inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 transition-colors duration-300 " +
-                    (isActive ? "text-foreground" : "text-muted-foreground/70 hover:text-foreground")
+                    (isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground/70 hover:text-foreground")
                   }
                 >
                   <Icon
@@ -313,16 +335,16 @@ function VillagePage() {
             {ABOUT_LABEL[lang]}
           </h2>
           <dl className="mt-10 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
-              {aboutItems.map((item) => (
-                <div key={item.key} className="grid min-w-0 gap-1 border-t hairline py-4">
-                  <dt className="text-sm font-normal leading-6 text-[var(--beige)]/70">
-                    {item.label}
-                  </dt>
-                  <dd className="min-w-0 break-words text-base font-normal leading-6 text-foreground/85">
-                    {displayStructuredValue(item.value ? pick(item.value, lang) : undefined, lang)}
-                  </dd>
-                </div>
-              ))}
+            {aboutItems.map((item) => (
+              <div key={item.key} className="grid min-w-0 gap-1 border-t hairline py-4">
+                <dt className="text-sm font-normal leading-6 text-[var(--beige)]/70">
+                  {item.label}
+                </dt>
+                <dd className="min-w-0 break-words text-base font-normal leading-6 text-foreground/85">
+                  {displayStructuredValue(item.value ? pick(item.value, lang) : undefined, lang)}
+                </dd>
+              </div>
+            ))}
           </dl>
         </div>
       </section>
@@ -367,31 +389,28 @@ function VillagePage() {
           {v.tourism.items.length ? (
             <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {v.tourism.items.map((it, i) => (
-              <article
-                key={i}
-                className="group relative overflow-hidden border hairline"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img
-                    src={it.image}
-                    alt={pick(it.title, lang)}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-[1.06]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 lg:p-7">
-                    <p className="kbd-eyebrow text-[var(--beige)]/80">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <h3 className="mt-3 font-display text-2xl leading-tight md:text-3xl">
-                      {pick(it.title, lang)}
-                    </h3>
-                    <p className="mt-3 max-w-xs text-sm text-pretty text-muted-foreground">
-                      {pick(it.body, lang)}
-                    </p>
+                <article key={i} className="group relative overflow-hidden border hairline">
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    <img
+                      src={it.image}
+                      alt={pick(it.title, lang)}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-[1.06]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-6 lg:p-7">
+                      <p className="kbd-eyebrow text-[var(--beige)]/80">
+                        {String(i + 1).padStart(2, "0")}
+                      </p>
+                      <h3 className="mt-3 font-display text-2xl leading-tight md:text-3xl">
+                        {pick(it.title, lang)}
+                      </h3>
+                      <p className="mt-3 max-w-xs text-sm text-pretty text-muted-foreground">
+                        {pick(it.body, lang)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
               ))}
             </div>
           ) : null}
@@ -403,7 +422,9 @@ function VillagePage() {
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-4">
-              <p className="kbd-eyebrow text-muted-foreground/70">{t("village.section.investment")}</p>
+              <p className="kbd-eyebrow text-muted-foreground/70">
+                {t("village.section.investment")}
+              </p>
               <h2 className="mt-4 font-display text-4xl leading-[1.05] md:text-5xl">
                 {t("village.investment.title")}
               </h2>
@@ -417,23 +438,23 @@ function VillagePage() {
             {v.investment.items.length ? (
               <div className="lg:col-span-8">
                 <div className="grid gap-px bg-border/40 sm:grid-cols-2 lg:grid-cols-3">
-                {v.investment.items.map((it, i) => (
-                  <div
-                    key={i}
-                    className="group relative bg-background p-8 transition-colors duration-500 hover:bg-foreground/[0.02]"
-                  >
-                    <p className="kbd-eyebrow text-[10px] text-muted-foreground/60">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <h3 className="mt-6 font-display text-2xl leading-tight">
-                      {pick(it.title, lang)}
-                    </h3>
-                    <p className="mt-3 text-sm text-pretty text-muted-foreground">
-                      {pick(it.body, lang)}
-                    </p>
-                    <div className="mt-8 h-px w-8 bg-[var(--beige)]/40 transition-all duration-500 group-hover:w-16 group-hover:bg-[var(--beige)]/80" />
-                  </div>
-                ))}
+                  {v.investment.items.map((it, i) => (
+                    <div
+                      key={i}
+                      className="group relative bg-background p-8 transition-colors duration-500 hover:bg-foreground/[0.02]"
+                    >
+                      <p className="kbd-eyebrow text-[10px] text-muted-foreground/60">
+                        {String(i + 1).padStart(2, "0")}
+                      </p>
+                      <h3 className="mt-6 font-display text-2xl leading-tight">
+                        {pick(it.title, lang)}
+                      </h3>
+                      <p className="mt-3 text-sm text-pretty text-muted-foreground">
+                        {pick(it.body, lang)}
+                      </p>
+                      <div className="mt-8 h-px w-8 bg-[var(--beige)]/40 transition-all duration-500 group-hover:w-16 group-hover:bg-[var(--beige)]/80" />
+                    </div>
+                  ))}
                 </div>
               </div>
             ) : null}
@@ -454,24 +475,24 @@ function VillagePage() {
                     <CentralVillagePersonCard key={person.slug} person={person} lang={lang} />
                   ))
                 : v.people.map((person, index) => (
-                  <div key={index} className="group">
-                    <div className="relative aspect-[3/4] overflow-hidden">
-                      <img
-                        src={person.img}
-                        alt={pick(person.name, lang)}
-                        loading="lazy"
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                    <div key={index} className="group">
+                      <div className="relative aspect-[3/4] overflow-hidden">
+                        <img
+                          src={person.img}
+                          alt={pick(person.name, lang)}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                      </div>
+                      <div className="mt-5">
+                        <p className="font-display text-xl">{pick(person.name, lang)}</p>
+                        <p className="mt-1 kbd-eyebrow text-muted-foreground/70">
+                          {pick(person.role, lang)}
+                        </p>
+                      </div>
                     </div>
-                    <div className="mt-5">
-                      <p className="font-display text-xl">{pick(person.name, lang)}</p>
-                      <p className="mt-1 kbd-eyebrow text-muted-foreground/70">
-                        {pick(person.role, lang)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
             </div>
           ) : null}
         </div>
@@ -496,19 +517,19 @@ function VillagePage() {
           {v.gallery.length ? (
             <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
               {v.gallery.map((src, i) => (
-              <div
-                key={i}
-                className={`relative overflow-hidden ${
-                  i % 5 === 0 ? "aspect-[3/4] md:col-span-2 md:aspect-[16/10]" : "aspect-square"
-                }`}
-              >
-                <img
-                  src={src}
-                  alt=""
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-105"
-                />
-              </div>
+                <div
+                  key={i}
+                  className={`relative overflow-hidden ${
+                    i % 5 === 0 ? "aspect-[3/4] md:col-span-2 md:aspect-[16/10]" : "aspect-square"
+                  }`}
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-105"
+                  />
+                </div>
               ))}
             </div>
           ) : null}
@@ -546,24 +567,24 @@ function VillagePage() {
           {related.length ? (
             <div className="mt-12 grid gap-6 sm:grid-cols-2">
               {related.map((r) => (
-              <Link
-                key={r.slug}
-                to="/villages/$slug"
-                params={{ slug: r.slug }}
-                className="group relative block aspect-[16/10] overflow-hidden border hairline"
-              >
-                <img
-                  src={r.hero}
-                  alt={displayVillageName(r, lang)}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8">
-                  <p className="font-display text-3xl">{displayVillageName(r, lang)}</p>
-                  <ArrowRight className="h-5 w-5 translate-y-[-2px] text-foreground/80 transition-transform group-hover:translate-x-1" />
-                </div>
-              </Link>
+                <Link
+                  key={r.slug}
+                  to="/villages/$slug"
+                  params={{ slug: r.slug }}
+                  className="group relative block aspect-[16/10] overflow-hidden border hairline"
+                >
+                  <img
+                    src={r.hero}
+                    alt={displayVillageName(r, lang)}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-8">
+                    <p className="font-display text-3xl">{displayVillageName(r, lang)}</p>
+                    <ArrowRight className="h-5 w-5 translate-y-[-2px] text-foreground/80 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Link>
               ))}
             </div>
           ) : null}
@@ -602,9 +623,7 @@ function CentralVillagePersonCard({
       <div className="mt-5">
         <p className="font-display text-xl">{person.name[lang]}</p>
         <p className="mt-1 text-xs text-muted-foreground">{person.role[lang]}</p>
-        <p className="mt-5 text-base leading-7 text-[var(--beige)]/75">
-          {person.body[lang]}
-        </p>
+        <p className="mt-5 text-base leading-7 text-[var(--beige)]/75">{person.body[lang]}</p>
       </div>
     </>
   );

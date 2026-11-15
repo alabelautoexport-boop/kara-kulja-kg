@@ -51,25 +51,32 @@ const KG: Dict = {
 
   "about.eyebrow": "РАЙОН ЖӨНҮНДӨ",
   "about.title": "Кара-Кулжа — убакыттын агымы өзгөргөн жер",
-  "about.body": "Табияты өзгөчө, нукура маданияты сакталган аймактардын бири. Бул жерде тунук дарыялар, кең жайлоолор жана кыргыз элинин салттуу жашоо образы өзгөчө атмосфераны жаратат.",
+  "about.body":
+    "Табияты өзгөчө, нукура маданияты сакталган аймактардын бири. Бул жерде тунук дарыялар, кең жайлоолор жана кыргыз элинин салттуу жашоо образы өзгөчө атмосфераны жаратат.",
   "about.stat1": "айыл аймагы",
   "about.stat2": "тургун",
   "about.stat3": "айыл",
   "about.stat4": "км² аянты",
 
   "about.section.history": "Тарых",
-  "about.section.history.body": "Кара-Кулжанын тарыхы кылымдарга кетет — Улуу Жибек жолунун урпактары, көчмөн уруулардын мурасы.",
+  "about.section.history.body":
+    "Кара-Кулжанын тарыхы кылымдарга кетет — Улуу Жибек жолунун урпактары, көчмөн уруулардын мурасы.",
   "about.section.geography": "География",
-  "about.section.geography.body": "Алай тоо тизмегинин түндүк капталында жайгашкан, бийик жайлоолор, терең капчыгайлар жана өзөндөр.",
+  "about.section.geography.body":
+    "Алай тоо тизмегинин түндүк капталында жайгашкан, бийик жайлоолор, терең капчыгайлар жана өзөндөр.",
   "about.section.nature": "Жаратылыш",
-  "about.section.nature.body": "Карагай, арча токойлору, тоо булактары, кар капчыгайлары жана уникалдуу жаныбарлар дүйнөсү.",
+  "about.section.nature.body":
+    "Карагай, арча токойлору, тоо булактары, кар капчыгайлары жана уникалдуу жаныбарлар дүйнөсү.",
   "about.section.culture": "Маданият",
-  "about.section.culture.body": "Манас эпосунун дүйнөсү, ат маданияты, эл оозеки чыгармачылыгы, кол өнөрчүлүк.",
+  "about.section.culture.body":
+    "Манас эпосунун дүйнөсү, ат маданияты, эл оозеки чыгармачылыгы, кол өнөрчүлүк.",
   "about.section.overview": "Райондун жалпы көрүнүшү",
-  "about.section.overview.body": "7 айыл аймагы, 55 айыл, 103 200 тургун. Борбору — Кара-Кулжа айылы. Айыл чарба жана мал чарбачылык — экономиканын негизи.",
+  "about.section.overview.body":
+    "7 айыл аймагы, 55 айыл, 103 200 тургун. Борбору — Кара-Кулжа айылы. Айыл чарба жана мал чарбачылык — экономиканын негизи.",
   "about.section.symbols": "Символдор",
   "about.section.infrastructure": "Коомдук инфраструктура",
-  "about.section.infrastructure.body": "Райондун негизги социалдык жана коомдук мекемелери: билим берүү, саламаттык сактоо, мамлекеттик башкаруу, маданият жана маалымат каражаттары.",
+  "about.section.infrastructure.body":
+    "Райондун негизги социалдык жана коомдук мекемелери: билим берүү, саламаттык сактоо, мамлекеттик башкаруу, маданият жана маалымат каражаттары.",
   "about.infrastructure.administration": "Райондук мамлекеттик администрация",
   "about.infrastructure.hospital": "Райондук оорукана",
   "about.infrastructure.schools": "Мектептер",
@@ -140,7 +147,8 @@ const KG: Dict = {
   "invest.why.eyebrow": "Эмне үчүн Кара-Кулжа",
   "invest.why.title": "Инвесторлор бул районду тандаган төрт себеп",
   "invest.reason.location": "Стратегиялык жайгашуу",
-  "invest.reason.location.body": "Ош облусунун стратегиялык чек арасы, 12 айыл аймагы, 49 калктуу конуш.",
+  "invest.reason.location.body":
+    "Ош облусунун стратегиялык чек арасы, 12 айыл аймагы, 49 калктуу конуш.",
   "invest.reason.resources": "Бай ресурстар",
   "invest.reason.resources.body": "Жайыттар, суу ресурстары, минералдар.",
   "invest.reason.workforce": "Активдүү калк",
@@ -167,7 +175,8 @@ const KG: Dict = {
   "stories.role.craftswoman": "Эл устасы",
   "stories.role.guide": "Туристтик гид",
   "stories.role.teacher": "Мугалим",
-  "stories.story.esenbek": "40 жылдан бери жайлоодо жашайт жана 200 малы менен жашоо тиричилигин жүргүзөт.",
+  "stories.story.esenbek":
+    "40 жылдан бери жайлоодо жашайт жана 200 малы менен жашоо тиричилигин жүргүзөт.",
   "stories.story.aizhamal": "Кыргыз ширдак жана туш кийиздерди жаратат, дүйнөгө экспорттойт.",
   "stories.story.bakyt": "Чет элдик туристтерге Алай тоосунун жашыруун жерлерин ачат.",
   "stories.story.gulzat": "Жаш муундарга кыргыз тилинин жана адабиятынын кооздугун үйрөтөт.",
@@ -251,8 +260,10 @@ const KG: Dict = {
   "village.investment.title": "Инвестициялык потенциал",
   "village.people.title": "Айылдын жүздөрү",
   "village.archive.title": "Эстелик сүрөттөр",
-  "village.archive.body": "Эски сүрөттөр, мектеп жылдары, союздук доордогу сүрөттөр, үй-бүлөлүк архивдер, тойлор жана спорт командалары — баары бул жерде сакталат.",
-  "village.archive.note": "Архив жакында ачылат. Эгер сизде эски сүрөттөр болсо, биз менен бөлүшүңүз.",
+  "village.archive.body":
+    "Эски сүрөттөр, мектеп жылдары, союздук доордогу сүрөттөр, үй-бүлөлүк архивдер, тойлор жана спорт командалары — баары бул жерде сакталат.",
+  "village.archive.note":
+    "Архив жакында ачылат. Эгер сизде эски сүрөттөр болсо, биз менен бөлүшүңүз.",
   "village.gallery.title": "Көз менен көрүү",
   "village.map.title": "Жайгашуусу",
   "village.map.soon": "Интерактивдүү карта жакында",
@@ -284,25 +295,32 @@ const RU: Dict = {
 
   "about.eyebrow": "О РАЙОНЕ",
   "about.title": "Кара-Кульджа — край, где время становится тише",
-  "about.body": "Уголок с уникальной природой и бережно сохранённой культурой. Чистые реки, бескрайние жайлоо и традиционный уклад кыргызского народа создают здесь особую атмосферу.",
+  "about.body":
+    "Уголок с уникальной природой и бережно сохранённой культурой. Чистые реки, бескрайние жайлоо и традиционный уклад кыргызского народа создают здесь особую атмосферу.",
   "about.stat1": "айыльных аймаков",
   "about.stat2": "жителей",
   "about.stat3": "сёл",
   "about.stat4": "км² площади",
 
   "about.section.history": "История",
-  "about.section.history.body": "История Кара-Кульджи уходит в глубь веков — наследники Великого Шёлкового пути и кочевых племён.",
+  "about.section.history.body":
+    "История Кара-Кульджи уходит в глубь веков — наследники Великого Шёлкового пути и кочевых племён.",
   "about.section.geography": "География",
-  "about.section.geography.body": "Расположен на северном склоне Алайского хребта: высокие джайлоо, глубокие ущелья и горные реки.",
+  "about.section.geography.body":
+    "Расположен на северном склоне Алайского хребта: высокие джайлоо, глубокие ущелья и горные реки.",
   "about.section.nature": "Природа",
-  "about.section.nature.body": "Хвойные и арчовые леса, горные источники, снежные ущелья и уникальный животный мир.",
+  "about.section.nature.body":
+    "Хвойные и арчовые леса, горные источники, снежные ущелья и уникальный животный мир.",
   "about.section.culture": "Культура",
-  "about.section.culture.body": "Мир эпоса «Манас», конная культура, устное народное творчество, ремёсла.",
+  "about.section.culture.body":
+    "Мир эпоса «Манас», конная культура, устное народное творчество, ремёсла.",
   "about.section.overview": "Обзор района",
-  "about.section.overview.body": "7 айыльных аймаков, 55 сёл, 103 200 жителей. Центр — село Кара-Кульджа. Основа экономики — сельское хозяйство и животноводство.",
+  "about.section.overview.body":
+    "7 айыльных аймаков, 55 сёл, 103 200 жителей. Центр — село Кара-Кульджа. Основа экономики — сельское хозяйство и животноводство.",
   "about.section.symbols": "Символы",
   "about.section.infrastructure": "Общественная инфраструктура",
-  "about.section.infrastructure.body": "Основные социальные и общественные учреждения района: образование, здравоохранение, государственное управление, культура и средства массовой информации.",
+  "about.section.infrastructure.body":
+    "Основные социальные и общественные учреждения района: образование, здравоохранение, государственное управление, культура и средства массовой информации.",
   "about.infrastructure.administration": "Районная государственная администрация",
   "about.infrastructure.hospital": "Районная больница",
   "about.infrastructure.schools": "Школы",
@@ -361,7 +379,8 @@ const RU: Dict = {
 
   "invest.eyebrow": "ИНВЕСТИЦИИ",
   "invest.title": "Инвестируйте в Кара-Кульджу",
-  "invest.desc": "Новые возможности в сельском хозяйстве, животноводстве, туризме и зелёной энергетике.",
+  "invest.desc":
+    "Новые возможности в сельском хозяйстве, животноводстве, туризме и зелёной энергетике.",
   "invest.cta": "Открыть возможности",
   "invest.opp.agri": "Сельское хозяйство",
   "invest.opp.livestock": "Животноводство",
@@ -373,7 +392,8 @@ const RU: Dict = {
   "invest.why.eyebrow": "Почему Кара-Кульджа",
   "invest.why.title": "Четыре причины, по которым инвесторы выбирают этот район",
   "invest.reason.location": "Стратегическое расположение",
-  "invest.reason.location.body": "Стратегическая граница Ошской области, 12 айыльных аймаков, 49 населённых пунктов.",
+  "invest.reason.location.body":
+    "Стратегическая граница Ошской области, 12 айыльных аймаков, 49 населённых пунктов.",
   "invest.reason.resources": "Богатые ресурсы",
   "invest.reason.resources.body": "Пастбища, водные ресурсы, полезные ископаемые.",
   "invest.reason.workforce": "Активное население",
@@ -401,7 +421,8 @@ const RU: Dict = {
   "stories.role.guide": "Туристический гид",
   "stories.role.teacher": "Учитель",
   "stories.story.esenbek": "Более 40 лет живёт на джайлоо и ведёт хозяйство со стадом в 200 голов.",
-  "stories.story.aizhamal": "Создаёт кыргызские ширдаки и тушкийизы, экспортирует их по всему миру.",
+  "stories.story.aizhamal":
+    "Создаёт кыргызские ширдаки и тушкийизы, экспортирует их по всему миру.",
   "stories.story.bakyt": "Открывает иностранным гостям скрытые уголки Алайского хребта.",
   "stories.story.gulzat": "Учит молодое поколение красоте кыргызского языка и литературы.",
 
@@ -483,8 +504,10 @@ const RU: Dict = {
   "village.investment.title": "Инвестиционный потенциал",
   "village.people.title": "Лица села",
   "village.archive.title": "Памятные фотографии",
-  "village.archive.body": "Старые снимки, школьные годы, фотографии советской эпохи, семейные архивы, свадьбы и спортивные команды — всё хранится здесь.",
-  "village.archive.note": "Архив скоро откроется. Если у вас есть старые фотографии — поделитесь с нами.",
+  "village.archive.body":
+    "Старые снимки, школьные годы, фотографии советской эпохи, семейные архивы, свадьбы и спортивные команды — всё хранится здесь.",
+  "village.archive.note":
+    "Архив скоро откроется. Если у вас есть старые фотографии — поделитесь с нами.",
   "village.gallery.title": "Глазами зрителя",
   "village.map.title": "Расположение",
   "village.map.soon": "Интерактивная карта скоро",
@@ -516,25 +539,32 @@ const EN: Dict = {
 
   "about.eyebrow": "ABOUT",
   "about.title": "Kara-Kulja — where time begins to slow down",
-  "about.body": "A place where unique nature and authentic culture have been carefully preserved. Crystal-clear rivers, endless summer pastures, and the traditional Kyrgyz way of life create a truly distinctive atmosphere here.",
+  "about.body":
+    "A place where unique nature and authentic culture have been carefully preserved. Crystal-clear rivers, endless summer pastures, and the traditional Kyrgyz way of life create a truly distinctive atmosphere here.",
   "about.stat1": "aiyl aimaks",
   "about.stat2": "residents",
   "about.stat3": "villages",
   "about.stat4": "km² of territory",
 
   "about.section.history": "History",
-  "about.section.history.body": "Kara-Kulja's history reaches deep into the centuries — heirs of the Great Silk Road and the nomadic tribes.",
+  "about.section.history.body":
+    "Kara-Kulja's history reaches deep into the centuries — heirs of the Great Silk Road and the nomadic tribes.",
   "about.section.geography": "Geography",
-  "about.section.geography.body": "Set on the northern slopes of the Alai range: high jailoos, deep gorges and mountain rivers.",
+  "about.section.geography.body":
+    "Set on the northern slopes of the Alai range: high jailoos, deep gorges and mountain rivers.",
   "about.section.nature": "Nature",
-  "about.section.nature.body": "Spruce and juniper forests, mountain springs, snow ravines and a unique wildlife.",
+  "about.section.nature.body":
+    "Spruce and juniper forests, mountain springs, snow ravines and a unique wildlife.",
   "about.section.culture": "Culture",
-  "about.section.culture.body": "The world of the Manas epic, horse culture, oral storytelling and traditional crafts.",
+  "about.section.culture.body":
+    "The world of the Manas epic, horse culture, oral storytelling and traditional crafts.",
   "about.section.overview": "District overview",
-  "about.section.overview.body": "7 aiyl aimaks, 55 villages, and 103,200 residents. The centre is Kara-Kulja village. Agriculture and livestock form the backbone of the economy.",
+  "about.section.overview.body":
+    "7 aiyl aimaks, 55 villages, and 103,200 residents. The centre is Kara-Kulja village. Agriculture and livestock form the backbone of the economy.",
   "about.section.symbols": "Symbols",
   "about.section.infrastructure": "Public infrastructure",
-  "about.section.infrastructure.body": "The district's main social and public institutions: education, healthcare, public administration, culture and the media.",
+  "about.section.infrastructure.body":
+    "The district's main social and public institutions: education, healthcare, public administration, culture and the media.",
   "about.infrastructure.administration": "District state administration",
   "about.infrastructure.hospital": "District hospital",
   "about.infrastructure.schools": "Schools",
@@ -542,7 +572,8 @@ const EN: Dict = {
   "about.infrastructure.newspaper": "Mezgil Unu district newspaper",
   "about.infrastructure.culture": "District cultural centre",
   "about.infrastructure.other": "Other institutions",
-  "about.section.symbols.body": "Blue sky, white snow, green valley, the horse and the Kyrgyz kalpak.",
+  "about.section.symbols.body":
+    "Blue sky, white snow, green valley, the horse and the Kyrgyz kalpak.",
 
   "admin.eyebrow": "ADMINISTRATIVE DIVISION",
   "admin.title": "7 aiyl aimaks, 55 villages",
@@ -605,7 +636,8 @@ const EN: Dict = {
   "invest.why.eyebrow": "Why Kara-Kulja",
   "invest.why.title": "Four reasons investors choose this district",
   "invest.reason.location": "Strategic location",
-  "invest.reason.location.body": "A strategic border position in Osh Region, 12 aiyl aimaks, 49 settlements.",
+  "invest.reason.location.body":
+    "A strategic border position in Osh Region, 12 aiyl aimaks, 49 settlements.",
   "invest.reason.resources": "Rich resources",
   "invest.reason.resources.body": "Pastures, water resources and minerals.",
   "invest.reason.workforce": "Active workforce",
@@ -632,10 +664,14 @@ const EN: Dict = {
   "stories.role.craftswoman": "Master craftswoman",
   "stories.role.guide": "Tour guide",
   "stories.role.teacher": "Teacher",
-  "stories.story.esenbek": "For more than 40 years he has lived on the jailoo, tending a herd of 200.",
-  "stories.story.aizhamal": "She creates Kyrgyz shyrdaks and tush kiyiz felts, exported around the world.",
-  "stories.story.bakyt": "He opens the hidden corners of the Alai range to international travellers.",
-  "stories.story.gulzat": "She teaches young generations the beauty of the Kyrgyz language and literature.",
+  "stories.story.esenbek":
+    "For more than 40 years he has lived on the jailoo, tending a herd of 200.",
+  "stories.story.aizhamal":
+    "She creates Kyrgyz shyrdaks and tush kiyiz felts, exported around the world.",
+  "stories.story.bakyt":
+    "He opens the hidden corners of the Alai range to international travellers.",
+  "stories.story.gulzat":
+    "She teaches young generations the beauty of the Kyrgyz language and literature.",
 
   "news.eyebrow": "NEWS",
   "news.title": "Latest from the district",
@@ -715,8 +751,10 @@ const EN: Dict = {
   "village.investment.title": "Investment potential",
   "village.people.title": "Faces of the village",
   "village.archive.title": "Memory photographs",
-  "village.archive.body": "Old photographs, school years, Soviet-era snapshots, family archives, weddings and sports teams — all kept here.",
-  "village.archive.note": "The archive opens soon. If you have old photographs, share them with us.",
+  "village.archive.body":
+    "Old photographs, school years, Soviet-era snapshots, family archives, weddings and sports teams — all kept here.",
+  "village.archive.note":
+    "The archive opens soon. If you have old photographs, share them with us.",
   "village.gallery.title": "Through your own eyes",
   "village.map.title": "Location",
   "village.map.soon": "Interactive map coming soon",
@@ -726,17 +764,24 @@ const EN: Dict = {
 
 const DICTS: Record<Lang, Dict> = { kg: KG, ru: RU, en: EN };
 
-const I18nCtx = createContext<{ lang: Lang; setLang: (l: Lang) => void; t: (k: string) => string }>({
-  lang: "kg",
-  setLang: () => {},
-  t: (k) => k,
-});
+const I18nCtx = createContext<{ lang: Lang; setLang: (l: Lang) => void; t: (k: string) => string }>(
+  {
+    lang: "kg",
+    setLang: () => {},
+    t: (k) => k,
+  },
+);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("kg");
 
   useEffect(() => {
-    const saved = typeof window !== "undefined" ? (localStorage.getItem("kk-lang") as Lang | null) : null;
+    document.documentElement.lang = lang === "kg" ? "ky" : lang;
+  }, [lang]);
+
+  useEffect(() => {
+    const saved =
+      typeof window !== "undefined" ? (localStorage.getItem("kk-lang") as Lang | null) : null;
     if (saved && ["kg", "ru", "en"].includes(saved)) setLangState(saved);
   }, []);
 

@@ -8,13 +8,14 @@ import { getPublishedNews } from "@/lib/news-data";
 import valleyImg from "@/assets/valley.jpg";
 
 export const Route = createFileRoute("/news")({
+  loader: () => getPublishedNews(),
   head: () => ({
     meta: [
-      { title: "Жаңылыктар - Kara-Kulja" },
+      { title: "Жаңылыктар | Kara-Kulja" },
       { name: "description", content: "Кара-Кулжа районундагы акыркы жаңылыктар жана окуялар." },
       { property: "og:title", content: "Жаңылыктар - Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/news" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/news/" }],
   }),
   component: NewsPage,
 });
@@ -25,6 +26,7 @@ function NewsPage() {
   const query = useQuery({
     queryKey: ["news", "published"],
     queryFn: getPublishedNews,
+    initialData: Route.useLoaderData(),
     retry: false,
   });
 

@@ -1,25 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { NewsLightbox } from "@/components/site/NewsLightbox";
 import { useI18n } from "@/lib/i18n";
-import {
-  NEWS_COPY,
-  formatNewsDate,
-  localizedNewsField,
-  sanitizeNewsHtml,
-} from "@/lib/news-content";
+import { NEWS_COPY, formatNewsDate, localizedNewsField } from "@/lib/news-content";
 import { getPublishedNewsBySlug } from "@/lib/news-data";
+import { sanitizePublicNewsHtml } from "@/lib/news-public-html";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/news_/$slug")({
-  head: () => ({
-    meta: [
-      { title: "Жаңылык - Kara-Kulja" },
-      { name: "description", content: "Кара-Кулжа районунун жаңылыгы." },
-    ],
-  }),
+  loader: async ({ params }) => {
+    const news = await getPublishedNewsBySlug(params.slug);
+    if (!news) throw notFound();
+    return news;
+  },
+  head: ({ loaderData }) =>
+    loaderData ? pageHead(loaderData.title_kg, loaderData.excerpt_kg || loaderData.title_kg) : {},
   component: NewsArticlePage,
 });
 
@@ -32,18 +30,21 @@ function NewsArticlePage() {
   const query = useQuery({
     queryKey: ["news", "slug", slug],
     queryFn: () => getPublishedNewsBySlug(slug),
+    initialData: Route.useLoaderData(),
     retry: false,
   });
   const title = query.data ? localizedNewsField(query.data, "title", lang) : null;
   const excerpt = query.data ? localizedNewsField(query.data, "excerpt", lang) : null;
-  const body = query.data ? sanitizeNewsHtml(localizedNewsField(query.data, "body", lang)) : "";
+  const body = query.data
+    ? sanitizePublicNewsHtml(localizedNewsField(query.data, "body", lang))
+    : "";
   const gallery = query.data?.gallery_images ?? [];
 
   useEffect(() => {
     if (!title) return;
-    document.title = `${title} - Kara-Kulja`;
+    document.title = `${title} | Kara-Kulja`;
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (description && excerpt) description.content = excerpt;
+    if (description) description.content = excerpt || title;
   }, [title, excerpt]);
 
   return (

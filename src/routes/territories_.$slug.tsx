@@ -1,6 +1,16 @@
 import type { ReactNode } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BookOpen, GraduationCap, HeartPulse, Home, Map as MapIcon, MapPin, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  GraduationCap,
+  HeartPulse,
+  Home,
+  Map as MapIcon,
+  MapPin,
+  Users,
+} from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import {
   Carousel,
@@ -28,6 +38,7 @@ import {
   type TerritoryTextValue,
 } from "@/lib/territories-data";
 import { getVillage } from "@/lib/villages-data";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/territories_/$slug")({
   loader: ({ params }) => {
@@ -35,6 +46,8 @@ export const Route = createFileRoute("/territories_/$slug")({
     if (!territory) throw notFound();
     return territory;
   },
+  head: ({ loaderData }) =>
+    loaderData ? pageHead(displayTerritoryName(loaderData, "kg"), loaderData.description.kg) : {},
   notFoundComponent: TerritoryNotFound,
   component: TerritoryPage,
 });
@@ -183,13 +196,13 @@ const TERRITORY_PASSPORT_LABELS: Record<Lang, Record<TerritoryPassportKey, strin
 };
 
 const TERRITORY_PASSPORT_KEYS: Record<string, TerritoryPassportKey> = {
-  "Облусу": "region",
-  "Району": "district",
+  Облусу: "region",
+  Району: "district",
   "Административдик борбору": "administrativeCenter",
-  "Калкы": "population",
-  "Айылдары": "villages",
+  Калкы: "population",
+  Айылдары: "villages",
   "Айылдардын саны": "villages",
-  "Кожолуктар": "households",
+  Кожолуктар: "households",
   "Кожолук саны": "households",
   "Жалпы аянт": "totalArea",
   "Жалпы аянты": "totalArea",
@@ -223,8 +236,14 @@ const INFRASTRUCTURE_SCHEMA: InfrastructureGroupSchema[] = [
     metrics: [
       { key: "schools", label: { kg: "Мектептер", ru: "Школы", en: "Schools" } },
       { key: "students", label: { kg: "Окуучулар", ru: "Учащиеся", en: "Students" } },
-      { key: "kindergartens", label: { kg: "Бала бакчалар", ru: "Детские сады", en: "Kindergartens" } },
-      { key: "preschoolGroups", label: { kg: "Мектепке чейинки топтор", ru: "Дошкольные группы", en: "Preschool groups" } },
+      {
+        key: "kindergartens",
+        label: { kg: "Бала бакчалар", ru: "Детские сады", en: "Kindergartens" },
+      },
+      {
+        key: "preschoolGroups",
+        label: { kg: "Мектепке чейинки топтор", ru: "Дошкольные группы", en: "Preschool groups" },
+      },
     ],
   },
   {
@@ -232,17 +251,33 @@ const INFRASTRUCTURE_SCHEMA: InfrastructureGroupSchema[] = [
     title: { kg: "Саламаттык сактоо", ru: "Здравоохранение", en: "Healthcare" },
     metrics: [
       { key: "fap", label: { kg: "ФАП", ru: "ФАП", en: "FAP clinics" } },
-      { key: "familyMedicine", label: { kg: "ҮДТ / ГСВ", ru: "ЦСМ / ГСВ", en: "Family medicine / GSV facilities" } },
-      { key: "ambulance", label: { kg: "Тез жардам", ru: "Скорая помощь", en: "Ambulance service" } },
+      {
+        key: "familyMedicine",
+        label: { kg: "ҮДТ / ГСВ", ru: "ЦСМ / ГСВ", en: "Family medicine / GSV facilities" },
+      },
+      {
+        key: "ambulance",
+        label: { kg: "Тез жардам", ru: "Скорая помощь", en: "Ambulance service" },
+      },
     ],
   },
   {
     key: "cultureSport",
     title: { kg: "Маданият жана спорт", ru: "Культура и спорт", en: "Culture and sport" },
     metrics: [
-      { key: "cultureHouses", label: { kg: "Маданият үйлөрү / клубдар", ru: "Дома культуры / клубы", en: "Culture houses / clubs" } },
+      {
+        key: "cultureHouses",
+        label: {
+          kg: "Маданият үйлөрү / клубдар",
+          ru: "Дома культуры / клубы",
+          en: "Culture houses / clubs",
+        },
+      },
       { key: "libraries", label: { kg: "Китепканалар", ru: "Библиотеки", en: "Libraries" } },
-      { key: "sportsFacilities", label: { kg: "Спорт объекттери", ru: "Спортивные объекты", en: "Sports facilities" } },
+      {
+        key: "sportsFacilities",
+        label: { kg: "Спорт объекттери", ru: "Спортивные объекты", en: "Sports facilities" },
+      },
     ],
   },
 ];
@@ -258,7 +293,10 @@ function TerritoryNotFound() {
       <div className="mx-auto max-w-3xl px-6 py-40 text-center">
         <p className="kbd-eyebrow text-muted-foreground">404</p>
         <h1 className="mt-4 font-display text-4xl">{l.notFound}</h1>
-        <Link to="/territories" className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          to="/territories"
+          className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeft className="h-4 w-4" /> {l.back}
         </Link>
       </div>
@@ -331,7 +369,11 @@ function TerritoryPage() {
 
       <SectionShell
         eyebrow={territoryName}
-        title={detail?.infrastructure ? pick(detail.infrastructure.title, lang) : sectionTitle.infrastructure}
+        title={
+          detail?.infrastructure
+            ? pick(detail.infrastructure.title, lang)
+            : sectionTitle.infrastructure
+        }
         compact
       >
         <InfrastructureSection groups={detail?.infrastructure?.groups ?? []} lang={lang} />
@@ -373,16 +415,15 @@ function TerritoryPage() {
   );
 }
 
-function HeroStats({
-  territory,
-  lang,
-}: {
-  territory: Territory;
-  lang: Lang;
-}) {
+function HeroStats({ territory, lang }: { territory: Territory; lang: Lang }) {
   const detailStats = territory.detail?.heroStats;
   const statIcons = [Users, MapPin, Home, MapIcon] as const;
-  const fallbackValues = [formatPopulation(territory.population), String(territory.villages.length), "", ""];
+  const fallbackValues = [
+    formatPopulation(territory.population),
+    String(territory.villages.length),
+    "",
+    "",
+  ];
   const stats = heroStatLabels[lang].map((label, index) => ({
     label,
     value: displayStructuredValue(
@@ -426,8 +467,16 @@ function SectionShell({
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="mb-10 max-w-4xl">
           <p className="kbd-eyebrow text-muted-foreground/70">{eyebrow}</p>
-          <h2 className={`mt-3 font-display leading-tight ${compact ? "text-4xl md:text-[42px]" : "text-4xl md:text-5xl"}`}>{title}</h2>
-          {intro ? <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">{intro}</p> : null}
+          <h2
+            className={`mt-3 font-display leading-tight ${compact ? "text-4xl md:text-[42px]" : "text-4xl md:text-5xl"}`}
+          >
+            {title}
+          </h2>
+          {intro ? (
+            <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
+              {intro}
+            </p>
+          ) : null}
         </div>
         {children}
       </div>
@@ -457,7 +506,8 @@ function getTerritoryPassportItems(territory: Territory) {
   const populationKgRu = new Intl.NumberFormat("ru-RU").format(territory.population);
   const populationEn = new Intl.NumberFormat("en-US").format(territory.population);
   const fallbacks: Partial<Record<TerritoryPassportKey, Localized<string>>> = {
-    population: heroStats?.[0]?.value ?? localizedValue(populationKgRu, populationKgRu, populationEn),
+    population:
+      heroStats?.[0]?.value ?? localizedValue(populationKgRu, populationKgRu, populationEn),
     villages: heroStats?.[1]?.value ?? localizedValue(String(territory.villages.length)),
     households: heroStats?.[2]?.value,
     totalArea: heroStats?.[3]?.value,
@@ -465,7 +515,9 @@ function getTerritoryPassportItems(territory: Territory) {
 
   return TERRITORY_PASSPORT_ORDER.map((key) => {
     const source = sourceByKey.get(key);
-    const value = hasLocalizedValue(source?.value) ? source!.value : fallbacks[key] ?? localizedValue("");
+    const value = hasLocalizedValue(source?.value)
+      ? source!.value
+      : (fallbacks[key] ?? localizedValue(""));
 
     return {
       key,
@@ -482,12 +534,22 @@ function getTerritoryPassportItems(territory: Territory) {
   });
 }
 
-function PassportSection({ territory, passport, lang }: { territory: Territory; passport?: TerritoryPassport; lang: Lang }) {
+function PassportSection({
+  territory,
+  passport,
+  lang,
+}: {
+  territory: Territory;
+  passport?: TerritoryPassport;
+  lang: Lang;
+}) {
   const items = getTerritoryPassportItems(territory);
 
   return (
     <div className="space-y-6">
-      {passport ? <p className="text-sm leading-6 text-muted-foreground">{pick(passport.reference, lang)}</p> : null}
+      {passport ? (
+        <p className="text-sm leading-6 text-muted-foreground">{pick(passport.reference, lang)}</p>
+      ) : null}
 
       <dl className="grid gap-x-8 sm:grid-cols-2 xl:grid-cols-3">
         {items.map(({ key, item }) => (
@@ -495,7 +557,9 @@ function PassportSection({ territory, passport, lang }: { territory: Territory; 
             key={key}
             className={`grid gap-1 border-t hairline py-4 sm:grid-cols-[minmax(128px,0.42fr)_1fr] sm:gap-4 ${item.links?.length ? "sm:col-span-2 xl:col-span-3" : ""}`}
           >
-            <dt className="text-base font-normal leading-6 text-[var(--beige)]/70 md:text-[17px]">{pick(item.label, lang)}</dt>
+            <dt className="text-base font-normal leading-6 text-[var(--beige)]/70 md:text-[17px]">
+              {pick(item.label, lang)}
+            </dt>
             <dd className="min-w-0 break-words text-base font-normal leading-6 text-foreground/85 md:text-[17px]">
               <PassportValue item={item} lang={lang} />
             </dd>
@@ -514,7 +578,10 @@ function PassportValue({ item, lang }: { item: TerritoryTextValue; lang: Lang })
       {item.links.map((link, index) => {
         const territory = link.slug ? getTerritory(link.slug) : null;
         const label = pick(link.label, lang);
-        const separator = index < item.links!.length - 1 ? <span className="ml-3 text-muted-foreground/45">·</span> : null;
+        const separator =
+          index < item.links!.length - 1 ? (
+            <span className="ml-3 text-muted-foreground/45">·</span>
+          ) : null;
 
         return (
           <span key={`${label}-${index}`} className="inline-flex items-center">
@@ -565,7 +632,7 @@ function VillageList({
         <div className="grid gap-4 md:grid-cols-2">
           {territory.villages.map((village) => {
             const detail = getVillage(village.slug);
-            const image = useNeutralCards ? null : detail?.hero ?? territory.image;
+            const image = useNeutralCards ? null : (detail?.hero ?? territory.image);
 
             return (
               <Link
@@ -621,12 +688,22 @@ function NeutralVillageVisual({ order }: { order: number }) {
   return (
     <div className="absolute inset-0 bg-[linear-gradient(135deg,oklch(0.22_0.018_130)_0%,oklch(0.30_0.025_100)_48%,oklch(0.18_0.012_130)_100%)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,oklch(0.85_0.04_80_/_0.18),transparent_34%),linear-gradient(to_top,oklch(0.16_0.012_130_/_0.86),transparent_68%)]" />
-      <div className="absolute bottom-4 left-4 font-display text-5xl text-foreground/18">{String(order).padStart(2, "0")}</div>
+      <div className="absolute bottom-4 left-4 font-display text-5xl text-foreground/18">
+        {String(order).padStart(2, "0")}
+      </div>
     </div>
   );
 }
 
-function NatureSection({ territory, places, lang }: { territory: Territory; places: TerritoryScenicPlace[]; lang: Lang }) {
+function NatureSection({
+  territory,
+  places,
+  lang,
+}: {
+  territory: Territory;
+  places: TerritoryScenicPlace[];
+  lang: Lang;
+}) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {places.map((place, index) => (
@@ -642,7 +719,9 @@ function NatureSection({ territory, places, lang }: { territory: Territory; plac
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-            <h3 className="font-display text-3xl leading-tight text-foreground">{pick(place.name, lang)}</h3>
+            <h3 className="font-display text-3xl leading-tight text-foreground">
+              {pick(place.name, lang)}
+            </h3>
           </div>
         </article>
       ))}
@@ -655,7 +734,10 @@ type InfrastructureSourceItem = {
   value: Localized<string>;
 };
 
-function matchesInfrastructureMetric(metric: InfrastructureMetricKey, item: InfrastructureSourceItem) {
+function matchesInfrastructureMetric(
+  metric: InfrastructureMetricKey,
+  item: InfrastructureSourceItem,
+) {
   const group = item.group.toLocaleLowerCase("ky-KG");
   const value = item.value.kg.toLocaleLowerCase("ky-KG");
   const education = group.includes("билим");
@@ -665,17 +747,31 @@ function matchesInfrastructureMetric(metric: InfrastructureMetricKey, item: Infr
 
   switch (metric) {
     case "schools":
-      return education && value.includes("мектеп") && !value.includes("мектепке") && !value.includes("окуучу") && !value.includes("орун");
+      return (
+        education &&
+        value.includes("мектеп") &&
+        !value.includes("мектепке") &&
+        !value.includes("окуучу") &&
+        !value.includes("орун")
+      );
     case "students":
       return education && value.includes("окуучу");
     case "kindergartens":
-      return education && (value.includes("бала бакча") || value.includes("мектепке чейинки мекеме"));
+      return (
+        education && (value.includes("бала бакча") || value.includes("мектепке чейинки мекеме"))
+      );
     case "preschoolGroups":
       return education && value.includes("мектепке чейинки топ");
     case "fap":
       return healthcare && value.includes("фап");
     case "familyMedicine":
-      return healthcare && (value.includes("үдт") || value.includes("гсв") || value.includes("үй-бүлөлүк медицина") || value.includes("үй-бүлөлүк дарыгер"));
+      return (
+        healthcare &&
+        (value.includes("үдт") ||
+          value.includes("гсв") ||
+          value.includes("үй-бүлөлүк медицина") ||
+          value.includes("үй-бүлөлүк дарыгер"))
+      );
     case "ambulance":
       return healthcare && value.includes("тез жардам");
     case "cultureHouses":
@@ -706,7 +802,13 @@ function getInfrastructureMetricValue(
   return numericValue || STRUCTURED_PRESENCE[lang];
 }
 
-function InfrastructureSection({ groups, lang }: { groups: TerritoryInfrastructureGroup[]; lang: Lang }) {
+function InfrastructureSection({
+  groups,
+  lang,
+}: {
+  groups: TerritoryInfrastructureGroup[];
+  lang: Lang;
+}) {
   const groupIcons = [GraduationCap, HeartPulse, BookOpen] as const;
   const sourceItems = groups.flatMap((group) =>
     [...group.primary, ...group.secondary].map((value) => ({ group: group.title.kg, value })),
@@ -725,10 +827,16 @@ function InfrastructureSection({ groups, lang }: { groups: TerritoryInfrastructu
             </h3>
             <ul className="mt-4 text-base font-normal leading-6 text-foreground/85 md:text-[17px]">
               {group.metrics.map((metric) => (
-                <li key={metric.key} className="grid min-w-0 gap-1 border-t hairline py-3.5 sm:grid-cols-[minmax(160px,0.48fr)_1fr] sm:gap-4">
+                <li
+                  key={metric.key}
+                  className="grid min-w-0 gap-1 border-t hairline py-3.5 sm:grid-cols-[minmax(160px,0.48fr)_1fr] sm:gap-4"
+                >
                   <span className="text-[var(--beige)]/70">{metric.label[lang]}</span>
                   <span className="min-w-0 break-words">
-                    {displayStructuredValue(getInfrastructureMetricValue(metric.key, sourceItems, lang), lang)}
+                    {displayStructuredValue(
+                      getInfrastructureMetricValue(metric.key, sourceItems, lang),
+                      lang,
+                    )}
                   </span>
                 </li>
               ))}
@@ -740,7 +848,15 @@ function InfrastructureSection({ groups, lang }: { groups: TerritoryInfrastructu
   );
 }
 
-function EconomySection({ body, profile, lang }: { body: TerritoryTextValue["value"]; profile: TerritoryEconomyProfileItem[]; lang: Lang }) {
+function EconomySection({
+  body,
+  profile,
+  lang,
+}: {
+  body: TerritoryTextValue["value"];
+  profile: TerritoryEconomyProfileItem[];
+  lang: Lang;
+}) {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.92fr)] lg:gap-12">
       <p className="max-w-3xl text-base font-normal leading-7 text-muted-foreground md:text-[17px] md:leading-8">
@@ -748,8 +864,13 @@ function EconomySection({ body, profile, lang }: { body: TerritoryTextValue["val
       </p>
       <dl className="border-y hairline divide-y divide-border/55">
         {profile.map((item) => (
-          <div key={pick(item.label, lang)} className="grid gap-2 py-3.5 sm:grid-cols-[minmax(145px,0.38fr)_1fr] sm:gap-5">
-            <dt className="text-base font-normal leading-6 text-[var(--beige)]/70 md:text-[17px]">{pick(item.label, lang)}</dt>
+          <div
+            key={pick(item.label, lang)}
+            className="grid gap-2 py-3.5 sm:grid-cols-[minmax(145px,0.38fr)_1fr] sm:gap-5"
+          >
+            <dt className="text-base font-normal leading-6 text-[var(--beige)]/70 md:text-[17px]">
+              {pick(item.label, lang)}
+            </dt>
             <dd className="min-w-0 text-base font-normal leading-6 text-foreground/85 md:text-[17px]">
               <InlineValues values={item.values} lang={lang} />
             </dd>
@@ -765,7 +886,10 @@ function PeopleSection({ people, lang }: { people: PersonProfile[]; lang: Lang }
     <Carousel opts={{ align: "start", containScroll: "trimSnaps" }} className="w-full">
       <CarouselContent className="-ml-6">
         {people.map((person) => (
-          <CarouselItem key={person.slug} className="basis-[84%] pl-6 sm:basis-[48%] lg:basis-[32%] xl:basis-[29%]">
+          <CarouselItem
+            key={person.slug}
+            className="basis-[84%] pl-6 sm:basis-[48%] lg:basis-[32%] xl:basis-[29%]"
+          >
             <TerritoryPersonCard person={person} lang={lang} />
           </CarouselItem>
         ))}
@@ -809,31 +933,53 @@ function PersonPortrait({ person, lang }: { person: PersonProfile; lang: Lang })
           className="absolute inset-0 h-full w-full object-contain grayscale transition-all duration-700 group-hover:grayscale-0"
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-foreground/[0.025]" aria-hidden>
+        <div
+          className="absolute inset-0 flex items-center justify-center bg-foreground/[0.025]"
+          aria-hidden
+        >
           <Users className="h-12 w-12 text-muted-foreground/30" strokeWidth={1} />
         </div>
       )}
     </div>
   );
 }
-function InlineValues({ values, lang }: { values: TerritoryEconomyProfileItem["values"]; lang: Lang }) {
+function InlineValues({
+  values,
+  lang,
+}: {
+  values: TerritoryEconomyProfileItem["values"];
+  lang: Lang;
+}) {
   return (
     <span className="flex flex-wrap gap-x-3 gap-y-1">
       {values.map((value, index) => (
         <span key={pick(value, lang)} className="inline-flex items-center">
           <span>{pick(value, lang)}</span>
-          {index < values.length - 1 ? <span className="ml-3 text-muted-foreground/45">·</span> : null}
+          {index < values.length - 1 ? (
+            <span className="ml-3 text-muted-foreground/45">·</span>
+          ) : null}
         </span>
       ))}
     </span>
   );
 }
 
-function GallerySection({ territory, images, lang }: { territory: Territory; images: TerritoryGalleryImage[]; lang: Lang }) {
+function GallerySection({
+  territory,
+  images,
+  lang,
+}: {
+  territory: Territory;
+  images: TerritoryGalleryImage[];
+  lang: Lang;
+}) {
   return (
     <div className="grid auto-rows-[220px] grid-cols-1 gap-4 sm:grid-cols-2 sm:auto-rows-[250px] lg:grid-cols-6">
       {images.map((image) => (
-        <figure key={image.filename} className={`${galleryClass(image.layout)} group relative overflow-hidden border hairline bg-background/30`}>
+        <figure
+          key={image.filename}
+          className={`${galleryClass(image.layout)} group relative overflow-hidden border hairline bg-background/30`}
+        >
           <img
             src={getTerritoryPhotoUrl(territory.slug, image.filename)}
             alt={pick(image.alt, lang)}

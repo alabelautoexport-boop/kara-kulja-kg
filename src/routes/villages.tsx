@@ -8,7 +8,7 @@ export const Route = createFileRoute("/villages")({
       { name: "description", content: "Discover the villages of Kara-Kulja district." },
       { property: "og:title", content: "Villages of Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/villages" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/villages/" }],
   }),
   component: TerritoriesLanding,
 });

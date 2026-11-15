@@ -10,10 +10,14 @@ export const Route = createFileRoute("/invest")({
   head: () => ({
     meta: [
       { title: "Invest in Kara-Kulja" },
-      { name: "description", content: "Investment opportunities in agriculture, livestock, tourism, energy and infrastructure." },
+      {
+        name: "description",
+        content:
+          "Investment opportunities in agriculture, livestock, tourism, energy and infrastructure.",
+      },
       { property: "og:title", content: "Invest in Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/invest" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/invest/" }],
   }),
   component: InvestPage,
 });
@@ -63,14 +67,18 @@ function InvestPage() {
 
       <section className="border-t hairline py-24 lg:py-32">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <h2 className="font-display text-4xl text-balance md:text-5xl">{t("invest.opps.heading")}</h2>
+          <h2 className="font-display text-4xl text-balance md:text-5xl">
+            {t("invest.opps.heading")}
+          </h2>
           <div className="mt-12 divide-y hairline border-y hairline">
             {opps.map((o, i) => (
               <div key={o.t} className="grid grid-cols-12 items-center gap-6 py-8">
                 <span className="col-span-2 text-xs tracking-widest text-muted-foreground">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="col-span-10 font-display text-2xl md:col-span-4 md:text-3xl">{o.t}</h3>
+                <h3 className="col-span-10 font-display text-2xl md:col-span-4 md:text-3xl">
+                  {o.t}
+                </h3>
                 <p className="col-span-10 col-start-3 text-muted-foreground md:col-span-6 md:col-start-7">
                   {o.d}
                 </p>
@@ -89,11 +97,18 @@ function InvestPage() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-3 text-sm">
-            <a href="/contact" className="inline-flex items-center gap-2 border-b hairline pb-1 text-foreground">
+            <a
+              href="/contact/"
+              className="inline-flex items-center gap-2 border-b hairline pb-1 text-foreground"
+            >
               {t("invest.contactOffice")} <ArrowRight className="h-4 w-4" />
             </a>
-            <a href="tel:+996554888484" className="text-muted-foreground hover:text-foreground">+996 554 888484</a>
-            <a href="tel:+13435006677" className="text-muted-foreground hover:text-foreground">+1 343 500 6677</a>
+            <a href="tel:+996554888484" className="text-muted-foreground hover:text-foreground">
+              +996 554 888484
+            </a>
+            <a href="tel:+13435006677" className="text-muted-foreground hover:text-foreground">
+              +1 343 500 6677
+            </a>
           </div>
         </div>
       </section>

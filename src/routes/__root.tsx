@@ -12,6 +12,7 @@ import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { I18nProvider } from "@/lib/i18n";
+import { canonicalUrl, isPrivatePath } from "@/lib/seo";
 
 const GA_MEASUREMENT_ID = "G-ZTGG3WNB1J";
 
@@ -69,7 +70,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">Please try again or return home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="bg-[var(--beige)] px-5 py-3 text-sm font-medium text-primary-foreground"
           >
             Try again
@@ -84,30 +88,49 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: ({ matches }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Kara-Kulja" },
-      { name: "description", content: "Көркү, наркы өзгөлөрдөн башкараак Кара-Кулжа ушул жерден башталат." },
+      {
+        name: "description",
+        content: "Көркү, наркы өзгөлөрдөн башкараак Кара-Кулжа ушул жерден башталат.",
+      },
       { name: "theme-color", content: "#0a0a0a" },
+      ...(isPrivatePath(matches.at(-1)?.pathname ?? "/")
+        ? [{ name: "robots", content: "noindex,nofollow" }]
+        : []),
       { property: "og:site_name", content: "Kara-Kulja" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Kara-Kulja" },
-      { property: "og:description", content: "Көркү, наркы өзгөлөрдөн башкараак Кара-Кулжа ушул жерден башталат." },
-      { property: "og:url", content: "https://kara-kulja.kg/" },
+      {
+        property: "og:description",
+        content: "Көркү, наркы өзгөлөрдөн башкараак Кара-Кулжа ушул жерден башталат.",
+      },
+      { property: "og:url", content: canonicalUrl(matches.at(-1)?.pathname ?? "/") },
       { property: "og:image", content: "https://kara-kulja.kg/og-image.jpg" },
       { property: "og:image:secure_url", content: "https://kara-kulja.kg/og-image.jpg" },
       { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "960" },
       { property: "og:image:height", content: "640" },
-      { property: "og:image:alt", content: "Kara-Kulja — gateway arch with Alay mountains at sunset" },
+      {
+        property: "og:image:alt",
+        content: "Kara-Kulja — gateway arch with Alay mountains at sunset",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Kara-Kulja" },
-      { name: "twitter:description", content: "Көркү, наркы өзгөлөрдөн башкараак Кара-Кулжа ушул жерден башталат." },
+      {
+        name: "twitter:description",
+        content: "Көркү, наркы өзгөлөрдөн башкараак Кара-Кулжа ушул жерден башталат.",
+      },
       { name: "twitter:image", content: "https://kara-kulja.kg/og-image.jpg" },
     ],
     links: [
+      ...(!isPrivatePath(matches.at(-1)?.pathname ?? "/") &&
+      matches.at(-1)?.pathname.replace(/\/$/, "") !== "/map"
+        ? [{ rel: "canonical", href: canonicalUrl(matches.at(-1)?.pathname ?? "/") }]
+        : []),
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
@@ -129,13 +152,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="kg">
+    <html lang="ky">
       <head>
         <HeadContent />
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}',{send_page_view:false});`,

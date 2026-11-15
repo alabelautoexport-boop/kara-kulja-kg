@@ -14,15 +14,22 @@ import { SCHOOL_COPY } from "@/lib/schools-copy";
 import { INSTITUTION_COPY } from "@/lib/institution-types";
 import { localizedSchoolField } from "@/lib/schools-data";
 import { getPublishedKindergartens, getPublishedKindergarten } from "@/lib/kindergartens-data";
+import type { KindergartenPublication } from "@/lib/kindergartens-data";
+import { institutionDescription } from "@/lib/seo";
+import { usePageMetadata } from "@/lib/use-page-metadata";
 
-export function KindergartensList() {
+export function KindergartensList({
+  initialData,
+}: { initialData?: KindergartenPublication[] } = {}) {
   const { lang, t } = useI18n(),
     c = INSTITUTION_COPY[lang],
     common = SCHOOL_COPY[lang];
   const [filters, setFilters] = useState(EMPTY_INSTITUTION_FILTERS);
+  usePageMetadata(c.title, c.subtitle);
   const query = useQuery({
     queryKey: ["kindergartens", "published"],
     queryFn: getPublishedKindergartens,
+    initialData,
     retry: false,
   });
   const records = query.data ?? [];
@@ -92,16 +99,28 @@ export function KindergartensList() {
   );
 }
 
-export function KindergartenPublicPage({ slug }: { slug: string }) {
+export function KindergartenPublicPage({
+  slug,
+  initialData,
+}: {
+  slug: string;
+  initialData?: KindergartenPublication;
+}) {
   const { lang } = useI18n(),
     c = INSTITUTION_COPY[lang],
     common = SCHOOL_COPY[lang];
   const query = useQuery({
     queryKey: ["kindergartens", "published", slug],
     queryFn: () => getPublishedKindergarten(slug),
+    initialData,
     retry: false,
   });
   const info = query.data?.document.info;
+  const seoName = info ? kindergartenDisplayName(info, slug, lang) : undefined;
+  usePageMetadata(
+    seoName,
+    info && seoName ? institutionDescription(info, seoName, lang) : undefined,
+  );
   return (
     <SiteLayout>
       <SchoolHeading compact>

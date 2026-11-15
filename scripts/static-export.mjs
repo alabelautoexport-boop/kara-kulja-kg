@@ -1,222 +1,138 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parseEnv } from "node:util";
-import { publishedKindergartenRoutes } from "./school-publication-routes.mjs";
-import { publishedSchoolRoutes } from "./school-publication-routes.mjs";
+import { build } from "esbuild";
+import {
+  publishedSchoolRoutes,
+  publishedKindergartenRoutes,
+  publishedNewsRoutes,
+} from "./school-publication-routes.mjs";
 
+const projectRoot = process.cwd();
 const server = (await import("../dist/server/index.js")).default;
-
-const BASE_URL = "https://kara-kulja.kg";
-
-const sitemapRoutes = [
-  "/",
-  "/about",
-  "/villages",
-  "/villages/kara-kulja",
-  "/villages/zhiyde",
-  "/villages/oy-tal",
-  "/tourism",
-  "/invest",
-  "/people",
-  "/map",
-  "/history",
-  "/gallery",
-  "/news",
-  "/schools",
-  "/kindergartens",
-  "/contact",
+const env = {
+  ...(fs.existsSync(".env") ? parseEnv(fs.readFileSync(".env", "utf8")) : {}),
+  ...process.env,
+};
+if (!env.VITE_SUPABASE_URL || !env.VITE_SUPABASE_PUBLISHABLE_KEY)
+  throw new Error("Public snapshot configuration is required for a complete export");
+const bundle = await build({
+  stdin: {
+    contents:
+      "export { publicRoutes, sitemapXml } from './src/lib/public-routes'; export { SITE_ORIGIN } from './src/lib/seo';",
+    resolveDir: process.cwd(),
+    loader: "ts",
+  },
+  bundle: true,
+  write: false,
+  platform: "node",
+  format: "esm",
+  define: { "import.meta.env": "{}" },
+});
+const { publicRoutes, sitemapXml, SITE_ORIGIN } = await import(
+  "data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].text).toString("base64")
+);
+const options = { url: env.VITE_SUPABASE_URL, publicKey: env.VITE_SUPABASE_PUBLISHABLE_KEY };
+// Failure is fatal: never publish an accidentally incomplete sitemap.
+const [schoolPaths, gardenPaths, newsPaths] = await Promise.all([
+  publishedSchoolRoutes(options),
+  publishedKindergartenRoutes(options),
+  publishedNewsRoutes(options),
+]);
+const rows = (paths) => paths.map((p) => ({ slug: p.split("/").at(-1) }));
+const indexable = publicRoutes({
+  schools: rows(schoolPaths),
+  kindergartens: rows(gardenPaths),
+  news: rows(newsPaths),
+});
+const privateRoutes = [
+  "/admin/",
+  "/admin/login/",
+  "/admin/news/",
+  "/admin/news/new/",
+  "/admin/schools/",
+  "/admin/kindergartens/",
+  "/school-admin/",
+  "/news-admin/",
+  "/news-admin/new/",
 ];
+const routes = [...indexable, "/map/", ...privateRoutes];
 
-const territoryRoutes = [
-  "/territories",
-  "/territories/kara-kulja",
-  "/territories/alaikuu",
-  "/territories/kara-guz",
-  "/territories/kara-kochkor",
-  "/territories/oy-tal",
-  "/territories/ryspai-abdykadyrov",
-  "/territories/ylai-talaa",
-];
+// The live endpoint and static file must use the identical sitemap inventory.
+const sitemapResponse = await server.fetch(new Request(SITE_ORIGIN + "/sitemap.xml"), {}, {});
+if (sitemapResponse.status !== 200 || (await sitemapResponse.text()) !== sitemapXml(indexable))
+  throw new Error("Server and static sitemap differ");
 
-const villageRoutes = [
-  "/villages/kok-art",
-  "/villages/kan-korgon",
-  "/villages/sai-talaa",
-  "/villages/ara-bulak",
-  "/villages/boru-tokoy",
-  "/villages/zhele-dobo",
-  "/villages/sary-bee",
-  "/villages/kara-tash",
-  "/villages/terek-suu",
-  "/villages/nichke-suu",
-  "/villages/kenesh",
-  "/villages/por",
-  "/villages/zhany-talaa",
-  "/villages/altyn-kurok",
-  "/villages/zhetim-dobo",
-  "/villages/kalmatay",
-  "/villages/kara-zhygach",
-  "/villages/nasirdin",
-  "/villages/kara-kochkor",
-  "/villages/ak-kyya",
-  "/villages/sary-bulak-kara-kochkor",
-  "/villages/biy-myrza",
-  "/villages/birinchi-may",
-  "/villages/sary-kamysh",
-  "/villages/kyzyl-zhar",
-  "/villages/kaiyn-talaa",
-  "/villages/koo-chaty",
-  "/villages/terek",
-  "/villages/chychyrkanak",
-  "/villages/kuyotash",
-  "/villages/ylai-talaa",
-  "/villages/sai",
-  "/villages/sharkyratma",
-  "/villages/zhylkol",
-  "/villages/sary-tash",
-  "/villages/konduk",
-  "/villages/sary-bulak",
-  "/villages/kara-bulak",
-  "/villages/konokbay-talaa",
-  "/villages/kyzyl-bulak",
-  "/villages/sary-kungoy",
-  "/villages/tegerek-saz",
-  "/villages/toguz-bulak",
-  "/villages/tokbay-talaa",
-  "/villages/buyga",
-  "/villages/besh-kempir",
-  "/villages/orto-talaa",
-  "/villages/zhany-talap",
-  "/villages/oktyabr",
-  "/villages/togotoy",
-  "/villages/yntymak",
-];
-
-const adminRoutes = [
-  "/admin/login",
-  "/admin",
-  "/admin/news",
-  "/admin/news/new",
-  "/admin/schools",
-  "/admin/kindergartens",
-  "/school-admin",
-  "/news-admin",
-  "/news-admin/new",
-];
-
-const localEnv = fs.existsSync(".env") ? parseEnv(fs.readFileSync(".env", "utf8")) : {};
-const buildEnv = { ...localEnv, ...process.env };
-let schoolRoutes = [];
-let kindergartenRoutes = [];
-try {
-  schoolRoutes = await publishedSchoolRoutes({
-    url: buildEnv.VITE_SUPABASE_URL,
-    publicKey: buildEnv.VITE_SUPABASE_PUBLISHABLE_KEY,
-  });
-  console.log(`Published school routes: ${schoolRoutes.length}`);
-} catch {
-  // No stale or private fallback. Dynamic details still use the SPA rewrite.
-  console.warn("Published school routes could not be enumerated; sitemap includes /schools only.");
+function outputPath(route) {
+  return path.join("dist", "client", ...route.split("/").filter(Boolean), "index.html");
 }
-try {
-  kindergartenRoutes = await publishedKindergartenRoutes({
-    url: buildEnv.VITE_SUPABASE_URL,
-    publicKey: buildEnv.VITE_SUPABASE_PUBLISHABLE_KEY,
-  });
-  console.log(`Published kindergarten routes: ${kindergartenRoutes.length}`);
-} catch {
-  console.warn(
-    "Published kindergarten routes could not be enumerated; sitemap includes /kindergartens only.",
-  );
-}
-const routes = [
-  ...new Set([
-    ...sitemapRoutes,
-    ...territoryRoutes,
-    ...villageRoutes,
-    ...adminRoutes,
-    ...schoolRoutes,
-    ...kindergartenRoutes,
-  ]),
-];
-
-async function renderRoute(routePath) {
-  const url = `${BASE_URL}${routePath}`;
-  const request = new Request(url);
-  const response = await server.fetch(request, {}, {});
-
-  if (!response.ok) {
-    throw new Error(`Failed to render ${routePath}: ${response.status}`);
-  }
-
-  return await response.text();
-}
-
-function getOutputPath(routePath) {
-  const cleanPath = routePath.replace(/^\//, "");
-  if (!cleanPath) {
-    return path.join("dist", "client", "index.html");
-  }
-  return path.join("dist", "client", cleanPath, "index.html");
-}
-
-// Render all routes
 for (const route of routes) {
-  try {
-    const html = await renderRoute(route);
-    const outputPath = getOutputPath(route);
-    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-    fs.writeFileSync(outputPath, html, "utf-8");
-    console.log(`✓ ${route} → ${outputPath}`);
-  } catch (err) {
-    console.error(`✗ ${route}: ${err.message}`);
-    process.exitCode = 1;
-  }
+  const response = await server.fetch(new Request(SITE_ORIGIN + route), {}, {});
+  if (response.status !== 200) throw new Error(`Failed to render ${route}: ${response.status}`);
+  const html = await response.text();
+  const output = outputPath(route);
+  fs.mkdirSync(path.dirname(output), { recursive: true });
+  fs.writeFileSync(output, html, "utf8");
+  console.log(`✓ ${route} → ${output}`);
 }
-
-// Generate static sitemap.xml
-let sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-for (const r of [...sitemapRoutes, ...schoolRoutes, ...kindergartenRoutes]) {
-  const priority = r === "/" ? "1.0" : "0.7";
-  sitemapXml += `  <url><loc>${BASE_URL}${r}</loc><changefreq>weekly</changefreq><priority>${priority}</priority></url>\n`;
+// Use the existing router's not-found UI. Apache ErrorDocument preserves HTTP 404.
+for (const route of [
+  "/admin/news/00000000-0000-4000-8000-000000000001/edit/",
+  "/news-admin/00000000-0000-4000-8000-000000000001/edit/",
+]) {
+  const response = await server.fetch(new Request(SITE_ORIGIN + route), {}, {});
+  if (
+    response.status !== 200 ||
+    !/<meta name="robots" content="noindex,nofollow"/.test(await response.text())
+  )
+    throw new Error(`Missing private robots tag: ${route}`);
 }
-sitemapXml += "</urlset>\n";
-fs.writeFileSync(path.join("dist", "client", "sitemap.xml"), sitemapXml, "utf-8");
-console.log(`✓ /sitemap.xml → dist/client/sitemap.xml`);
-
-// Remove server build — not needed for static hosting
-const serverDir = path.join("dist", "server");
-if (fs.existsSync(serverDir)) {
-  fs.rmSync(serverDir, { recursive: true, force: true });
-  console.log("✓ Removed dist/server/");
+for (const prefix of ["/schools", "/kindergartens", "/news", "/villages", "/territories"]) {
+  const missing = await server.fetch(
+    new Request(SITE_ORIGIN + prefix + "/static-export-missing-slug/"),
+    {},
+    {},
+  );
+  if (missing.status !== 404)
+    throw new Error(`Expected 404 for missing ${prefix} slug, got ${missing.status}`);
+  await missing.text();
 }
+const notFoundResponse = await server.fetch(
+  new Request(SITE_ORIGIN + "/static-export-missing-page/"),
+  {},
+  {},
+);
+if (notFoundResponse.status !== 404) throw new Error("SSR not-found response must be 404");
+let notFoundHtml = await notFoundResponse.text();
+notFoundHtml = notFoundHtml.replace(
+  "</head>",
+  '<meta name="robots" content="noindex,nofollow"/></head>',
+);
+fs.writeFileSync(path.join("dist", "client", "404.html"), notFoundHtml, "utf8");
+fs.writeFileSync(path.join("dist", "client", "sitemap.xml"), sitemapXml(indexable), "utf8");
+console.log(
+  JSON.stringify({
+    sitemapUrls: indexable.length,
+    schools: schoolPaths.length,
+    kindergartens: gardenPaths.length,
+    villages: indexable.filter((p) => p.startsWith("/villages/") && p !== "/villages/").length,
+    territories: indexable.filter((p) => p.startsWith("/territories/") && p !== "/territories/")
+      .length,
+    news: newsPaths.length,
+  }),
+);
 
-// Move dist/client/* up to dist/ for clean deployment
-const clientDir = path.join("dist", "client");
-const distDir = path.join("dist");
-
-function moveUp(srcDir, destDir) {
-  const entries = fs.readdirSync(srcDir, { withFileTypes: true });
-  for (const entry of entries) {
-    const src = path.join(srcDir, entry.name);
-    const dest = path.join(destDir, entry.name);
-    if (fs.existsSync(dest)) {
-      fs.rmSync(dest, { recursive: true, force: true });
-    }
-    fs.renameSync(src, dest);
-  }
+const serverDir = path.resolve("dist/server");
+if (serverDir !== path.join(projectRoot, "dist", "server"))
+  throw new Error("Unexpected server output path");
+fs.rmSync(serverDir, { recursive: true, force: true });
+const clientDir = path.resolve("dist/client"),
+  distDir = path.resolve("dist");
+for (const entry of fs.readdirSync(clientDir)) {
+  const dest = path.join(distDir, entry);
+  if (fs.existsSync(dest)) fs.rmSync(dest, { recursive: true, force: true });
+  fs.renameSync(path.join(clientDir, entry), dest);
 }
-
-moveUp(clientDir, distDir);
 fs.rmdirSync(clientDir);
-console.log("✓ Moved dist/client/* → dist/");
-
-// Remove Vite internal files not needed for deployment
-const assetsIgnore = path.join("dist", ".assetsignore");
-if (fs.existsSync(assetsIgnore)) {
-  fs.rmSync(assetsIgnore, { force: true });
-  console.log("✓ Cleaned up .assetsignore");
-}
-
-console.log("\n✓ Static export complete. Deploy the 'dist/' folder to your static host.");
+fs.rmSync(path.join(distDir, ".assetsignore"), { force: true });
+console.log("✓ Static export complete. Deploy the dist/ folder to your static host.");

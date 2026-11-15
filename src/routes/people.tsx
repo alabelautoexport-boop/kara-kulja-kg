@@ -14,7 +14,7 @@ export const Route = createFileRoute("/people")({
       { name: "description", content: "Storytelling and portraits of the people of Kara-Kulja." },
       { property: "og:title", content: "People of Kara-Kulja" },
     ],
-    links: [{ rel: "canonical", href: "https://kara-kulja.kg/people" }],
+    links: [{ rel: "canonical", href: "https://kara-kulja.kg/people/" }],
   }),
   component: PeoplePage,
 });
@@ -30,13 +30,25 @@ function PeoplePage() {
         <div className="mx-auto max-w-[1100px] px-6 lg:px-10">
           <div className="space-y-20">
             {people.map((p, i) => (
-              <article id={p.slug} key={p.slug} className={`scroll-mt-24 grid items-center gap-10 md:grid-cols-12 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+              <article
+                id={p.slug}
+                key={p.slug}
+                className={`scroll-mt-24 grid items-center gap-10 md:grid-cols-12 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}
+              >
                 <div className="md:col-span-5">
                   <div className="relative aspect-[4/5] overflow-hidden border hairline bg-background/70">
                     {p.image ? (
-                      <img src={p.image} alt={pick(p.name, lang)} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
+                      <img
+                        src={p.image}
+                        alt={pick(p.name, lang)}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-contain"
+                      />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-foreground/[0.025]" aria-hidden>
+                      <div
+                        className="absolute inset-0 flex items-center justify-center bg-foreground/[0.025]"
+                        aria-hidden
+                      >
                         <Users className="h-12 w-12 text-muted-foreground/30" strokeWidth={1} />
                       </div>
                     )}
@@ -44,8 +56,12 @@ function PeoplePage() {
                 </div>
                 <div className="md:col-span-7">
                   <p className="kbd-eyebrow text-[var(--ember)]">{pick(p.role, lang)}</p>
-                  <h3 className="mt-4 font-display text-4xl text-balance md:text-5xl">{pick(p.name, lang)}</h3>
-                  <p className="mt-6 max-w-xl text-pretty text-muted-foreground">{pick(p.body, lang)}</p>
+                  <h3 className="mt-4 font-display text-4xl text-balance md:text-5xl">
+                    {pick(p.name, lang)}
+                  </h3>
+                  <p className="mt-6 max-w-xl text-pretty text-muted-foreground">
+                    {pick(p.body, lang)}
+                  </p>
                 </div>
               </article>
             ))}
@@ -53,18 +69,25 @@ function PeoplePage() {
               const sequenceIndex = people.length + item;
 
               return (
-                <article key={item} className={`grid items-center gap-10 md:grid-cols-12 ${sequenceIndex % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
-                <div className="md:col-span-5">
-                  <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden border hairline bg-background/70">
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/40 to-transparent" />
-                    <span className="relative text-xs tracking-[0.28em] text-muted-foreground/70">{t("common.soon")}</span>
+                <article
+                  key={item}
+                  className={`grid items-center gap-10 md:grid-cols-12 ${sequenceIndex % 2 ? "md:[&>*:first-child]:order-2" : ""}`}
+                >
+                  <div className="md:col-span-5">
+                    <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden border hairline bg-background/70">
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/40 to-transparent" />
+                      <span className="relative text-xs tracking-[0.28em] text-muted-foreground/70">
+                        {t("common.soon")}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="md:col-span-7">
-                  <p className="text-xs tracking-[0.28em] text-[var(--ember)]">{t("common.soon")}</p>
-                  <div className="mt-4 h-px max-w-sm bg-border/70" />
-                </div>
-              </article>
+                  <div className="md:col-span-7">
+                    <p className="text-xs tracking-[0.28em] text-[var(--ember)]">
+                      {t("common.soon")}
+                    </p>
+                    <div className="mt-4 h-px max-w-sm bg-border/70" />
+                  </div>
+                </article>
               );
             })}
           </div>
