@@ -116,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:height", content: "640" },
       {
         property: "og:image:alt",
-        content: "Kara-Kulja — gateway arch with Alay mountains at sunset",
+        content: "Kara-Kulja - gateway arch with Alay mountains at sunset",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Kara-Kulja" },

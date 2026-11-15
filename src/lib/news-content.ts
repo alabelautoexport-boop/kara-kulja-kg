@@ -1,4 +1,5 @@
 import DOMPurify from "dompurify";
+import { formatPublicText } from "./public-text";
 import type { Lang } from "@/lib/i18n";
 import type { NewsRecord } from "@/lib/news-data";
 
@@ -21,9 +22,11 @@ export function localizedNewsField(
 ) {
   const localized = news[`${field}_${lang}` as keyof NewsRecord];
   const fallback = news[`${field}_kg` as keyof NewsRecord];
-  return (typeof localized === "string" && localized.trim() ? localized : fallback) as
+  const value = (typeof localized === "string" && localized.trim() ? localized : fallback) as
     | string
     | null;
+  // HTML body formatting happens only on text nodes in the public sanitizer.
+  return typeof value === "string" && field !== "body" ? formatPublicText(value) : value;
 }
 
 const NEWS_MONTHS = {

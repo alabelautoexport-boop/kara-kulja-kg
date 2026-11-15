@@ -55,18 +55,18 @@ const SHARED_TOURISM: TourismItem[] = [
   {
     title: L("Ат туризми", "Конный туризм", "Horse tourism"),
     body: L(
-      "Тоо жолдору менен атчан саякат — кылымдар бою сакталган ыргак.",
-      "Конные путешествия по горным тропам — ритм, сохранённый веками.",
-      "Horseback journeys along mountain trails — a rhythm preserved for centuries."
+      "Тоо жолдору менен атчан саякат - кылымдар бою сакталган ыргак.",
+      "Конные путешествия по горным тропам - ритм, сохранённый веками.",
+      "Horseback journeys along mountain trails - a rhythm preserved for centuries."
     ),
     image: horseRouteImg,
   },
   {
     title: L("Жайлоо жашоосу", "Жизнь на джайлоо", "Life on the jailoo"),
     body: L(
-      "Боз үйдө түнөө, кымыз, тоо абасы — көчмөн маданиятка кириш.",
-      "Ночь в юрте, кумыс, горный воздух — погружение в кочевую культуру.",
-      "A night in a yurt, kumys, mountain air — an entry into nomadic culture."
+      "Боз үйдө түнөө, кымыз, тоо абасы - көчмөн маданиятка кириш.",
+      "Ночь в юрте, кумыс, горный воздух - погружение в кочевую культуру.",
+      "A night in a yurt, kumys, mountain air - an entry into nomadic culture."
     ),
     image: jailooImg,
   },
@@ -91,9 +91,9 @@ const SHARED_TOURISM: TourismItem[] = [
   {
     title: L("Кымыз", "Кумыс", "Kumys"),
     body: L(
-      "Жаңы саалган бээ сүтүнүн даамы — жайдын белгиси.",
-      "Вкус свежего кобыльего молока — знак лета.",
-      "The taste of freshly milked mare's milk — a sign of summer."
+      "Жаңы саалган бээ сүтүнүн даамы - жайдын белгиси.",
+      "Вкус свежего кобыльего молока - знак лета.",
+      "The taste of freshly milked mare's milk - a sign of summer."
     ),
     image: kymyzImg,
   },
@@ -237,22 +237,22 @@ const DETAILED_VILLAGES: Village[] = [
       { label: INFO_AO, value: L("Кара-Кулжа а/ө", "АО Кара-Кульджа", "Kara-Kulja AO") },
     ],
     history: L(
-      "Кылымдар бою бул өрөөн көчмөн уруулардын жайлоосу болуп келген. Убакыттын өтүшү менен ал райондун жүрөгүнө айланды — соода жолдору кошулган, мечит-мектептери курулган, муундардан муундарга жашоо уланган жер.",
-      "Веками эта долина была летним джайлоо кочевых племён. Со временем она стала сердцем района — здесь сходились торговые пути, строились мечети и школы, жизнь передавалась из поколения в поколение.",
-      "For centuries this valley was the summer jailoo of nomadic tribes. In time it became the heart of the district — trade routes met here, mosques and schools were built, and life passed from one generation to the next."
+      "Кылымдар бою бул өрөөн көчмөн уруулардын жайлоосу болуп келген. Убакыттын өтүшү менен ал райондун жүрөгүнө айланды - соода жолдору кошулган, мечит-мектептери курулган, муундардан муундарга жашоо уланган жер.",
+      "Веками эта долина была летним джайлоо кочевых племён. Со временем она стала сердцем района - здесь сходились торговые пути, строились мечети и школы, жизнь передавалась из поколения в поколение.",
+      "For centuries this valley was the summer jailoo of nomadic tribes. In time it became the heart of the district - trade routes met here, mosques and schools were built, and life passed from one generation to the next."
     ),
     tourism: {
       lead: L(
-        "Тоолор, дарыя, асман — Кара-Кулжанын табияты сапарга чакырат.",
-        "Горы, реки, небо — природа Кара-Кульджи зовёт в путь.",
-        "Mountains, rivers, sky — the nature of Kara-Kulja calls you on a journey."
+        "Тоолор, дарыя, асман - Кара-Кулжанын табияты сапарга чакырат.",
+        "Горы, реки, небо - природа Кара-Кульджи зовёт в путь.",
+        "Mountains, rivers, sky - the nature of Kara-Kulja calls you on a journey."
       ),
       items: SHARED_TOURISM,
     },
     investment: {
       lead: L(
-        "Райондун борбору катары — өнүгүүнүн жана өнөктөштүктүн негизги чекити.",
-        "Как центр района — ключевая точка для развития и партнёрства.",
+        "Райондун борбору катары - өнүгүүнүн жана өнөктөштүктүн негизги чекити.",
+        "Как центр района - ключевая точка для развития и партнёрства.",
         "As the district centre, the key point for growth and partnership."
       ),
       items: SHARED_INVESTMENT,

@@ -3,6 +3,7 @@ import L, { type PathOptions } from "leaflet";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
 import { OFFICIAL_VILLAGES } from "@/lib/territories-data";
 import type { Lang } from "@/lib/i18n";
+import { formatPublicText } from "./public-text";
 
 export type GeoJsonCollection = FeatureCollection<Geometry, Record<string, unknown>>;
 export type GeoJsonFeature = Feature<Geometry, Record<string, unknown>>;
@@ -640,7 +641,7 @@ export function bindFeatureTooltip(layer: L.Layer, feature: GeoJsonFeature, fall
   const name = featureName(feature);
   if (!name) return;
 
-  layer.bindTooltip(name, {
+  layer.bindTooltip(formatPublicText(name), {
     direction: "top",
     sticky: true,
     className: `kara-map-hover-label ${fallback}`,

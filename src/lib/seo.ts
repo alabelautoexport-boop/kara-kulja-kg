@@ -4,6 +4,7 @@ import {
   displayVillageName,
   getOfficialVillage,
 } from "./territories-data";
+import { formatPublicText } from "./public-text";
 
 export const SITE_ORIGIN = "https://kara-kulja.kg";
 
@@ -23,10 +24,10 @@ export function isPrivatePath(path: string) {
 export function pageHead(title: string, description: string) {
   return {
     meta: [
-      { title: `${title} | Kara-Kulja` },
-      { name: "description", content: description },
-      { property: "og:title", content: `${title} | Kara-Kulja` },
-      { property: "og:description", content: description },
+      { title: `${formatPublicText(title)} | Kara-Kulja` },
+      { name: "description", content: formatPublicText(description) },
+      { property: "og:title", content: `${formatPublicText(title)} | Kara-Kulja` },
+      { property: "og:description", content: formatPublicText(description) },
     ],
   };
 }

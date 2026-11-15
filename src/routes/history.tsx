@@ -14,7 +14,7 @@ const historyHeroImg = getPageHeroUrl("history");
 export const Route = createFileRoute("/history")({
   head: () => ({
     meta: [
-      { title: "History & Archive — Kara-Kulja" },
+      { title: "History & Archive - Kara-Kulja" },
       { name: "description", content: "Historical archive: old photos, Soviet era, oral history." },
       { property: "og:title", content: "History of Kara-Kulja" },
     ],

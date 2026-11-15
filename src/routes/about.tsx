@@ -10,7 +10,7 @@ const aboutHeroImg = getPageHeroUrl("about");
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Kara-Kulja" },
+      { title: "About - Kara-Kulja" },
       {
         name: "description",
         content: "History, geography, nature and culture of Kara-Kulja district.",

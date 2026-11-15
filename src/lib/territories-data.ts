@@ -617,9 +617,9 @@ const YLAI_TALAA_DETAIL: TerritoryDetail = {
   history: {
     title: L("Тарых", "История", "History"),
     body: L(
-      "Ылай-Талаа айыл аймагы 2024-жылы уюшулган. Ылай-Талаа айылы тууралуу жергиликтүү тарыхый маалыматтарда бул жер мурда «Сөгөт» деп аталганы айтылат. 1955–1956-жылдары Ворошилов, Сталин, Кызыл-Жол, Киров жана Молотов колхоздору бириктирилип, Мариш Баатыровдун жетекчилиги астында Карл Маркс атындагы колхоз уюштурулган.",
-      "Айыльный аймак Ылай-Талаа был образован в 2024 году. В местных исторических сведениях о селе Ылай-Талаа говорится, что раньше это место называлось «Сёгёт». В 1955–1956 годах колхозы имени Ворошилова, Сталина, Кызыл-Жол, Кирова и Молотова были объединены, и под руководством Мариша Баатырова был создан колхоз имени Карла Маркса.",
-      "Ylai-Talaa Aiyl Aimak was established in 2024. Local historical information about Ylai-Talaa village says that this place was formerly called Sogot. In 1955–1956, the Voroshilov, Stalin, Kyzyl-Jol, Kirov and Molotov collective farms were merged, and the Karl Marx collective farm was organized under the leadership of Marish Baatyrov.",
+      "Ылай-Талаа айыл аймагы 2024-жылы уюшулган. Ылай-Талаа айылы тууралуу жергиликтүү тарыхый маалыматтарда бул жер мурда «Сөгөт» деп аталганы айтылат. 1955-1956-жылдары Ворошилов, Сталин, Кызыл-Жол, Киров жана Молотов колхоздору бириктирилип, Мариш Баатыровдун жетекчилиги астында Карл Маркс атындагы колхоз уюштурулган.",
+      "Айыльный аймак Ылай-Талаа был образован в 2024 году. В местных исторических сведениях о селе Ылай-Талаа говорится, что раньше это место называлось «Сёгёт». В 1955-1956 годах колхозы имени Ворошилова, Сталина, Кызыл-Жол, Кирова и Молотова были объединены, и под руководством Мариша Баатырова был создан колхоз имени Карла Маркса.",
+      "Ylai-Talaa Aiyl Aimak was established in 2024. Local historical information about Ylai-Talaa village says that this place was formerly called Sogot. In 1955-1956, the Voroshilov, Stalin, Kyzyl-Jol, Kirov and Molotov collective farms were merged, and the Karl Marx collective farm was organized under the leadership of Marish Baatyrov.",
     ),
   },
   gallery: {
@@ -846,7 +846,7 @@ export const OFFICIAL_VILLAGES = TERRITORIES.flatMap((territory) =>
 );
 
 export const formatPopulation = (value: number | null) =>
-  value == null ? "—" : new Intl.NumberFormat("ru-RU").format(value);
+  value == null ? "-" : new Intl.NumberFormat("ru-RU").format(value);
 
 export const pick = <T,>(loc: Localized<T>, lang: Lang): T => loc[lang] ?? loc.kg;
 

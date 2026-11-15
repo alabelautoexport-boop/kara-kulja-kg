@@ -50,7 +50,7 @@ const KG: Dict = {
   "hero.scroll": "Ылдый сыдырыңыз",
 
   "about.eyebrow": "РАЙОН ЖӨНҮНДӨ",
-  "about.title": "Кара-Кулжа — убакыттын агымы өзгөргөн жер",
+  "about.title": "Кара-Кулжа - убакыттын агымы өзгөргөн жер",
   "about.body":
     "Табияты өзгөчө, нукура маданияты сакталган аймактардын бири. Бул жерде тунук дарыялар, кең жайлоолор жана кыргыз элинин салттуу жашоо образы өзгөчө атмосфераны жаратат.",
   "about.stat1": "айыл аймагы",
@@ -60,7 +60,7 @@ const KG: Dict = {
 
   "about.section.history": "Тарых",
   "about.section.history.body":
-    "Кара-Кулжанын тарыхы кылымдарга кетет — Улуу Жибек жолунун урпактары, көчмөн уруулардын мурасы.",
+    "Кара-Кулжанын тарыхы кылымдарга кетет - Улуу Жибек жолунун урпактары, көчмөн уруулардын мурасы.",
   "about.section.geography": "География",
   "about.section.geography.body":
     "Алай тоо тизмегинин түндүк капталында жайгашкан, бийик жайлоолор, терең капчыгайлар жана өзөндөр.",
@@ -72,7 +72,7 @@ const KG: Dict = {
     "Манас эпосунун дүйнөсү, ат маданияты, эл оозеки чыгармачылыгы, кол өнөрчүлүк.",
   "about.section.overview": "Райондун жалпы көрүнүшү",
   "about.section.overview.body":
-    "7 айыл аймагы, 55 айыл, 103 200 тургун. Борбору — Кара-Кулжа айылы. Айыл чарба жана мал чарбачылык — экономиканын негизи.",
+    "7 айыл аймагы, 55 айыл, 103 200 тургун. Борбору - Кара-Кулжа айылы. Айыл чарба жана мал чарбачылык - экономиканын негизи.",
   "about.section.symbols": "Символдор",
   "about.section.infrastructure": "Коомдук инфраструктура",
   "about.section.infrastructure.body":
@@ -99,7 +99,7 @@ const KG: Dict = {
   "discover.explore": "Ачуу",
 
   "tourism.eyebrow": "ТУРИЗМ",
-  "tourism.title": "Тоо, суу, асман — үч элемент",
+  "tourism.title": "Тоо, суу, асман - үч элемент",
   "tourism.desc": "Жаратылыштын кубаты, ат сейилдөөсү, жөө басуу жолдору жана өзгөчө экотуризм.",
   "tourism.cta": "Туристтик каттарды көрүү",
   "tourism.item.mountains": "Тоолор",
@@ -152,7 +152,7 @@ const KG: Dict = {
   "invest.reason.resources": "Бай ресурстар",
   "invest.reason.resources.body": "Жайыттар, суу ресурстары, минералдар.",
   "invest.reason.workforce": "Активдүү калк",
-  "invest.reason.workforce.body": "103 200 тургун (01.01.2026) — жаш жана активдүү калк.",
+  "invest.reason.workforce.body": "103 200 тургун (01.01.2026) - жаш жана активдүү калк.",
   "invest.reason.gov": "Ачык башкаруу",
   "invest.reason.gov.body": "Инвесторлор үчүн ачык диалог.",
   "invest.opps.heading": "Мүмкүнчүлүктөр",
@@ -261,7 +261,7 @@ const KG: Dict = {
   "village.people.title": "Айылдын жүздөрү",
   "village.archive.title": "Эстелик сүрөттөр",
   "village.archive.body":
-    "Эски сүрөттөр, мектеп жылдары, союздук доордогу сүрөттөр, үй-бүлөлүк архивдер, тойлор жана спорт командалары — баары бул жерде сакталат.",
+    "Эски сүрөттөр, мектеп жылдары, союздук доордогу сүрөттөр, үй-бүлөлүк архивдер, тойлор жана спорт командалары - баары бул жерде сакталат.",
   "village.archive.note":
     "Архив жакында ачылат. Эгер сизде эски сүрөттөр болсо, биз менен бөлүшүңүз.",
   "village.gallery.title": "Көз менен көрүү",
@@ -294,7 +294,7 @@ const RU: Dict = {
   "hero.scroll": "Прокрутите вниз",
 
   "about.eyebrow": "О РАЙОНЕ",
-  "about.title": "Кара-Кульджа — край, где время становится тише",
+  "about.title": "Кара-Кульджа - край, где время становится тише",
   "about.body":
     "Уголок с уникальной природой и бережно сохранённой культурой. Чистые реки, бескрайние жайлоо и традиционный уклад кыргызского народа создают здесь особую атмосферу.",
   "about.stat1": "айыльных аймаков",
@@ -304,7 +304,7 @@ const RU: Dict = {
 
   "about.section.history": "История",
   "about.section.history.body":
-    "История Кара-Кульджи уходит в глубь веков — наследники Великого Шёлкового пути и кочевых племён.",
+    "История Кара-Кульджи уходит в глубь веков - наследники Великого Шёлкового пути и кочевых племён.",
   "about.section.geography": "География",
   "about.section.geography.body":
     "Расположен на северном склоне Алайского хребта: высокие джайлоо, глубокие ущелья и горные реки.",
@@ -316,7 +316,7 @@ const RU: Dict = {
     "Мир эпоса «Манас», конная культура, устное народное творчество, ремёсла.",
   "about.section.overview": "Обзор района",
   "about.section.overview.body":
-    "7 айыльных аймаков, 55 сёл, 103 200 жителей. Центр — село Кара-Кульджа. Основа экономики — сельское хозяйство и животноводство.",
+    "7 айыльных аймаков, 55 сёл, 103 200 жителей. Центр - село Кара-Кульджа. Основа экономики - сельское хозяйство и животноводство.",
   "about.section.symbols": "Символы",
   "about.section.infrastructure": "Общественная инфраструктура",
   "about.section.infrastructure.body":
@@ -397,7 +397,7 @@ const RU: Dict = {
   "invest.reason.resources": "Богатые ресурсы",
   "invest.reason.resources.body": "Пастбища, водные ресурсы, полезные ископаемые.",
   "invest.reason.workforce": "Активное население",
-  "invest.reason.workforce.body": "103 200 жителей (01.01.2026) — молодое и активное население.",
+  "invest.reason.workforce.body": "103 200 жителей (01.01.2026) - молодое и активное население.",
   "invest.reason.gov": "Открытое управление",
   "invest.reason.gov.body": "Открытый диалог для инвесторов.",
   "invest.opps.heading": "Возможности",
@@ -505,9 +505,9 @@ const RU: Dict = {
   "village.people.title": "Лица села",
   "village.archive.title": "Памятные фотографии",
   "village.archive.body":
-    "Старые снимки, школьные годы, фотографии советской эпохи, семейные архивы, свадьбы и спортивные команды — всё хранится здесь.",
+    "Старые снимки, школьные годы, фотографии советской эпохи, семейные архивы, свадьбы и спортивные команды - всё хранится здесь.",
   "village.archive.note":
-    "Архив скоро откроется. Если у вас есть старые фотографии — поделитесь с нами.",
+    "Архив скоро откроется. Если у вас есть старые фотографии - поделитесь с нами.",
   "village.gallery.title": "Глазами зрителя",
   "village.map.title": "Расположение",
   "village.map.soon": "Интерактивная карта скоро",
@@ -538,7 +538,7 @@ const EN: Dict = {
   "hero.scroll": "Scroll",
 
   "about.eyebrow": "ABOUT",
-  "about.title": "Kara-Kulja — where time begins to slow down",
+  "about.title": "Kara-Kulja - where time begins to slow down",
   "about.body":
     "A place where unique nature and authentic culture have been carefully preserved. Crystal-clear rivers, endless summer pastures, and the traditional Kyrgyz way of life create a truly distinctive atmosphere here.",
   "about.stat1": "aiyl aimaks",
@@ -548,7 +548,7 @@ const EN: Dict = {
 
   "about.section.history": "History",
   "about.section.history.body":
-    "Kara-Kulja's history reaches deep into the centuries — heirs of the Great Silk Road and the nomadic tribes.",
+    "Kara-Kulja's history reaches deep into the centuries - heirs of the Great Silk Road and the nomadic tribes.",
   "about.section.geography": "Geography",
   "about.section.geography.body":
     "Set on the northern slopes of the Alai range: high jailoos, deep gorges and mountain rivers.",
@@ -641,7 +641,7 @@ const EN: Dict = {
   "invest.reason.resources": "Rich resources",
   "invest.reason.resources.body": "Pastures, water resources and minerals.",
   "invest.reason.workforce": "Active workforce",
-  "invest.reason.workforce.body": "103,200 inhabitants (01.01.2026) — a young, active population.",
+  "invest.reason.workforce.body": "103,200 inhabitants (01.01.2026) - a young, active population.",
   "invest.reason.gov": "Open governance",
   "invest.reason.gov.body": "An open dialogue with investors.",
   "invest.opps.heading": "Opportunities",
@@ -752,7 +752,7 @@ const EN: Dict = {
   "village.people.title": "Faces of the village",
   "village.archive.title": "Memory photographs",
   "village.archive.body":
-    "Old photographs, school years, Soviet-era snapshots, family archives, weddings and sports teams — all kept here.",
+    "Old photographs, school years, Soviet-era snapshots, family archives, weddings and sports teams - all kept here.",
   "village.archive.note":
     "The archive opens soon. If you have old photographs, share them with us.",
   "village.gallery.title": "Through your own eyes",

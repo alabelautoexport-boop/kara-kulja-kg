@@ -15,7 +15,7 @@ const placesImg = "/images/nature/row-of-camping-tents.jpg";
 export const Route = createFileRoute("/tourism")({
   head: () => ({
     meta: [
-      { title: "Tourism — Kara-Kulja" },
+      { title: "Tourism - Kara-Kulja" },
       { name: "description", content: "Mountain tourism, horse routes, ecotourism in Kara-Kulja." },
       { property: "og:title", content: "Tourism in Kara-Kulja" },
     ],

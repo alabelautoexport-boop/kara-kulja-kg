@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Кара-Кулжа району — Кыргыз Республикасынын маданий, туристтик жана инвестициялык санариптик жүзү.",
+          "Кара-Кулжа району - Кыргыз Республикасынын маданий, туристтик жана инвестициялык санариптик жүзү.",
       },
       { property: "og:title", content: "Kara-Kulja District" },
       { property: "og:description", content: "Cultural portal, tourism showcase and investment gateway of Kara-Kulja, Kyrgyzstan." },
