@@ -109,7 +109,6 @@ export function Footer() {
         <div className="mt-16 flex flex-col justify-between gap-3 border-t hairline pt-6 text-xs text-muted-foreground/70 md:flex-row">
           <span className="space-y-1">
             <span className="block">{t("footer.copyright")}</span>
-            <span className="block">{t("footer.author")}</span>
           </span>
           <span className="tracking-wide">{t("footer.region")}</span>
         </div>
